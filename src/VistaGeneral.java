@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -23,46 +24,58 @@ public class VistaGeneral implements ActionListener {
     JButton btnEliminarCaso;
     JButton btnModificarCaso;
     JButton btnsalir;
+    JButton btnVisualizarCaso;
     
   ArrayList<Caso> ListaCasos = new ArrayList();
     public VistaGeneral() {
         JFrame frame = new JFrame("Vienvenido a sistema de denuncia.");
        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            Container conte = new Container();
+           // Container conte = new Container();
 
             JTabbedPane tab = new JTabbedPane();
             JPanel panelCaso = new JPanel();
+            JPanel panelMostrarCaso = new JPanel();
+     
+     panelCaso.setLayout(null);
+    panelMostrarCaso.setLayout(null);
+
  
    btnCaso = new JButton("Caso");
-    btnCaso.setBounds(50, 50, 200, 30);
-    conte.add(btnCaso);
+    btnCaso.setBounds(40, 50, 200, 30);
+    panelCaso.add(btnCaso);
     btnCaso.addActionListener(this);
 
     btnMostrarCaso = new JButton("Mostrar Casos");
     btnMostrarCaso.setBounds(50, 100, 200, 30);
-    conte.add(btnMostrarCaso);
+    panelMostrarCaso.add(btnMostrarCaso);
     btnMostrarCaso.addActionListener(this);
 
-    btnEliminarCaso = new JButton("Eliminar Caso"); 
+    btnEliminarCaso = new JButton("Resolver Caso"); 
     btnEliminarCaso.setBounds(50, 150, 200, 30);
-    conte.add(btnEliminarCaso);
+    panelMostrarCaso.add(btnEliminarCaso);
     btnEliminarCaso.addActionListener(this);
 
+    btnVisualizarCaso = new JButton("Visualizar Caso"); 
+    btnVisualizarCaso.setBounds(40, 100, 200, 30);
+    panelCaso.add(btnVisualizarCaso);
+    btnVisualizarCaso.addActionListener(this);
+
     btnModificarCaso = new JButton("Modificar Caso");
-    btnModificarCaso.setBounds(50, 200, 200, 30);
-    conte.add(btnModificarCaso);
+    btnModificarCaso.setBounds(40, 150, 200, 30);
+    panelCaso.add(btnModificarCaso);
     btnModificarCaso.addActionListener(this);
 
     btnsalir = new JButton("Salir");
-    btnsalir.setBounds(50, 250, 200, 30);
-    conte.add(btnsalir);
+    btnsalir.setBounds(40, 200, 200, 30);
+    panelCaso.add(btnsalir);
     btnsalir.addActionListener(this);
 
 
-
-frame.setSize(800, 600);
-frame.add(conte);
+    tab.addTab("Usuario",panelCaso);
+    tab.addTab("Institucion", panelMostrarCaso);
+frame.setSize(300, 400);
+frame.add(tab);
 frame.setLocationRelativeTo(null);
       
         frame.setVisible(true);
@@ -80,6 +93,10 @@ frame.setLocationRelativeTo(null);
         }
         if (e.getSource() == btnEliminarCaso) {
             // Aquí puedes agregar la lógica para manejar el evento del botón "Eliminar Caso"
+           
+        }
+        if (e.getSource() == btnVisualizarCaso) {
+            visualizarCaso();
            
         }
         if (e.getSource() == btnModificarCaso) {
@@ -113,11 +130,12 @@ frame.setLocationRelativeTo(null);
         
 
         Container conte = new Container();
-        
-        JLabel lblFecha = new JLabel("Fecha de la denucia:  "+obtenerFecha());
+        String f=obtenerFecha();
+        String h=obtenerHora();
+        JLabel lblFecha = new JLabel("Fecha de la denucia:  "+f);
         lblFecha.setBounds(30, 50, 200, 30);
         conte.add(lblFecha);
-        JLabel lblHora = new JLabel("Hora de la denuncia:   "+obtenerHora());
+        JLabel lblHora = new JLabel("Hora de la denuncia:   "+h);
         lblHora.setBounds(30, 100, 220, 30);
         conte.add(lblHora);
         JLabel lblDescripcion = new JLabel("Descripcion de la denuncia:");
@@ -256,9 +274,10 @@ frame.setLocationRelativeTo(null);
 
 
             if (tViolencia1.getSelectedItem().toString()=="Violencia Digital") {
-                ListaCasos.add(new vDigital(vNombre1.getText(), cVictima.getText(), Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), 
+                ingresarCaso1();
+
+                ListaCasos.add(new vDigital(f,h, txtDescripcion.getText(),vNombre1.getText(), cVictima.getText(), Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), 
                 Integer.parseInt(vEdad1.getText()), genero, vEcivil1.getSelectedItem().toString(),vOcupacion1.getText(), vNacionalidad1.getText()));
-                   
                 }else if (tViolencia1.getSelectedItem().toString()=="Violencia Economica") {
                     
                 }else if (tViolencia1.getSelectedItem().toString()=="Violencia Emocional") {
@@ -281,8 +300,11 @@ frame.dispose();
         Container conte = new Container();
 
         JTextArea textArea = new JTextArea();
-        textArea.setBounds(40, 50, 700, 400);
-        conte.add(textArea);
+        //textArea.setBounds(40, 50, 700, 400);
+        textArea.setLineWrap(true);
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(40, 50, 700, 400);
+        conte.add(scroll);
         
         for (int i = 0; i < ListaCasos.size(); i++) {
             
@@ -304,6 +326,116 @@ frame.dispose();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
+    }
+    public void visualizarCaso(){
+       JFrame frame = new JFrame("Ingrese el ID del caso que desea visualizar");
+         Container conte = new Container();
+        JLabel lblID = new JLabel("ID de casos registrados:");
+        lblID.setBounds(110, 40, 200, 30);
+        conte.add(lblID);
+        JLabel lblID1 = new JLabel("Ingrese el ID del caso que desea visualizar:");
+        lblID1.setBounds(50, 300, 300, 30);
+        conte.add(lblID1);
+        JTextField campo = new JTextField();
+        campo.setBounds(80, 330, 200, 30);
+        conte.add(campo);
+        campo.requestFocus();
+        JTextArea txtId=new JTextArea();
+        for (int i =0;  i <ListaCasos.size() ; i++){
+           txtId.setText(txtId.getText() + "\n"+ListaCasos.get(i).buscarCaso());
+        }
+        txtId.setEditable(false);
+        JScrollPane scroll = new JScrollPane(txtId);
+        scroll.setBounds(80, 80,200, 200);
+        conte.add(scroll);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setBounds(80, 380, 100, 30);
+        conte.add(btnBuscar);
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = campo.getText();
+              frame.dispose();
+              for (int i = 0; i < ListaCasos.size(); i++) {
+                  if (ListaCasos.get(i).getVictima().getCedula().equals(campo.getText())) {
+                      JOptionPane.showMessageDialog(null,"Caso encontrado"+ListaCasos.get(i).mostrarcaso());
+                  }
+              }
+            }
+        });
+            
+        frame.add(conte);
+        frame.setSize(400, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+    }
+
+    public void ingresarCaso1(){
+JFrame frame = new JFrame("Informacion adicional del caso Violencia digital");
+Container conte = new Container();
+JLabel pDigital = new JLabel("Ingrese la plataforme donde se dio la agresion:");
+pDigital.setBounds(30, 50, 300, 30);
+conte.add(pDigital);
+JTextField pDigital1 = new JTextField();
+pDigital1.setBounds(50, 80, 200, 30);
+conte.add(pDigital1);
+JLabel agresor = new JLabel("Nombre del agresor:");
+agresor.setBounds(30, 120, 200, 30);
+conte.add(agresor);
+JTextField agresor1 = new JTextField();
+agresor1.setBounds(50, 150, 200, 30);
+conte.add(agresor1);
+JLabel rAgresor = new JLabel("Relacion con el agresor:");
+rAgresor.setBounds(30, 190, 200, 30);
+conte.add(rAgresor);
+JTextField rAgresor1 = new JTextField();
+rAgresor1.setBounds(50, 220, 200, 30);
+conte.add(rAgresor1);
+JLabel gAgresor = new JLabel("Genero del agresor:");
+gAgresor.setBounds(30, 260, 200, 30);
+conte.add(gAgresor);
+JRadioButton gAgresor1 = new JRadioButton("Masculino");
+gAgresor1.setBounds(50, 290, 200, 30);  
+conte.add(gAgresor1);
+JRadioButton gAgresor2 = new JRadioButton("Femenino");
+gAgresor2.setBounds(50, 320, 200, 30);
+conte.add(gAgresor2);
+JRadioButton gAgresor3 = new JRadioButton("Otro");
+gAgresor3.setBounds(50, 350, 200, 30);
+conte.add(gAgresor3);
+ButtonGroup botones = new ButtonGroup();
+botones.add(gAgresor1);
+botones.add(gAgresor2);
+botones.add(gAgresor3);
+JButton btnGuardar = new JButton("Guardar");
+btnGuardar.setBounds(30, 400, 100, 30);
+conte.add(btnGuardar);
+btnGuardar.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String gAgresor = "";
+        if (gAgresor1.isSelected()) {
+            gAgresor = "Masculino";
+        } else if (gAgresor2.isSelected()) {
+            gAgresor = "Femenino";
+        } else if (gAgresor3.isSelected()) {
+            gAgresor = "Otro";
+        }
+        ListaCasos.get(ListaCasos.size()-1).iDatos(pDigital.getText(),rAgresor1.getText(),rAgresor1.getText(), gAgresor);
+        frame.dispose();
+    }
+});
+
+frame.add(conte);
+frame.setSize(400,500);
+frame.setLocationRelativeTo(null);
+frame.setVisible(true);
+
+
+
+
     }
 }
 

@@ -5,10 +5,12 @@ private String descripcion;
 private Victima victima;
 
 
-    public Caso(String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
+    public Caso(String fecha,String hora , String descripcion,String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
     String ocupacion, String nacionalidad) {
         victima = new Victima(nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
-
+        this.fecha = fecha;
+        this.hora = hora;
+        this.descripcion = descripcion;
 }
 
     public String getFecha() {
@@ -35,6 +37,15 @@ private Victima victima;
         this.descripcion = descripcion;
     }
     
+    public Victima getVictima() {
+        return victima;
+    }
+
+    public void setVictima(Victima victima) {
+        this.victima = victima;
+    }
+    
+    
     public void aniadorcaso(String fecha, String hora, String descripcion){
         this.fecha = fecha;
         this.hora = hora;
@@ -45,10 +56,10 @@ private Victima victima;
         //System.out.println("Fecha: " + fecha);
         //System.out.println("Hora: " + hora);
         //System.out.println("Descripcion: " + descripcion);
-        txt= "Nombre de victima: "+victima.getNombre() + "     Cedula de la victima:" + victima.getCedula() +"     Numero celular: " + victima.getnCelular()
-        +"\nDireccion: " + victima.getDireccion() + "       Edad de la victima: " + victima.getEdad() + "    Genero de la victima: " + victima.getGenero()+
-        "\nEstado civil de la victima: " + victima.getEstadoCivil() + "    Ocupacion de la victima: " + victima.getOcupacion() + "    Nacionalidad de la victima: " + victima.getNacionalidad()
-        +"\n----------------------------***************------------------------------\n";
+        txt= "Fecha: " + fecha + "    Hora: " + hora +"    Nombre de victima: "+victima.getNombre() 
+        + "\nCedula de la victima:" + victima.getCedula() +"     Numero celular: " + victima.getnCelular()+"    Direccion: " + victima.getDireccion() 
+        + "\nEdad de la victima: " + victima.getEdad() + "    Genero de la victima: " + victima.getGenero()+"    Estado civil de la victima: " + victima.getEstadoCivil() 
+        + "\nOcupacion de la victima: " + victima.getOcupacion() + "    Nacionalidad de la victima: " + victima.getNacionalidad();
         return txt;
         
     }
@@ -62,11 +73,16 @@ private Victima victima;
         this.hora = hora;
         this.descripcion = descripcion;
     }
-    public void buscarcaso(String fecha, String hora, String descripcion){
-        if(this.fecha.equals(fecha) && this.hora.equals(hora) && this.descripcion.equals(descripcion)){
-            System.out.println("Caso encontrado");
-        }else{
-            System.out.println("Caso no encontrado");
-        }
+    public String buscarCaso(){
+        String txt="";
+        txt="Nunmero de cedula: "+victima.getCedula()+"\n";
+        return txt;
+       
     }
+
+    public void iDatos(String pDigital, String agresor, String rAgresor, String gAgreasor){
+
+    }
+
+    
 }
