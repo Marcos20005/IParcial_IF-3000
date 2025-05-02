@@ -1,4 +1,4 @@
-public class vEmocional {
+public class vEmocional extends Caso{
     private String agresor;
     private String rAgresor;
     private String gAgreasor;

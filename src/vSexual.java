@@ -1,4 +1,4 @@
-public class vSexual {
+public class vSexual extends Caso{
     private String agresor;
     private String rAgresor;
     private String gAgreasor;

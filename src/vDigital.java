@@ -1,15 +1,17 @@
-public class vDigital {
+public class vDigital extends Caso {
 String pDigital;
 String agresor;
 String rAgresor;
 String gAgreasor;
-public vDigital(String pDigital, String agresor, String rAgresor, String gAgreasor, String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
-        String ocupacion, String nacionalidad) {
-    this.pDigital = pDigital;
-    this.agresor = agresor;
-    this.rAgresor = rAgresor;
-    this.gAgreasor = gAgreasor;
-}
+
+    public vDigital(String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil, String ocupacion, String nacionalidad) {
+        super(nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
+    }
+
+    
+
+    
+
 
     public String getpDigital() {
         return pDigital;

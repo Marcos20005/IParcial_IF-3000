@@ -3,13 +3,12 @@ private String fecha;
 private  String hora;
 private String descripcion;
 private Victima victima;
-public Caso(String fecha, String hora, String descripcion,String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
-        String ocupacion, String nacionalidad) {
-        this.fecha = fecha;
-        this.hora = hora;
-        this.descripcion = descripcion;
-        victima = new Victima(nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil,
-        ocupacion, nacionalidad);
+
+
+    public Caso(String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
+    String ocupacion, String nacionalidad) {
+        victima = new Victima(nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
+
 }
 
     public String getFecha() {
@@ -41,10 +40,17 @@ public Caso(String fecha, String hora, String descripcion,String nombre, String 
         this.hora = hora;
         this.descripcion = descripcion;
     }
-    public void mostrarcaso(){
-        System.out.println("Fecha: " + fecha);
-        System.out.println("Hora: " + hora);
-        System.out.println("Descripcion: " + descripcion);
+    public String mostrarcaso(){
+        String txt="";
+        //System.out.println("Fecha: " + fecha);
+        //System.out.println("Hora: " + hora);
+        //System.out.println("Descripcion: " + descripcion);
+        txt= "Nombre de victima: "+victima.getNombre() + "     Cedula de la victima:" + victima.getCedula() +"     Numero celular: " + victima.getnCelular()
+        +"\nDireccion: " + victima.getDireccion() + "       Edad de la victima: " + victima.getEdad() + "    Genero de la victima: " + victima.getGenero()+
+        "\nEstado civil de la victima: " + victima.getEstadoCivil() + "    Ocupacion de la victima: " + victima.getOcupacion() + "    Nacionalidad de la victima: " + victima.getNacionalidad()
+        +"\n----------------------------***************------------------------------\n";
+        return txt;
+        
     }
     public void eliminarcaso(){
         this.fecha = null;

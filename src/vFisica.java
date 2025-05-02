@@ -1,4 +1,4 @@
-public class vFisica {
+public class vFisica extends Caso{
     private String agresor;
     private String rAgresor;
     private String gAgreasor;

@@ -1,22 +1,22 @@
 public class Victima {
-String nombre;
-String cedula;
-int nCelular;
-String direccion;
-int edad;
-String sexo;
-String estadoCivil;
-String ocupacion;
-String nacionalidad;
+private String nombre;
+private String cedula;
+private int nCelular;
+private String direccion;
+private int edad;
+private String genero;
+private String estadoCivil;
+private String ocupacion;
+private String nacionalidad;
 
-    public Victima(String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
+    public Victima(String nombre, String cedula, int nCelular, String direccion, int edad, String genero, String estadoCivil,
         String ocupacion, String nacionalidad) {
     this.nombre = nombre;
     this.cedula = cedula;
     this.nCelular = nCelular;
     this.direccion = direccion;
     this.edad = edad;
-    this.sexo = sexo;
+    this.genero = genero;
     this.estadoCivil = estadoCivil;
     this.ocupacion = ocupacion;
     this.nacionalidad = nacionalidad;
@@ -62,12 +62,12 @@ String nacionalidad;
         this.edad = edad;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getEstadoCivil() {

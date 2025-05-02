@@ -1,4 +1,4 @@
-public class vEconomica {
+public class vEconomica extends Caso {
    private String agresor;
    private String rAgresor;
    private String gAgreasor;
