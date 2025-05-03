@@ -22,78 +22,78 @@ private String nacionalidad;
     this.nacionalidad = nacionalidad;
 }
 
-    public String getNombre() {
+    protected String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    protected void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getCedula() {
+    protected String getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    protected void setCedula(String cedula) {
         this.cedula = cedula;
     }
 
-    public int getnCelular() {
+    protected int getnCelular() {
         return nCelular;
     }
 
-    public void setnCelular(int nCelular) {
+    protected void setnCelular(int nCelular) {
         this.nCelular = nCelular;
     }
 
-    public String getDireccion() {
+    protected String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    protected void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public int getEdad() {
+    protected int getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    protected void setEdad(int edad) {
         this.edad = edad;
     }
 
-    public String getGenero() {
+    protected String getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    protected void setGenero(String genero) {
         this.genero = genero;
     }
 
-    public String getEstadoCivil() {
+    protected String getEstadoCivil() {
         return estadoCivil;
     }
 
-    public void setEstadoCivil(String estadoCivil) {
+    protected void setEstadoCivil(String estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
 
-    public String getOcupacion() {
+    protected String getOcupacion() {
         return ocupacion;
     }
 
-    public void setOcupacion(String ocupacion) {
+    protected void setOcupacion(String ocupacion) {
         this.ocupacion = ocupacion;
     }
 
-    public String getNacionalidad() {
+    protected String getNacionalidad() {
         return nacionalidad;
     }
 
-    public void setNacionalidad(String nacionalidad) {
+    protected void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
-    public void reportarCaso(){
+    protected void reportarCaso(){
 
     }
 }

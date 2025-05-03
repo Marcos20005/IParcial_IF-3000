@@ -13,35 +13,35 @@ private Victima victima;
         this.descripcion = descripcion;
 }
 
-    public String getFecha() {
+    protected String getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    protected void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public String getHora() {
+    protected String getHora() {
         return hora;
     }
 
-    public void setHora(String hora) {
+    protected void setHora(String hora) {
         this.hora = hora;
     }
 
-    public String getDescripcion() {
+    protected String getDescripcion() {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    protected void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
     
-    public Victima getVictima() {
+    protected Victima getVictima() {
         return victima;
     }
 
-    public void setVictima(Victima victima) {
+    protected void setVictima(Victima victima) {
         this.victima = victima;
     }
     

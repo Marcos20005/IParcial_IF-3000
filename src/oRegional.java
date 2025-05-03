@@ -6,27 +6,27 @@ int telefono;
 public oRegional() {
 }
 
-    public String getLugar() {
+    protected String getLugar() {
         return lugar;
     }
 
-    public void setLugar(String lugar) {
+    protected void setLugar(String lugar) {
         this.lugar = lugar;
     }
 
-    public String getDireccion() {
+    protected String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    protected void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public int getTelefono() {
+    protected int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    protected void setTelefono(int telefono) {
                this.telefono = telefono;
     }
 

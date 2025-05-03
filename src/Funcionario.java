@@ -6,35 +6,35 @@ String hAtencion;
 public Funcionario() {
 }
 
-    public String getNombre() {
+    protected String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    protected void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getCedula() {
+    protected String getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    protected void setCedula(String cedula) {
         this.cedula = cedula;
     }
 
-    public int getiDempleado() {
+    protected int getiDempleado() {
         return iDempleado;
     }
 
-    public void setiDempleado(int iDempleado) {
+    protected void setiDempleado(int iDempleado) {
         this.iDempleado = iDempleado;
     }
 
-    public String gethAtencion() {
+    protected String gethAtencion() {
         return hAtencion;
     }
 
-    public void sethAtencion(String hAtencion) {
+    protected void sethAtencion(String hAtencion) {
         this.hAtencion = hAtencion;
     }
 ;

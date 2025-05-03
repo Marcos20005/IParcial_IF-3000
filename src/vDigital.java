@@ -9,35 +9,35 @@ private String gAgreasor;
     }
 
 
-    public String getpDigital() {
+    protected String getpDigital() {
         return pDigital;
     }
 
-    public void setpDigital(String pDigital) {
+    protected void setpDigital(String pDigital) {
         this.pDigital = pDigital;
     }
 
-    public String getAgresor() {
+    protected String getAgresor() {
         return agresor;
     }
 
-    public void setAgresor(String agresor) {
+    protected void setAgresor(String agresor) {
         this.agresor = agresor;
     }
 
-    public String getrAgresor() {
+    protected String getrAgresor() {
         return rAgresor;
     }
 
-    public void setrAgresor(String rAgresor) {
+    protected void setrAgresor(String rAgresor) {
         this.rAgresor = rAgresor;
     }
 
-    public String getgAgreasor() {
+    protected String getgAgreasor() {
         return gAgreasor;
     }
 
-    public void setgAgreasor(String gAgreasor) {
+    protected void setgAgreasor(String gAgreasor) {
         this.gAgreasor = gAgreasor;
     }
 
