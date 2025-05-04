@@ -35,7 +35,7 @@ public class VistaGeneral implements ActionListener {
     ArrayList<String> listaResultados = new ArrayList();
 
     public VistaGeneral() throws UnsupportedLookAndFeelException {
-        System.out.println("Hola mundo");
+        
 UIManager.setLookAndFeel(new FlatMacLightLaf());
 UIManager.put("Button.arc", 100);
             UIManager.put("TextComponent.arc", 100);
@@ -45,7 +45,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE);           
 
 
-System.out.print("Aparece");
+
         JFrame frame = new JFrame("Bienvenido al sistema de denuncia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -865,7 +865,7 @@ System.out.print("Aparece");
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 caso.modificarcaso(txtFecha.getText(), txtHora.getText(), txtDescripcion.getText());
-                
+                listaResultados.set(index, caso.mostrarcaso() + (caso.devolverExtras() != null ? caso.devolverExtras() : ""));
                 JOptionPane.showMessageDialog(null, "Caso modificado correctamente.");
                 frame.dispose();
             }
