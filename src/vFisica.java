@@ -26,8 +26,8 @@ public class vFisica extends Caso{
                "\nNombre del agresor: " + agresor +
                "\nRelación con el agresor: " + rAgresor +
                "\nGénero del agresor: " + gAgreasor +
-               "\nDescripción del caso: " + super.getDescripcion() +
-               "\n-----------------------***************-----------------------\n";
+               "\nDescripción del caso: " + super.getDescripcion() ;
+           
         return txt;
     }
 

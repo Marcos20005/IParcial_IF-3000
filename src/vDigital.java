@@ -9,52 +9,53 @@ private String gAgreasor;
     }
 
 
-    protected String getpDigital() {
+    public String getpDigital() {
         return pDigital;
     }
 
-    protected void setpDigital(String pDigital) {
+    public void setpDigital(String pDigital) {
         this.pDigital = pDigital;
     }
 
-    protected String getAgresor() {
+    public String getAgresor() {
         return agresor;
     }
 
-    protected void setAgresor(String agresor) {
+    public void setAgresor(String agresor) {
         this.agresor = agresor;
     }
 
-    protected String getrAgresor() {
+    public String getrAgresor() {
         return rAgresor;
     }
 
-    protected void setrAgresor(String rAgresor) {
+    public void setrAgresor(String rAgresor) {
         this.rAgresor = rAgresor;
     }
 
-    protected String getgAgreasor() {
+    public String getgAgreasor() {
         return gAgreasor;
     }
 
-    protected void setgAgreasor(String gAgreasor) {
+    public void setgAgreasor(String gAgreasor) {
         this.gAgreasor = gAgreasor;
     }
 
+@Override
     public void iDatos(String pDigital, String agresor, String rAgresor, String gAgreasor){
+        
         this.pDigital = pDigital;
         this.agresor = agresor;
         this.rAgresor = rAgresor;
         this.gAgreasor = gAgreasor;
 
     }
-   
+   @Override
    public String mostrarcaso(){
     String txt = super.mostrarcaso();
 
-    txt =txt + "\nTipo de violencia digital: Violencia digital"  + "    Nombre del agresor: " + agresor + "    Relacion con el agresor: " + rAgresor  +
-            "\nGenero del agresor: " + gAgreasor +"    Tipo de violecia registrada: Violencia digital" + "\nDescripcion del caso: " + super.getDescripcion() 
-     +"\n----------------------------***************------------------------------\n";
+    txt =txt + "\nTipo de violencia registrada: Violencia digital"  + "    Nombre del agresor: " + agresor + "    Relacion con el agresor: " + rAgresor  +
+            "\nGenero del agresor: " + gAgreasor +"    Plataforma en la cual se dio el caso: "+ pDigital+ "\nDescripcion del caso: " + super.getDescripcion() ;
 
     return txt;
    }

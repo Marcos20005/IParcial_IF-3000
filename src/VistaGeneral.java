@@ -16,6 +16,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class VistaGeneral implements ActionListener {
  
@@ -27,8 +31,15 @@ public class VistaGeneral implements ActionListener {
     JButton btnVisualizarCaso;
     
     ArrayList<Caso> ListaCasos = new ArrayList();
+    ArrayList<String> listaResultados = new ArrayList();
 
-    public VistaGeneral() {
+    public VistaGeneral() throws UnsupportedLookAndFeelException {
+UIManager.setLookAndFeel(new FlatMacLightLaf());
+UIManager.put("Button.arc", 100);
+            UIManager.put("TextComponent.arc", 100);
+            UIManager.put("Component.arc", 100);
+
+
         JFrame frame = new JFrame("Bienvenido al sistema de denuncia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -257,38 +268,49 @@ public class VistaGeneral implements ActionListener {
                     try {
                         if (tViolencia1.getSelectedItem().toString().equals("Violencia Digital")) {
                             vDigital caso = new vDigital(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
-                                Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
-                                genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
-                            ListaCasos.add(caso);
+                               Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
+                             genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
+                           // ListaCasos.add(new vDigital(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
+                            //Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
+                            //genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText()));
+                            
                             ingresarCaso1(caso);
+                            //ListaCasos.add(caso);
+                            //listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                             frame.dispose();
                         } else if (tViolencia1.getSelectedItem().toString().equals("Violencia Economica")) {
                             vEconomica caso = new vEconomica(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
-                                Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
-                                genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
-                            ListaCasos.add(caso);
+                            Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
+                            genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
+                            //ListaCasos.add(new vEconomica(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
+                            //Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
+                            //genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText()));
                             ingresarCaso2(caso); 
+                           
                             frame.dispose();
                         } else if( tViolencia1.getSelectedItem().toString().equals("Violencia Emocional")){ 
                             vEmocional caso = new vEmocional(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
                                 Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
                                 genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
-                            ListaCasos.add(caso);
+                           
                             ingresarCaso3(caso);
+                           
                             frame.dispose();
                         } else if( tViolencia1.getSelectedItem().toString().equals("Violencia Fisica")){ 
                             vFisica caso = new vFisica(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
                                 Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
                                 genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
-                            ListaCasos.add(caso);
+                            
                             ingresarCaso4(caso);
+                            
                             frame.dispose();
                         } else if (tViolencia1.getSelectedItem().toString().equals("Violencia Sexual")){ 
                             vSexual caso = new vSexual(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
                                 Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
                                 genero, vEcivil1.getSelectedItem().toString(), vOcupacion1.getText(), vNacionalidad1.getText());
-                            ListaCasos.add(caso);
+                            
                             ingresarCaso5(caso);
+                            
                             frame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Seleccione un tipo de violencia");
@@ -322,7 +344,7 @@ public class VistaGeneral implements ActionListener {
                 a += "-----------------------------------\n";
                 a += "Caso #" + (i + 1) + "\n";
                 a += "------------------------------------\n";
-                a += ListaCasos.get(i).mostrarcaso() + "\n\n";
+                a += listaResultados.get(i) + "\n\n";
             }
         }
 
@@ -378,7 +400,7 @@ public class VistaGeneral implements ActionListener {
                 frame.dispose();
                 for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(id)) {
-                        JOptionPane.showMessageDialog(null, "Caso encontrado:\n" + ListaCasos.get(i).mostrarcaso());
+                        JOptionPane.showMessageDialog(null, "Caso encontrado:\n" + listaResultados.get(i));
                         return;
                     }
                 }
@@ -446,6 +468,9 @@ public class VistaGeneral implements ActionListener {
                     gAgresor = "Otro";
                 }
                 caso.iDatos(pDigital1.getText(), agresor1.getText(), rAgresor1.getText(), gAgresor);
+                ListaCasos.add(caso);
+                listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
+               // ListaCasos.get(ListaCasos.size()-1).iDatos(pDigital1.getText(), agresor1.getText(), rAgresor1.getText(), gAgresor);
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
             }
@@ -523,6 +548,10 @@ public class VistaGeneral implements ActionListener {
                     }
                  caso.iDatos(tipoIngresoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
                         caso.setCantidadIngreso(Double.parseDouble(impactoFinancieroField.getText()));
+                        ListaCasos.add(caso);
+                        listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
+                  // ListaCasos.get(ListaCasos.size()-1).iDatos(tipoIngresoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
+                  // ListaCasos.get(ListaCasos.size()-1).setCantidadIngreso(Double.parseDouble(impactoFinancieroField.getText()));
                         JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
                         frame.dispose();
                 }
@@ -590,6 +619,8 @@ public class VistaGeneral implements ActionListener {
                         gAgresor = "Otro";
                     }
                     caso.iDatos(impactoPsicologicoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
+                    ListaCasos.add(caso);
+                    listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                     JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                     frame.dispose();
                 }
@@ -664,6 +695,8 @@ public class VistaGeneral implements ActionListener {
                 }
                 caso.iDatos(tipoLesionField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
                 caso.setAtencionMedica(atencionMedicaField.getText());
+                ListaCasos.add(caso);
+                listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
                 frame.dispose();
             }
@@ -732,6 +765,8 @@ public class VistaGeneral implements ActionListener {
                         gAgresor = "Otro";
                     }
                 caso.iDatos(tipoAbusoSexualField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
+                ListaCasos.add(caso);
+                listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
                 frame.dispose();
             }
@@ -746,14 +781,22 @@ public class VistaGeneral implements ActionListener {
         Container conte = new Container();
         conte.setLayout(null);
 
+        JTextArea textArea = new JTextArea();
+        for (int i = 0; i < ListaCasos.size(); i++) {
+            textArea.setText(textArea.getText() + "\n" + ListaCasos.get(i).buscarCaso());
+        }
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(30, 30, 200, 200);
+        conte.add(scroll);
+
         JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
-        lblCedula.setBounds(30, 30, 200, 30);
+        lblCedula.setBounds(30, 230, 200, 30);
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
-        txtCedula.setBounds(30, 60, 200, 30);
+        txtCedula.setBounds(30, 260, 200, 30);
         conte.add(txtCedula);
         JButton btnBuscar = new JButton("Buscar");
-        btnBuscar.setBounds(30, 100, 100, 30);
+        btnBuscar.setBounds(30, 310, 100, 30);
         conte.add(btnBuscar);
 
         btnBuscar.addActionListener(new ActionListener() {
@@ -776,7 +819,7 @@ public class VistaGeneral implements ActionListener {
         });
 
         frame.add(conte);
-        frame.setSize(300, 200);
+        frame.setSize(300, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -832,14 +875,22 @@ public class VistaGeneral implements ActionListener {
         Container conte = new Container();
         conte.setLayout(null);
 
+        JTextArea textArea = new JTextArea();
+        for (int i = 0; i < ListaCasos.size(); i++) {
+            textArea.setText(textArea.getText() + "\n" + ListaCasos.get(i).buscarCaso());
+        }
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(30, 30, 200, 200);
+        conte.add(scroll);
+
         JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
-        lblCedula.setBounds(30, 30, 200, 30);
+        lblCedula.setBounds(30, 230, 200, 30);
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
-        txtCedula.setBounds(30, 60, 200, 30);
+        txtCedula.setBounds(30, 260, 200, 30);
         conte.add(txtCedula);
         JButton btnResolver = new JButton("Resolver");
-        btnResolver.setBounds(30, 100, 100, 30);
+        btnResolver.setBounds(30, 320, 100, 30);
         conte.add(btnResolver);
 
         btnResolver.addActionListener(new ActionListener() {
@@ -847,8 +898,9 @@ public class VistaGeneral implements ActionListener {
                 String cedula = txtCedula.getText();
                 for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
-                        ListaCasos.remove(i);
-                        JOptionPane.showMessageDialog(null, "Caso resuelto y eliminado correctamente.");
+                        //ListaCasos.remove(i);
+                         seguimientodeCaso();
+                       // JOptionPane.showMessageDialog(null, "Caso resuelto y eliminado correctamente.");
                         frame.dispose();
                         return;
                     }
@@ -858,8 +910,94 @@ public class VistaGeneral implements ActionListener {
         });
 
         frame.add(conte);
-        frame.setSize(300, 200);
+        frame.setSize(300, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+    public void seguimientodeCaso(){
+        JFrame frame = new JFrame("Seguimiento de Caso");
+        Container conte = new Container();
+
+        JLabel l1 = new JLabel("Informacion de funcionario");
+        l1.setBounds(20, 30, 200, 30);
+        conte.add(l1);
+        JLabel l2 = new JLabel("Nombre del funcionario:");
+        l2.setBounds(20, 70, 200, 30);
+        conte.add(l2);
+        JTextField t1 = new JTextField();
+        t1.setBounds(20, 100, 200, 30);
+        conte.add(t1);
+        JLabel l3 = new JLabel("Cedula de funcionario:");
+        l3.setBounds(20,150,200,30);
+        conte.add(l3);
+        JTextField t2 = new JTextField();
+        t2.setBounds(20, 180, 200, 30);
+        conte.add(t2);
+        JLabel l4 = new JLabel("Codigo de funcionario:");
+        l4.setBounds(20, 220, 200, 30);
+        conte.add(l4);
+        JTextField t3 = new JTextField();
+        t3.setBounds(20, 250, 200, 30);
+        conte.add(t3);
+        JLabel l5 = new JLabel("Solucion propuesta:");
+        l5.setBounds(20, 290, 200, 30);
+        conte.add(l5);
+        JTextArea t4 = new JTextArea();
+        t4.setLineWrap(true);
+        JScrollPane scroll = new JScrollPane(t4);
+        scroll.setBounds(20, 320, 200, 100);
+        conte.add(scroll);
+        JButton grdr = new JButton("Guardar");
+        grdr.setBounds(30, 440, 100, 30);
+        conte.add(grdr);
+        JLabel l6 = new JLabel("Informacion de oficina:");
+        l6.setBounds(280, 30, 200, 30);
+        conte.add(l6);
+        JLabel l7 = new JLabel("Lugar de la oficina:");
+        l7.setBounds(280, 70, 200, 30);
+        conte.add(l7);
+        JTextField t7 = new JTextField();
+        t7.setBounds(280, 100, 200, 30);
+        conte.add(t7);
+        JLabel l8 = new JLabel("Telefono de la oficina:");
+        l8.setBounds(280, 150, 200, 30);
+        conte.add(l8);
+        JTextField t8 = new JTextField();
+        t8.setBounds(280, 180, 200, 30);
+        conte.add(t8);
+        JLabel l9 = new JLabel("Direccion de la oficina");
+        l9.setBounds(280, 220, 200, 30);
+        conte.add(l9);
+        JTextField t9 = new JTextField();
+        t9.setBounds(280, 250, 200, 30);
+        conte.add(t9);
+
+        grdr.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+              for (int i = 0; i < ListaCasos.size(); i++) {
+                    if (ListaCasos.get(i).getVictima().getCedula().equals(t2.getText())) {
+
+                        ListaCasos.get(i).editarExtras(t1.getText(), t2.getText(), obtenerFecha(), Integer.parseInt(t3.getText()), obtenerHora(), t4.getText(), t7.getText(), t9.getText(), Integer.parseInt(t8.getText()));;
+                       
+                        listaResultados.set(i, listaResultados.get(i)+ListaCasos.get(i).devolverExtras());
+                        break;
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Seguimiento guardado correctamente.");
+                frame.dispose();
+            }
+        });
+
+
+
+           
+frame.add(conte);
+        frame.setSize(500,600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
     }
 }

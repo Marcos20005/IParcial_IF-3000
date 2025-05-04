@@ -3,8 +3,21 @@ String nombre;
 String cedula;
 int iDempleado;
 String hAtencion;
-public Funcionario() {
+String fechaAtencion;
+String solucion;
+
+    public Funcionario() {
+       
+    }
+public String getSolucion() {
+    return solucion;
 }
+
+public void setSolucion(String solucion) {
+    this.solucion = solucion;
+}
+
+
 
     protected String getNombre() {
         return nombre;
@@ -38,5 +51,14 @@ public Funcionario() {
         this.hAtencion = hAtencion;
     }
 ;
+
+    public String getFechaAtencion() {
+        return fechaAtencion;
+    }
+
+    public void setFechaAtencion(String fechaAtencion) {
+        this.fechaAtencion = fechaAtencion;
+    }
+
 
 }

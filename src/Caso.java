@@ -3,6 +3,8 @@ private String fecha;
 private  String hora;
 private String descripcion;
 private Victima victima;
+private Funcionario funci = new Funcionario();
+private oRegional ofi = new oRegional();
 
 
     public Caso(String fecha,String hora , String descripcion,String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil,
@@ -13,35 +15,29 @@ private Victima victima;
         this.descripcion = descripcion;
 }
 
-    protected String getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    protected void setFecha(String fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    protected String getHora() {
+    public String getHora() {
         return hora;
     }
 
-    protected void setHora(String hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 
-    protected String getDescripcion() {
-        return descripcion;
-    }
-
-    protected void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+  
     
-    protected Victima getVictima() {
+    public Victima getVictima() {
         return victima;
     }
 
-    protected void setVictima(Victima victima) {
+    public void setVictima(Victima victima) {
         this.victima = victima;
     }
     
@@ -84,5 +80,31 @@ private Victima victima;
 
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public void editarExtras(String nombre,String cedula,String fecha,int cEmpleado,String hora,String solucion,String lugar, String direccion, int telefono){
+    funci.setNombre(nombre);
+    funci.setCedula(cedula);
+    funci.setFechaAtencion(fecha);
+    funci.setiDempleado(cEmpleado);
+    funci.sethAtencion(hora);
+    funci.setSolucion(solucion);
+    ofi.setLugar(lugar);
+    ofi.setDireccion(direccion);
+    ofi.setTelefono(telefono);
+    }
+    public String devolverExtras(){
+    String txt="";
+    txt="\n\nSe a añadido la siguiente respuesta a su caso\nInformacion de funcionario \nFacilitador de solucion\nNombre del funcionario: "+funci.getNombre()+"    Cedula de funcionario: "+funci.getCedula()+"    Codigo de empleado: "+funci.getiDempleado()+
+   "\nFecha en que se dio la solucion: "+funci.getFechaAtencion()+"    Hora en que se dio la respuesta: "+funci.gethAtencion()
+   +"\nSolucion: "+funci.getSolucion()+
+   "\nInformacion de la oficina\nLugar de la oficina: "+ofi.getLugar()+"    Direccion de la oficina: "+ofi.getDireccion()+"    Telefono de la oficina: "+ofi.getTelefono()+"\n-----------------------***************-----------------------\n";
+    return txt;    
+    }
     
 }
