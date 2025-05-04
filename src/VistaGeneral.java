@@ -35,6 +35,13 @@ public class VistaGeneral implements ActionListener {
     ArrayList<String> listaResultados = new ArrayList();
 
     public VistaGeneral() throws UnsupportedLookAndFeelException {
+UIManager.setLookAndFeel(new FlatMacLightLaf());
+UIManager.put("Button.arc", 100);
+            UIManager.put("TextComponent.arc", 100);
+            UIManager.put("Component.arc", 100);
+            UIManager.put("Button.background", new Color(30, 144, 255));
+            UIManager.put("Button.foreground", Color.WHITE);            
+UIManager.put("Button.focusColor", Color.ORANGE);           
 
 
         JFrame frame = new JFrame("Bienvenido al sistema de denuncia");
@@ -896,7 +903,7 @@ public class VistaGeneral implements ActionListener {
                 for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
                         //ListaCasos.remove(i);
-                         seguimientodeCaso();
+                         seguimientodeCaso(cedula);
                        // JOptionPane.showMessageDialog(null, "Caso resuelto y eliminado correctamente.");
                         frame.dispose();
                         return;
@@ -911,7 +918,7 @@ public class VistaGeneral implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    public void seguimientodeCaso(){
+    public void seguimientodeCaso(String cedula){
         JFrame frame = new JFrame("Seguimiento de Caso");
         Container conte = new Container();
 
@@ -975,7 +982,7 @@ public class VistaGeneral implements ActionListener {
             public void actionPerformed(ActionEvent e) {
 
               for (int i = 0; i < ListaCasos.size(); i++) {
-                    if (ListaCasos.get(i).getVictima().getCedula().equals(t2.getText())) {
+                    if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
 
                         ListaCasos.get(i).editarExtras(t1.getText(), t2.getText(), obtenerFecha(), Integer.parseInt(t3.getText()), obtenerHora(), t4.getText(), t7.getText(), t9.getText(), Integer.parseInt(t8.getText()));;
                        
