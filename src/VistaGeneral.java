@@ -35,7 +35,17 @@ public class VistaGeneral implements ActionListener {
     ArrayList<String> listaResultados = new ArrayList();
 
     public VistaGeneral() throws UnsupportedLookAndFeelException {
-        System.out.println("Hola mundo");
+
+        UIManager.setLookAndFeel(new FlatMacLightLaf());
+        UIManager.put("Button.arc", 100);
+        UIManager.put("TextComponent.arc", 100);
+        UIManager.put("Component.arc", 100);
+        UIManager.put("Button.background", new Color(30, 144, 255));
+        UIManager.put("Button.foreground", Color.WHITE);            
+        UIManager.put("Button.focusColor", Color.ORANGE);           
+
+        //UIManager.setLookAndFeel(new FlatLightLaf());
+
 UIManager.setLookAndFeel(new FlatMacLightLaf());
 UIManager.put("Button.arc", 100);
             UIManager.put("TextComponent.arc", 100);
