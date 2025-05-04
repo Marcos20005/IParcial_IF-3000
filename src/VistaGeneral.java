@@ -23,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class VistaGeneral implements ActionListener {
- 
+
     JButton btnCaso;
     JButton btnMostrarCaso;
     JButton btnEliminarCaso;
@@ -35,6 +35,7 @@ public class VistaGeneral implements ActionListener {
     ArrayList<String> listaResultados = new ArrayList();
 
     public VistaGeneral() throws UnsupportedLookAndFeelException {
+        System.out.println("Hola mundo");
 UIManager.setLookAndFeel(new FlatMacLightLaf());
 UIManager.put("Button.arc", 100);
             UIManager.put("TextComponent.arc", 100);
