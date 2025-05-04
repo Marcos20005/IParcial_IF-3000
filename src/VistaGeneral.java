@@ -30,6 +30,7 @@ public class VistaGeneral implements ActionListener {
     JButton btnModificarCaso;
     JButton btnsalir;
     JButton btnVisualizarCaso;
+    JButton btnSalir1;
     
     ArrayList<Caso> ListaCasos = new ArrayList();
     ArrayList<String> listaResultados = new ArrayList();
@@ -70,6 +71,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         btnEliminarCaso.setBounds(50, 150, 200, 30);
         panelMostrarCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(this);
+
+        btnSalir1 = new JButton("Salir");
+        btnSalir1.setBounds(50, 200, 200, 30);
+        panelMostrarCaso.add(btnSalir1);
+        btnSalir1.addActionListener(this); 
 
         btnVisualizarCaso = new JButton("Visualizar Caso"); 
         btnVisualizarCaso.setBounds(40, 100, 200, 30);
@@ -112,6 +118,8 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             modificarCaso();
         }
         if (e.getSource() == btnsalir) {
+            System.exit(0);
+        }if (e.getSource() == btnSalir1) {
             System.exit(0);
         }
     }
