@@ -1,4 +1,5 @@
 public class Victima {
+//Atributos de la clase victima
 private String nombre;
 private String cedula;
 private int nCelular;
@@ -9,6 +10,7 @@ private String estadoCivil;
 private String ocupacion;
 private String nacionalidad;
 
+//Constructor de la clase victima, con parametros para inicializar los atributos de la clase victima.
     public Victima(String nombre, String cedula, int nCelular, String direccion, int edad, String genero, String estadoCivil,
         String ocupacion, String nacionalidad) {
     this.nombre = nombre;
@@ -22,6 +24,7 @@ private String nacionalidad;
     this.nacionalidad = nacionalidad;
 }
 
+//Inicializacion de getters y setters de la clase victima.
     protected String getNombre() {
         return nombre;
     }

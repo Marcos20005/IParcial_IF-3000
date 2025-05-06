@@ -1,14 +1,16 @@
 public class vDigital extends Caso {
+//Atributos de la clase vDigital
 private String pDigital;
 private String agresor;
 private String rAgresor;
 private String gAgreasor;
 
+//Constructor de la clase vDigital, con parametros para inicializar los atributos.
     public vDigital(String fecha,String Hora , String descripcion,String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil, String ocupacion, String nacionalidad) {
         super(fecha,Hora,descripcion,nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
     }
 
-
+//Inicializacion de getters y setters de la clase vDigital.
     public String getpDigital() {
         return pDigital;
     }
@@ -41,6 +43,7 @@ private String gAgreasor;
         this.gAgreasor = gAgreasor;
     }
 
+    //Metododo para inicializar los atributos de la clase vDigital.
 @Override
     public void iDatos(String pDigital, String agresor, String rAgresor, String gAgreasor){
         
@@ -50,6 +53,8 @@ private String gAgreasor;
         this.gAgreasor = gAgreasor;
 
     }
+     
+    //Metodo sobreescrito para mostrar el caso, se utiliza para mostrar la informacion de la victima y el caso de manera completa.
    @Override
    public String mostrarcaso(){
     String txt = super.mostrarcaso();

@@ -1,14 +1,17 @@
 public class vSexual extends Caso{
+    //Atributos de la clase vSexual
     private String agresor;
     private String rAgresor;
     private String gAgresor;
     private String tipoAbusoSexual;
 
+    //Constructor de la clase vSexual, con parametros para inicializar los atributos.
     public vSexual(String fecha, String hora, String descripcion, String nombre, String cedula, int nCelular, 
                    String direccion, int edad, String sexo, String estadoCivil, String ocupacion, String nacionalidad) {
         super(fecha, hora, descripcion, nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
     }
 
+    //Metododo para inicializar los atributos de la clase vSexual.
     @Override
     public void iDatos(String tipoAbusoSexual, String agresor, String rAgresor, String gAgresor) {
         this.tipoAbusoSexual = tipoAbusoSexual;
@@ -17,6 +20,7 @@ public class vSexual extends Caso{
         this.gAgresor = gAgresor;
     }
 
+    //Metodo sobreescrito para mostrar el caso, se utiliza para mostrar la informacion de la victima y el caso de manera completa.
     @Override
     public String mostrarcaso() {
         String txt = super.mostrarcaso();
@@ -31,10 +35,10 @@ public class vSexual extends Caso{
         return txt;
     }
 
-    @Override
-    public String buscarCaso() {
-        return getVictima().getCedula();
-    }
+   // @Override
+    //public String buscarCaso() {
+      //  return getVictima().getCedula();
+    //}
 
     protected String getAgresor() {
         return agresor;

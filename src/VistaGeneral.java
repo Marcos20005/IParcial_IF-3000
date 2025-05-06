@@ -23,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class VistaGeneral implements ActionListener {
-
+//Componentes graficos globales para agregar actionListener mediante un solo metodo.
     JButton btnCaso;
     JButton btnMostrarCaso;
     JButton btnEliminarCaso;
@@ -31,12 +31,13 @@ public class VistaGeneral implements ActionListener {
     JButton btnsalir;
     JButton btnVisualizarCaso;
     JButton btnSalir1;
-    
+    //ArrayList utilizado donde se guardan todos los datos utilizados.
     ArrayList<Caso> ListaCasos = new ArrayList();
+    //ArrayList utilizado para poder aniadir una solucion y que se muestre la informacion del caso y la solucion.
     ArrayList<String> listaResultados = new ArrayList();
 
     public VistaGeneral() throws UnsupportedLookAndFeelException {
-        
+   //Metodos utilizados para darle una vista mas atractiva utilizando libreria FlatLaf.     
 UIManager.setLookAndFeel(new FlatMacLightLaf());
 UIManager.put("Button.arc", 100);
             UIManager.put("TextComponent.arc", 100);
@@ -46,7 +47,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE);           
 
 
-
+       //Inicializacion de componentes mostrados en la ventana principal del sistema.
         JFrame frame = new JFrame("Bienvenido al sistema de denuncia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -98,8 +99,10 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.add(tab);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        //Fin de inicializacion y edicion de componentes de la pantalla principal.
     }
 
+    //Declaracion de metodo actionPerformed para funcion de los botones, al momento de implementar este metodo.
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCaso) {
@@ -123,19 +126,20 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             System.exit(0);
         }
     }
-
+//Metodo declarado para la obtencion de la fecha correspondiente cuando se ingrese un caso o se de una solucion.
     public String obtenerFecha() {
         Date fecha = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         return formato.format(fecha);
     }
-
+//Metodo declarado para la obtencion de la hora correspondiente cuando se ingrese un caso o se de una solucion.
     public String obtenerHora() {
         Date hora = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("HH:mm:ss a");
         return formato.format(hora);
     }
 
+    //Metodo declarado para visualizar la pestaña donde se nos solicita la informacion general del caso.
     public void vistaCasos() {
         String estado[] = {"Soltero/a", "Casado/a", "Divorciado/a", "Separado/a", "Viudo/a", "Concubinato"};
         String cViolencia[] = {"Violencia Digital", "Violencia Economica", "Violencia Emocional", "Violencia Fisica", "Violencia Sexual"};
@@ -253,7 +257,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.add(conte);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+    //ActionPerformed de boton guardar para guardar todos los datos en el arrayList ListaCasos.
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -272,6 +276,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
                 }
                 
                 try {
+                    //Si alguno de los campos de texto esta vacio entra a este metodo y se solicita llenar todos los componentes.
                     if (vNombre1.getText().isEmpty() || cVictima.getText().isEmpty() || vNumero1.getText().isEmpty() ||
                         vDireccion1.getText().isEmpty() || vEdad1.getText().isEmpty() || vOcupacion1.getText().isEmpty() ||
                         vNacionalidad1.getText().isEmpty()) {
@@ -280,6 +285,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
                     }
 
                     try {
+                        //Si toda la informacion esta completa dependiendo de la seccion de un JComboBox donde se debe de eligir un tipo de violencia se me desplegara otra ventana solicitando los datos especificos de tipo de violencia.
                         if (tViolencia1.getSelectedItem().toString().equals("Violencia Digital")) {
                             vDigital caso = new vDigital(f, h, txtDescripcion.getText(), vNombre1.getText(), cVictima.getText(),
                                Integer.parseInt(vNumero1.getText()), vDireccion1.getText(), Integer.parseInt(vEdad1.getText()),
@@ -339,6 +345,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             }
         });
     }
+    //Fin de metodo donde se nos solicita la informacion general.
+
+    //Este metodo se declara para visualizar toda la informacion de los registros.
     public void mosCasos() {
         JFrame frame = new JFrame("Casos registrados");
         Container conte = new Container();
@@ -351,6 +360,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         conte.add(scroll);
         
         String a = "";
+        //Declaraion de este condicional para verificar si el arrayList esta vacio y no se muestre un mensaje de error.
         if (ListaCasos.isEmpty()) {
             a = "No hay casos registrados.";
         } else {
@@ -379,7 +389,8 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
+    //Declaracion de este metodo para poder ver la informacion de un caso en especifico y ver si tiene respuesta o no.
     public void visualizarCaso() {
         JFrame frame = new JFrame("Ingrese el ID del caso que desea visualizar");
         Container conte = new Container();
@@ -396,6 +407,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         conte.add(campo);
         campo.requestFocus();
         JTextArea txtId = new JTextArea();
+        //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
         for (int i = 0; i < ListaCasos.size(); i++) {
             txtId.setText(txtId.getText() + "\n" + ListaCasos.get(i).buscarCaso());
         }
@@ -412,6 +424,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             public void actionPerformed(ActionEvent e) {
                 String id = campo.getText();
                 frame.dispose();
+                //For implementado para traer de nuestra el caso que coincida con un numero de cedula.
                 for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(id)) {
                         JOptionPane.showMessageDialog(null, "Caso encontrado:\n" + listaResultados.get(i));
@@ -427,7 +440,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de moetodo visualizar un caso en especifico.
 
+
+    //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio digital.
+    //Fin de metodo utilizado para solicitar la informacion de violencia digital.
     public void ingresarCaso1(vDigital caso) {
         JFrame frame = new JFrame("Información adicional del caso Violencia digital");
         Container conte = new Container();
@@ -495,6 +512,8 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para solicitar la informacion de violencia digital.
+     //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio economica.
     public void ingresarCaso2(vEconomica caso) {
             JFrame frame = new JFrame("Información adicional del caso Violencia Económica");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -573,7 +592,10 @@ UIManager.put("Button.focusColor", Color.ORANGE);
     
             frame.setVisible(true);
         }
+        //Fin de metodo utilizado para solicitar la informacion de violencia economica.
 
+
+     //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio emocional.
     public void ingresarCaso3(vEmocional caso) {
             JFrame frame = new JFrame("Información adicional del caso Violencia Emocional");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -641,7 +663,10 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             });
             frame.setVisible(true);
         }
+        //Fin de metodo utilizado para solicitar la informacion de violencia emocional.
 
+
+     //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio fisica.
     public void ingresarCaso4(vFisica caso) {
         JFrame frame = new JFrame("Información adicional del caso Violencia Física");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -719,7 +744,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para solicitar la informacion de violencia fisica.
 
+     //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio sexual.
     public void ingresarCaso5(vSexual caso) {
         JFrame frame = new JFrame("Información adicional del caso Violencia Sexual");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -789,7 +816,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para solicitar la informacion de violencia sexual.
 
+     //Metodo declarado para mostrar los componente graficos utilizados para solicitar poder editar la descripcion de un caso registrado, a su misma vez al hacerlo se cambian la fecha y hora del caso que se este editando.
     public void modificarCaso() {
         JFrame frame = new JFrame("Modificar Caso");
         Container conte = new Container();
@@ -817,12 +846,14 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             public void actionPerformed(ActionEvent e) {
                 String cedula = txtCedula.getText();
                 int index = -1;
+                //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
                 for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
                         index = i;
                         break;
                     }
                 }
+                //Si el caso no es encontrado se despliega un JOptionPane con el mensaje de que no se encontro el caso.
                 if (index != -1) {
                     frame.dispose();
                     editarCaso(index);
@@ -837,7 +868,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para solicitar poder editar la descripcion de un caso registrado.
 
+//Si al momento de editar un caso se encuentra un registro entonces se llama a este metodo, solicitando que ingresemos una nueva descripcion.
     public void editarCaso(int index) {
         Caso caso = ListaCasos.get(index);
         JFrame frame = new JFrame("Editar Caso");
@@ -872,7 +905,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //Al presionar el boton guardar se llama al metodo modificarcaso de la clase caso, donde se le pasan los nuevos valores de fecha, hora y descripcion.
                 caso.modificarcaso(txtFecha.getText(), txtHora.getText(), txtDescripcion.getText());
+                //Como al mostrar los casos se utiliza el arraiList listaResultados entonces hay que editar este registro tambien en dondes se agreguen los valores nuevos y una respuesta si es que la tiene
                 listaResultados.set(index, caso.mostrarcaso() + (caso.devolverExtras() != null ? caso.devolverExtras() : ""));
                 JOptionPane.showMessageDialog(null, "Caso modificado correctamente.");
                 frame.dispose();
@@ -884,7 +919,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para editar la descripcion de un caso.
 
+    //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
     public void resolverCaso() {
         JFrame frame = new JFrame("Resolver Caso");
         Container conte = new Container();
@@ -929,6 +966,9 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    //Fin de metodo utilizado para solicitar la cedula de un caso y poder darle una solucion.
+
+    //Metodo declarado para mostrar los componentes graficos utilizados para solicitar la informacion de seguimiento de un caso, solicitando la informacion de un usuario y la oficina regional.
     public void seguimientodeCaso(String cedula){
         JFrame frame = new JFrame("Seguimiento de Caso");
         Container conte = new Container();
@@ -991,7 +1031,7 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             
             @Override
             public void actionPerformed(ActionEvent e) {
-
+    //For declarado para recorrer el array list y cuando se encuentre coincidencia con la cedula ingresada anteriormente aniadir la informacion solicitada en este metodo
               for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
 
@@ -1012,4 +1052,6 @@ frame.add(conte);
         frame.setVisible(true);
 
     }
+    //Fin de metodo utilizado para solicitar la informacion de usuario y la ofocina regional
 }
+//Fin de la clase VistaGeneral

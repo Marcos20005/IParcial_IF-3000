@@ -1,19 +1,29 @@
 public class Funcionario {
+    //Atributos de la clase Funcionario
 String nombre;
 String cedula;
 int iDempleado;
 String hAtencion;
 String fechaAtencion;
 String solucion;
-
+//Constructor de clase Funcionario.
     public Funcionario() {
        
     }
-public String getSolucion() {
+
+//declaracion de los metodos get y set de la clase Funcionario.
+    public Funcionario(String nombre, String cedula, int iDempleado, String hAtencion, String fechaAtencion) {
+        this.nombre = nombre;
+        this.cedula = cedula;
+        this.iDempleado = iDempleado;
+        this.hAtencion = hAtencion;
+        this.fechaAtencion = fechaAtencion;
+    }
+ protected  String getSolucion() {
     return solucion;
 }
 
-public void setSolucion(String solucion) {
+ protected  void setSolucion(String solucion) {
     this.solucion = solucion;
 }
 
