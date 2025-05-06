@@ -40,6 +40,7 @@ public class vSexual extends Caso{
       //  return getVictima().getCedula();
     //}
 
+    //Getters y Setters de la clase vSexual.
     protected String getAgresor() {
         return agresor;
     }
