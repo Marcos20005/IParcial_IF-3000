@@ -261,6 +261,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                 String genero = "";
                 if (vGenero1.isSelected()) {
                     genero = "Masculino";
@@ -490,6 +495,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                 String gAgresor = "";
                 if (gAgresor1.isSelected()) {
                     gAgresor = "Masculino";
@@ -571,6 +581,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                     String gAgresor = "";
                     if (gAgresor1.isSelected()) {
                         gAgresor = "Masculino";
@@ -646,6 +661,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+                    if (respuesta == JOptionPane.NO_OPTION) {
+                        frame.dispose();
+                       return;
+                    }
                     String gAgresor = "";
                     if (gAgresor1.isSelected()) {
                         gAgresor = "Masculino";
@@ -722,8 +742,14 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         btnGuardar.setBounds(20, 380, 100, 30);
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                 String gAgresor = "";
                 if (gAgresor1.isSelected()) {
                     gAgresor = "Masculino";
@@ -797,6 +823,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                     String gAgresor = "";
                     if (gAgresor1.isSelected()) {
                         gAgresor = "Masculino";
@@ -905,10 +936,15 @@ UIManager.put("Button.focusColor", Color.ORANGE);
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
                 //Al presionar el boton guardar se llama al metodo modificarcaso de la clase caso, donde se le pasan los nuevos valores de fecha, hora y descripcion.
                 caso.modificarcaso(txtFecha.getText(), txtHora.getText(), txtDescripcion.getText());
                 //Como al mostrar los casos se utiliza el arraiList listaResultados entonces hay que editar este registro tambien en dondes se agreguen los valores nuevos y una respuesta si es que la tiene
-                listaResultados.set(index, caso.mostrarcaso() + (caso.devolverExtras() != null ? caso.devolverExtras() : ""));
+                listaResultados.set(index, caso.mostrarcaso());
                 JOptionPane.showMessageDialog(null, "Caso modificado correctamente.");
                 frame.dispose();
             }
@@ -1031,6 +1067,11 @@ UIManager.put("Button.focusColor", Color.ORANGE);
             
             @Override
             public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.NO_OPTION) {
+                frame.dispose();
+               return;
+            }
     //For declarado para recorrer el array list y cuando se encuentre coincidencia con la cedula ingresada anteriormente aniadir la informacion solicitada en este metodo
               for (int i = 0; i < ListaCasos.size(); i++) {
                     if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
@@ -1053,5 +1094,6 @@ frame.add(conte);
 
     }
     //Fin de metodo utilizado para solicitar la informacion de usuario y la ofocina regional
+
 }
 //Fin de la clase VistaGeneral

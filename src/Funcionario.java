@@ -1,11 +1,11 @@
 public class Funcionario {
     //Atributos de la clase Funcionario
-String nombre;
-String cedula;
-int iDempleado;
-String hAtencion;
-String fechaAtencion;
-String solucion;
+private String nombre;
+private String cedula;
+private int iDempleado;
+private String hAtencion;
+private String fechaAtencion;
+private String solucion;
 //Constructor de clase Funcionario.
     public Funcionario() {
        
@@ -29,7 +29,7 @@ String solucion;
 
 
 
-    protected String getNombre() {
+    protected   String getNombre() {
         return nombre;
     }
 

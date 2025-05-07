@@ -96,7 +96,7 @@ private String nacionalidad;
     protected void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
-    protected void reportarCaso(){
+   // public void reportarCaso(){
 
-    }
+   // }
 }

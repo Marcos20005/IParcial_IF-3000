@@ -1,8 +1,8 @@
 public class oRegional {
     //Atributos de la clase oRegional
-String lugar;
-String direccion;
-int telefono;
+    private String lugar;
+    private String direccion;
+    private int telefono;
 
 //Constructor de la clase oRegional.
 public oRegional() {
