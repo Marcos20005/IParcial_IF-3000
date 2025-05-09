@@ -78,7 +78,7 @@ private oRegional ofi = new oRegional();
     //Metodo para buscar el caso, se utiliza para buscar el caso por la cedula de la victima.
     public String buscarCaso(){
         String txt="";
-        txt="Nunmero de cedula: "+victima.getCedula()+"\n";
+        txt="Numero de cedula: "+victima.getCedula()+"\n";
         return txt;
        
     }
