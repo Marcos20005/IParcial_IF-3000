@@ -1,6 +1,6 @@
 public class App {
     public static void main(String[] args) throws Exception {
-   VistaGeneral vistaGeneral = new VistaGeneral();
-   
+        //Instancia de la clase donde esta toda la parte grafica.
+    VistaGeneral vistaGeneral = new VistaGeneral();
     }
 }

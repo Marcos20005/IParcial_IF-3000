@@ -1,14 +1,17 @@
 public class vEconomica extends Caso {
+    //Atributos de la clase vEconomica
     private String agresor;
     private String rAgresor;
     private String gAgreasor;
     private String tIngreso;
     private double cantidadIngreso;
 
+    //Constructor de la clase vEconomica, con parametros para inicializar los atributos de la clase Caso.
     public vEconomica(String fecha, String hora, String descripcion, String nombre, String cedula, int nCelular, String direccion, int edad, String sexo, String estadoCivil, String ocupacion, String nacionalidad) {
         super(fecha, hora, descripcion, nombre, cedula, nCelular, direccion, edad, sexo, estadoCivil, ocupacion, nacionalidad);
     }
 
+    //Metododo para inicializar los atributos de la clase vEconomica.
     @Override
     public void iDatos(String tIngreso, String agresor, String rAgresor, String gAgreasor) {
         this.tIngreso = tIngreso;   
@@ -17,6 +20,7 @@ public class vEconomica extends Caso {
         this.gAgreasor = gAgreasor;
     }
 
+    //Metodo sobreescrito para mostrar el caso, se utiliza para mostrar la informacion de la victima y el caso de manera completa.
     @Override
     public String mostrarcaso() {
         String txt = super.mostrarcaso();
@@ -31,6 +35,8 @@ public class vEconomica extends Caso {
         return txt;
     }
 
+
+    //Getters y Setters de la clase vEconomica.
     protected String getAgresor() {
         return agresor;
     }

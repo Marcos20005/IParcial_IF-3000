@@ -1,11 +1,14 @@
 public class oRegional {
-String lugar;
-String direccion;
-int telefono;
+    //Atributos de la clase oRegional
+    private String lugar;
+    private String direccion;
+    private int telefono;
 
+//Constructor de la clase oRegional.
 public oRegional() {
 }
 
+//Getters y Setters d ela clase oRegional
     protected String getLugar() {
         return lugar;
     }
