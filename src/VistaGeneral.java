@@ -23,7 +23,7 @@ import java.sql.*;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
-public class VistaGeneral implements ActionListener {
+public class VistaGeneral  {
 //Componentes graficos globales para agregar actionListener mediante un solo metodo.
     JButton btnCaso;
     JButton btnMostrarCaso;
@@ -48,7 +48,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE); 
  //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
  Class.forName("com.mysql.jdbc.Driver");
-      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
       Statement stmt = con.createStatement();
       //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
 pantallaLoguear(stmt);     
@@ -228,11 +228,11 @@ public void pantallaGeneral(Statement stmt){
         btnMostrarCaso.setBounds(50, 100, 200, 30);
         panelMostrarCaso.add(btnMostrarCaso);
         btnMostrarCaso.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mosCasos(stmt);
-            }
-        });
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mosCasos(stmt);
+    }
+});
 
         btnEliminarCaso = new JButton("Resolver Caso"); 
         btnEliminarCaso.setBounds(50, 150, 200, 30);
@@ -612,24 +612,45 @@ public void pantallaGeneral(Statement stmt){
                try{
                 ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
                 while(rs2.next()){
-                 if (rs2.getString("Cedula").equals(id)) {
-JOptionPane.showMessageDialog(null,"Caso encontrado\n"+"Cedula: "+rs2.getString("Cedula")
-              +"\nNombre: "+rs2.getString("Nombre") + "\nNumero Celular:  " +
-                rs2.getString("NumeroCelular") + "\nDireccion: " +
-                rs2.getString("Direccion") + "\nEdad: " +
-                rs2.getString("Edad") + "\nGenero: " +
-                rs2.getString("Genero") + "\nEstadoCivil: " +
-                rs2.getString("EstadoCivil") + "\nOcupacion: " +
-                rs2.getString("Ocupacion") + "\nNacionalidad " +
-                rs2.getString("Nacionalidad") + "\nTipo de violencia: " +
-                rs2.getString("TipoViolencia") + "\nNombre del Agresor: " +
-                rs2.getString("Agresor") + "\nTipo de relacion con Agresor: " +
-                rs2.getString("RelacionAgresor") + "\nGenero del Agresor: " +
-                rs2.getString("GeneroAgresor") + "\nPlataforma digital en donde se dio la Agresion: "+ 
-                rs2.getString("PlataformaDigital")+"\nDescripcion: "+
-                rs2.getString("Descripcion"));
-return;     
-                 }
+                  if (rs2.getString("Cedula").equals(id)) {
+
+            String mensaje = "Caso encontrado\n" +
+                "Cedula: " + rs2.getString("Cedula") +
+                "\nNombre: " + rs2.getString("Nombre") +
+                "\nNumero Celular: " + rs2.getString("NumeroCelular") +
+                "\nDireccion: " + rs2.getString("Direccion") +
+                "\nEdad: " + rs2.getString("Edad") +
+                "\nGenero: " + rs2.getString("Genero") +
+                "\nEstadoCivil: " + rs2.getString("EstadoCivil") +
+                "\nOcupacion: " + rs2.getString("Ocupacion") +
+                "\nNacionalidad: " + rs2.getString("Nacionalidad") +
+                "\nTipo de violencia: " + rs2.getString("TipoViolencia") +
+                "\nNombre del Agresor: " + rs2.getString("Agresor") +
+                "\nTipo de relacion con Agresor: " + rs2.getString("RelacionAgresor") +
+                "\nGenero del Agresor: " + rs2.getString("GeneroAgresor");
+
+            // Agregar los campos adicionales segun el tipo de violencia
+            String tipoViolencia = rs2.getString("TipoViolencia");
+
+            if (tipoViolencia.equals("Violencia Emocional")) {
+                mensaje += "\nImpacto Psicologico: " + rs2.getString("ImpactoPsicologico");
+            } else if (tipoViolencia.equals("Violencia Fisica")) {
+                mensaje += "\nTipo de Lesion: " + rs2.getString("TipoLesion") +
+                           "\nAtencion Medica: " + rs2.getString("AtencionMedica");
+            } else if (tipoViolencia.equals("Violencia Sexual")) {
+                mensaje += "\nTipo de Abuso Sexual: " + rs2.getString("TipoAbusoSexual");
+            } else if (tipoViolencia.equals("Violencia Economica")) {
+                mensaje += "\nTipo de Ingreso: " + rs2.getString("TipoIngreso") +
+                           "\nCantidad de Ingreso: " + rs2.getString("CantidadIngreso");
+            } else if (tipoViolencia.equals("Violencia Digital")) {
+                mensaje += "\nPlataforma digital en donde se dio la Agresion: " + rs2.getString("PlataformaDigital");
+            }
+
+            mensaje += "\nDescripcion: " + rs2.getString("Descripcion");
+
+            JOptionPane.showMessageDialog(null, mensaje);
+            return;     
+        }
                 }
                }catch(SQLException e1){
                 e1.printStackTrace();
@@ -800,16 +821,21 @@ return;
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
                     }
-                 caso.iDatos(tipoIngresoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
-                        caso.setCantidadIngreso(Double.parseDouble(impactoFinancieroField.getText()));
-                        ListaCasos.add(caso);
-                        listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
-                  // ListaCasos.get(ListaCasos.size()-1).iDatos(tipoIngresoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
-                  // ListaCasos.get(ListaCasos.size()-1).setCantidadIngreso(Double.parseDouble(impactoFinancieroField.getText()));
-                        JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
-                        frame.dispose();
-                }
-            });
+                  try {
+          int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Economica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+tipoIngresoField.getText()+"','"+impactoFinancieroField.getText()+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            //While para comprobar los datos actual de la base de datos.
+          while (rs.next()) { 
+             System.out.println("Cedula: " + rs.getString("Cedula")+" Nombre: " + rs.getString("Nombre") +" Tipo ingreso:"+ rs.getString("TipoIngreso") + " Impacto Financiero: " + rs.getString("CantidadIngreso"));
+          }
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+                JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
+                frame.dispose();
+            }
+        });
     
             frame.setVisible(true);
         }
@@ -880,14 +906,22 @@ return;
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
                     }
-                    caso.iDatos(impactoPsicologicoField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
-                    ListaCasos.add(caso);
-                    listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
-                    JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
-                    frame.dispose();
-                }
-            });
-            frame.setVisible(true);
+                    try {
+                        int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Emocional" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + impactoPsicologicoField.getText() +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            //While para comprobar los datos actual de la base de datos.
+            while (rs.next()) { 
+                 System.out.println("Cedula: " + rs.getString("Cedula")+" Nombre: " + rs.getString("Nombre") +" Impacto Psicologico:"+ rs.getString("ImpactoPsicologico"));
+                    }
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+                JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
+                frame.dispose();
+            }
+        });
+                 frame.setVisible(true);
         }
         //Fin de metodo utilizado para solicitar la informacion de violencia emocional.
 
@@ -964,13 +998,22 @@ return;
                 } else if (gAgresor3.isSelected()) {
                     gAgresor = "Otro";
                 }
-                caso.iDatos(tipoLesionField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
-                caso.setAtencionMedica(atencionMedicaField.getText());
-                ListaCasos.add(caso);
-                listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
-                JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
+            
+                try {
+            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Fisica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + tipoLesionField.getText() + "','" + atencionMedicaField.getText() + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");    
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            //While para comprobar los datos actual de la base de datos.
+            while (rs.next()) { 
+                 System.out.println("Cedula: " + rs.getString("Cedula")+" Nombre: " + rs.getString("Nombre") +" Tipo Lesion:"+ rs.getString("TipoLesion") + " Atencion Medica: " + rs.getString("AtencionMedica"));
+            }
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+                JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
             }
+            
         });
 
         frame.setLocationRelativeTo(null);
@@ -1042,10 +1085,18 @@ return;
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
                     }
-                caso.iDatos(tipoAbusoSexualField.getText(), agresorField.getText(), rAgresorField.getText(), gAgresor);
-                ListaCasos.add(caso);
-                listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
-                JOptionPane.showMessageDialog(null, "Caso registrado correctamente");
+               try {
+            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Sexual" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+tipoAbusoSexualField.getText()+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            //While para comprobar los datos actual de la base de datos.    
+            while (rs.next()) { 
+                 System.out.println("Cedula: " + rs.getString("Cedula")+" Nombre: " + rs.getString("Nombre") +" Tipo Abuso Sexual:"+ rs.getString("TipoAbusoSexual"));
+            }
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+                JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
             }
         });
@@ -1205,7 +1256,84 @@ return;
         
     }
     //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
+
     //Fin de metodo utilizado para editar la descripcion de un caso.
+   public void mostratCasos(Statement stmt) {
+    JFrame frame = new JFrame("Casos Registrados");
+    Container conte = frame.getContentPane();
+    conte.setLayout(null);
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    JTextArea textArea = new JTextArea();
+    textArea.setEditable(false);
+    JScrollPane scroll = new JScrollPane(textArea);
+    scroll.setBounds(20, 20, 450, 300);
+    conte.add(scroll);
+
+    try {
+        ResultSet rsCasos = stmt.executeQuery("SELECT * FROM caso");
+        boolean hayCasos = false;
+
+        while (rsCasos.next()) {
+            hayCasos = true;
+            String cedula = rsCasos.getString("Cedula");
+            String fecha = rsCasos.getString("Fecha");
+            String hora = rsCasos.getString("Hora");
+            String descripcion = rsCasos.getString("Descripcion");
+            String tipoViolencia = rsCasos.getString("TipoViolencia");
+
+            textArea.append(
+                "Cédula: " + cedula + "\n" +
+                "Fecha: " + fecha + "\n" +
+                "Hora: " + hora + "\n" +
+                "Descripción: " + descripcion + "\n" +
+                "Tipo de Violencia: " + tipoViolencia + "\n"
+            );
+
+            // Ahora consultamos la tabla oficinaregional con la misma cédula
+            ResultSet rsOficina = stmt.executeQuery(
+                "SELECT * FROM oficinaregional WHERE Cedula = '" + cedula + "'"
+            );
+
+            if (rsOficina.next()) {
+                String nombre = rsOficina.getString("Nombre");
+                String lugar = rsOficina.getString("Lugar");
+                String direccion = rsOficina.getString("Direccion");
+                String telefono = rsOficina.getString("Telefono");
+                String solucion = rsOficina.getString("Solucion");
+                String fechaAt = rsOficina.getString("FechaAtencion");
+                String horaAt = rsOficina.getString("HoraAtencion");
+
+                textArea.append(
+                    "Funcionario: " + nombre + "\n" +
+                    "Oficina: " + lugar + ", " + direccion + "\n" +
+                    "Teléfono Oficina: " + telefono + "\n" +
+                    "Fecha Atención: " + fechaAt + "\n" +
+                    "Hora Atención: " + horaAt + "\n" +
+                    "Solución: " + solucion + "\n"
+                );
+            } else {
+                textArea.append("Este caso aún no tiene solución registrada.\n");
+            }
+
+            textArea.append("------------------------------\n");
+        }
+
+        if (!hayCasos) {
+            textArea.setText("No hay casos registrados.");
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al cargar los casos.");
+    }
+
+    frame.add(conte);
+    frame.setSize(500, 400);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+}
+
 
     //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
     public void resolverCaso(Statement stmt) {
@@ -1214,41 +1342,61 @@ return;
         conte.setLayout(null);
 
         JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+
         for (int i = 0; i < ListaCasos.size(); i++) {
             textArea.setText(textArea.getText() + "\n" + ListaCasos.get(i).buscarCaso());
         }
         JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setBounds(30, 30, 200, 200);
+        scroll.setBounds(30, 30, 400,250);
         conte.add(scroll);
+        //Se crea un JLabel y JTextField para solicitar la cedula del caso a resolver
+         try {
+    ResultSet rs = stmt.executeQuery("SELECT Cedula, TipoViolencia FROM caso");
+    while (rs.next()) {
+        String cedula = rs.getString("Cedula");
+        String tipo = rs.getString("TipoViolencia");
+        textArea.append("Cédula: " + cedula + "- Tipo de violencia: " + tipo + "\n");
+        }
+         } catch (SQLException e) {
+        e.printStackTrace();
+    }
 
         JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
-        lblCedula.setBounds(30, 230, 200, 30);
+        lblCedula.setBounds(30, 290,200, 30);
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
-        txtCedula.setBounds(30, 260, 200, 30);
+        txtCedula.setBounds(30, 320,200,30);
         conte.add(txtCedula);
         JButton btnResolver = new JButton("Resolver");
-        btnResolver.setBounds(30, 320, 100, 30);
+        btnResolver.setBounds(250,320,100, 30);
         conte.add(btnResolver);
 
         btnResolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String cedula = txtCedula.getText();
-                for (int i = 0; i < ListaCasos.size(); i++) {
-                    if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
-                        //ListaCasos.remove(i);
-                         seguimientodeCaso(cedula);
-                       // JOptionPane.showMessageDialog(null, "Caso resuelto y eliminado correctamente.");
-                        frame.dispose();
-                        return;
-                    }
+             String cedulaInput = txtCedula.getText().trim();
+            boolean encontrado = false;
+
+            try {
+                ResultSet rs = stmt.executeQuery("SELECT * FROM caso WHERE Cedula = '" + cedulaInput + "'");
+                if (rs.next()) {
+                    encontrado = true;
                 }
-                JOptionPane.showMessageDialog(null, "Caso no encontrado.");
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
-        });
+
+            if (encontrado) {
+                // Abrir la ventana para seguimiento del caso
+                seguimientodeCaso(cedulaInput, stmt);
+            } else {
+                JOptionPane.showMessageDialog(null, "Caso no encontrado");
+            }
+        }
+    });
 
         frame.add(conte);
-        frame.setSize(300, 400);
+        frame.setSize(500, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -1322,18 +1470,25 @@ return;
                 frame.dispose();
                return;
             }
-    //For declarado para recorrer el array list y cuando se encuentre coincidencia con la cedula ingresada anteriormente aniadir la informacion solicitada en este metodo
-              for (int i = 0; i < ListaCasos.size(); i++) {
-                    if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
+            try {
+            int valor = stmt.executeUpdate(
+                "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, HoraAtencion, FechaAtencion, Solucion) " +
+                "VALUES ('" + t3.getText() + "', '" + t7.getText() + "', '" + t9.getText() + "', '" + t8.getText() + "', '" + t1.getText() + "', '" + t2.getText() + "', '" + obtenerHora() + "', '" + obtenerFecha() + "', '" + t4.getText() + "')"
+            );
+ // Consulta opcional para verificar que se guardó
+            ResultSet rs = stmt.executeQuery("SELECT * FROM oficinaregional");
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getString("IDempleado") +
+                    " - Nombre: " + rs.getString("Nombre") +
+                    " - Lugar: " + rs.getString("Lugar") +
+                    " - Cedula: " + rs.getString("Cedula"));
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
 
-                        ListaCasos.get(i).editarExtras(t1.getText(), t2.getText(), obtenerFecha(), Integer.parseInt(t3.getText()), obtenerHora(), t4.getText(), t7.getText(), t9.getText(), Integer.parseInt(t8.getText()));;
-                       
-                        listaResultados.set(i, listaResultados.get(i)+ListaCasos.get(i).devolverExtras());
-                        break;
-                    }
-                }
-                JOptionPane.showMessageDialog(null, "Seguimiento guardado correctamente.");
-                frame.dispose();
+        JOptionPane.showMessageDialog(null, "Seguimiento guardado correctamente.");
+        frame.dispose();
             }
         });
       
