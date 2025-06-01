@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -230,7 +231,7 @@ public void pantallaGeneral(Statement stmt){
         btnMostrarCaso.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
-        mosCasos(stmt);
+        mostratCasos(stmt);
     }
 });
 
@@ -608,7 +609,7 @@ public void pantallaGeneral(Statement stmt){
             public void actionPerformed(ActionEvent e) {
                 String id = campo.getText();
                 frame.dispose();
-                //Se declara ResultSet para comparar el caso de la cedula buscada con la cedula de la base de datos.
+                //Se declara ResultSet para comparar el caso de la cedula buscada con la cedula de la base de datos
                try{
                 ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
                 while(rs2.next()){
@@ -666,6 +667,7 @@ public void pantallaGeneral(Statement stmt){
     }
     //Fin de moetodo visualizar un caso en especifico.
    
+    //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio digital.
     public void ingresarCaso1(vDigital caso, Statement stmt){
         JFrame frame = new JFrame("Información adicional del caso Violencia digital");
         Container conte = new Container();
@@ -841,7 +843,6 @@ public void pantallaGeneral(Statement stmt){
         }
         //Fin de metodo utilizado para solicitar la informacion de violencia economica.
 
-
      //Metodo declarado para mostrar los componente graficos utilizados para solicitar la informacion especifica de Violencio emocional.
     public void ingresarCaso3(vEmocional caso, Statement stmt) {
             JFrame frame = new JFrame("Información adicional del caso Violencia Emocional");
@@ -909,7 +910,7 @@ public void pantallaGeneral(Statement stmt){
                     try {
                         int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Emocional" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + impactoPsicologicoField.getText() +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
-            //While para comprobar los datos actual de la base de datos.
+            //While para comprobar los datos actual de la base de datos
             while (rs.next()) { 
                  System.out.println("Cedula: " + rs.getString("Cedula")+" Nombre: " + rs.getString("Nombre") +" Impacto Psicologico:"+ rs.getString("ImpactoPsicologico"));
                     }
@@ -1255,90 +1256,141 @@ public void pantallaGeneral(Statement stmt){
         }
         
     }
-    //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
-
     //Fin de metodo utilizado para editar la descripcion de un caso.
+
+    //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
    public void mostratCasos(Statement stmt) {
     JFrame frame = new JFrame("Casos Registrados");
+    frame.setSize(500, 520);
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    frame.setLocationRelativeTo(null);
+
     Container conte = frame.getContentPane();
     conte.setLayout(null);
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-    JTextArea textArea = new JTextArea();
-    textArea.setEditable(false);
-    JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setBounds(20, 20, 450, 300);
+    JLabel lblID = new JLabel("Todos los casos registrados:");
+    lblID.setBounds(100, 20, 300, 30);
+    conte.add(lblID);
+
+    JTextArea txtId = new JTextArea();
+    txtId.setEditable(false);
+    txtId.setFont(new Font("Arial", Font.PLAIN, 12));
+    txtId.setLineWrap(true);
+    txtId.setWrapStyleWord(true);
+
+    JScrollPane scroll = new JScrollPane(txtId);
+    scroll.setBounds(30, 60, 420, 360);
     conte.add(scroll);
 
-    try {
-        ResultSet rsCasos = stmt.executeQuery("SELECT * FROM caso");
-        boolean hayCasos = false;
+    JButton btnMostrar = new JButton("Mostrar Todos");
+    btnMostrar.setBounds(160, 430, 150, 30);
+    conte.add(btnMostrar);
 
-        while (rsCasos.next()) {
-            hayCasos = true;
-            String cedula = rsCasos.getString("Cedula");
-            String fecha = rsCasos.getString("Fecha");
-            String hora = rsCasos.getString("Hora");
-            String descripcion = rsCasos.getString("Descripcion");
-            String tipoViolencia = rsCasos.getString("TipoViolencia");
+    btnMostrar.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        txtId.setText("");
+        
+// Conexión a la base de datos
+        Connection con = null;
+        Statement stmt = null;
+        Statement stmt2 = null;
 
-            textArea.append(
-                "Cédula: " + cedula + "\n" +
-                "Fecha: " + fecha + "\n" +
-                "Hora: " + hora + "\n" +
-                "Descripción: " + descripcion + "\n" +
-                "Tipo de Violencia: " + tipoViolencia + "\n"
-            );
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+            stmt = con.createStatement();
+            stmt2 = con.createStatement();
 
-            // Ahora consultamos la tabla oficinaregional con la misma cédula
-            ResultSet rsOficina = stmt.executeQuery(
-                "SELECT * FROM oficinaregional WHERE Cedula = '" + cedula + "'"
-            );
+// Consulta para obtener los casos y sus seguimientos
+           ResultSet rs = stmt.executeQuery(
+    "SELECT c.*, o.Nombre AS NombreFuncionario, o.IDempleado, o.Solucion, o.Lugar, o.Direccion AS DireccionOficina, o.Telefono, o.FechaAtencion, o.HoraAtencion " +
+    "FROM caso c LEFT JOIN oficinaregional o ON c.Cedula = o.CedulaCaso"
+);
+            int contador = 1;
 
-            if (rsOficina.next()) {
-                String nombre = rsOficina.getString("Nombre");
-                String lugar = rsOficina.getString("Lugar");
-                String direccion = rsOficina.getString("Direccion");
-                String telefono = rsOficina.getString("Telefono");
-                String solucion = rsOficina.getString("Solucion");
-                String fechaAt = rsOficina.getString("FechaAtencion");
-                String horaAt = rsOficina.getString("HoraAtencion");
+            while (rs.next()) {
+    String cedula = rs.getString("Cedula");
+    String tipoViolencia = rs.getString("TipoViolencia");
 
-                textArea.append(
-                    "Funcionario: " + nombre + "\n" +
-                    "Oficina: " + lugar + ", " + direccion + "\n" +
-                    "Teléfono Oficina: " + telefono + "\n" +
-                    "Fecha Atención: " + fechaAt + "\n" +
-                    "Hora Atención: " + horaAt + "\n" +
-                    "Solución: " + solucion + "\n"
-                );
-            } else {
-                textArea.append("Este caso aún no tiene solución registrada.\n");
-            }
+    String mensaje = "✅ CASO RESUELTO N° " + contador + "\n"
+            + "Cédula: " + cedula
+            + "\nNombre: " + rs.getString("Nombre")
+            + "\nCelular: " + rs.getString("NumeroCelular")
+            + "\nDirección: " + rs.getString("Direccion")
+            + "\nEdad: " + rs.getString("Edad")
+            + "\nGénero: " + rs.getString("Genero")
+            + "\nEstado Civil: " + rs.getString("EstadoCivil")
+            + "\nOcupación: " + rs.getString("Ocupacion")
+            + "\nNacionalidad: " + rs.getString("Nacionalidad")
+            + "\nTipo de violencia: " + tipoViolencia
+            + "\nAgresor: " + rs.getString("Agresor")
+            + "\nRelación con agresor: " + rs.getString("RelacionAgresor")
+            + "\nGénero del agresor: " + rs.getString("GeneroAgresor");
 
-            textArea.append("------------------------------\n");
-        }
-
-        if (!hayCasos) {
-            textArea.setText("No hay casos registrados.");
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al cargar los casos.");
+            // Dependiendo del tipo de violencia, agrega información específica
+    if (tipoViolencia.equals("Violencia Emocional")) {
+        mensaje += "\nImpacto Psicológico: " + rs.getString("ImpactoPsicologico");
+    } else if (tipoViolencia.equals("Violencia Fisica")) {
+        mensaje += "\nTipo de Lesión: " + rs.getString("TipoLesion")
+                + "\nAtención Médica: " + rs.getString("AtencionMedica");
+    } else if (tipoViolencia.equals("Violencia Sexual")) {
+        mensaje += "\nTipo de Abuso Sexual: " + rs.getString("TipoAbusoSexual");
+    } else if (tipoViolencia.equals("Violencia Economica")) {
+        mensaje += "\nTipo de Ingreso: " + rs.getString("TipoIngreso")
+                + "\nCantidad de Ingreso: " + rs.getString("CantidadIngreso");
+    } else if (tipoViolencia.equals("Violencia Digital")) {
+        mensaje += "\nPlataforma de Agresión: " + rs.getString("PlataformaDigital");
     }
 
-    frame.add(conte);
-    frame.setSize(500, 400);
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
+    mensaje += "\nDescripción del caso: " + rs.getString("Descripcion");
+
+    // Verifica si hay seguimiento del caso)
+    if (rs.getString("NombreFuncionario") != null) {
+        mensaje += "\n\n✅ Seguimiento registrado:"
+                + "\nFuncionario: " + rs.getString("NombreFuncionario")
+                + "\nCódigo Funcionario: " + rs.getString("IDempleado")
+                + "\nSolución: " + rs.getString("Solucion")
+                + "\nOficina: " + rs.getString("Lugar")
+                + "\nDirección Oficina: " + rs.getString("DireccionOficina")
+                + "\nTeléfono Oficina: " + rs.getString("Telefono")
+                + "\nFecha Atención: " + rs.getString("FechaAtencion")
+                + "\nHora Atención: " + rs.getString("HoraAtencion");
+    }
+
+    mensaje += "\n-----------------------------------------------------------\n\n";
+    txtId.append(mensaje);
+    contador++;
 }
 
+            rs.close();
 
-    //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
+            if (contador == 1) {
+                txtId.setText("No hay casos resueltos registrados.");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener los datos.");
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (stmt2 != null) stmt2.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+});
+
+frame.setVisible(true);
+    }
+//Fin de metodo utilizado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
+
+    //Metodo utilizado para solicitar la cedula de un caso y poder darle una solucion.
     public void resolverCaso(Statement stmt) {
         JFrame frame = new JFrame("Resolver Caso");
-        Container conte = new Container();
+        Container conte = frame.getContentPane(); // Usamos el contentPane correctamente
         conte.setLayout(null);
 
         JTextArea textArea = new JTextArea();
@@ -1347,88 +1399,98 @@ public void pantallaGeneral(Statement stmt){
         for (int i = 0; i < ListaCasos.size(); i++) {
             textArea.setText(textArea.getText() + "\n" + ListaCasos.get(i).buscarCaso());
         }
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setBounds(30, 30, 400,250);
-        conte.add(scroll);
-        //Se crea un JLabel y JTextField para solicitar la cedula del caso a resolver
-         try {
-    ResultSet rs = stmt.executeQuery("SELECT Cedula, TipoViolencia FROM caso");
-    while (rs.next()) {
-        String cedula = rs.getString("Cedula");
-        String tipo = rs.getString("TipoViolencia");
-        textArea.append("Cédula: " + cedula + "- Tipo de violencia: " + tipo + "\n");
+
+        try {
+            // Consulta para obtener los casos no resueltos
+            ResultSet rs = stmt.executeQuery("SELECT Cedula, TipoViolencia FROM caso WHERE Resuelto = FALSE");
+            while (rs.next()) {
+                String cedula = rs.getString("Cedula");
+                String tipo = rs.getString("TipoViolencia");
+                textArea.append("Cédula: " + cedula + " - Tipo de violencia: " + tipo + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-         } catch (SQLException e) {
-        e.printStackTrace();
-    }
+
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(30, 30, 400, 250);
+        conte.add(scroll);
 
         JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
-        lblCedula.setBounds(30, 290,200, 30);
+        lblCedula.setBounds(30, 290, 200, 30);
         conte.add(lblCedula);
+
         JTextField txtCedula = new JTextField();
-        txtCedula.setBounds(30, 320,200,30);
+        txtCedula.setBounds(30, 320, 200, 30);
         conte.add(txtCedula);
+
         JButton btnResolver = new JButton("Resolver");
-        btnResolver.setBounds(250,320,100, 30);
+        btnResolver.setBounds(250, 320, 100, 30);
         conte.add(btnResolver);
 
         btnResolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-             String cedulaInput = txtCedula.getText().trim();
-            boolean encontrado = false;
+                String cedulaInput = txtCedula.getText().trim();
+                boolean encontrado = false;
 
-            try {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM caso WHERE Cedula = '" + cedulaInput + "'");
-                if (rs.next()) {
-                    encontrado = true;
+                try {
+                    // Verificar si el caso existe en la base de datos
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM caso WHERE Cedula = '" + cedulaInput + "'");
+                    if (rs.next()) {
+                        encontrado = true;
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
                 }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
 
-            if (encontrado) {
-                // Abrir la ventana para seguimiento del caso
-                seguimientodeCaso(cedulaInput, stmt);
-            } else {
-                JOptionPane.showMessageDialog(null, "Caso no encontrado");
+                if (encontrado) {
+                    // Si el caso existe, se cierra el frame y llamamos al método seguimientodeCaso
+                    seguimientodeCaso(cedulaInput, stmt); 
+                } else {
+                    JOptionPane.showMessageDialog(null, "Caso no encontrado");
+                }
             }
-        }
-    });
+        });
 
-        frame.add(conte);
-        frame.setSize(500, 400);
+        frame.setSize(500, 420);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
     //Fin de metodo utilizado para solicitar la cedula de un caso y poder darle una solucion.
 
-    //Metodo declarado para mostrar los componentes graficos utilizados para solicitar la informacion de seguimiento de un caso, solicitando la informacion de un usuario y la oficina regional.
-    public void seguimientodeCaso(String cedula, Statement stmt){
-        JFrame frame = new JFrame("Seguimiento de Caso");
-        Container conte = new Container();
+    //Metodo utilizado para darle seguimiento a un caso, solicitando la informacion del funcionario y de la oficina regional.
+    public void seguimientodeCaso(String cedulaCaso, Statement stmt){
+         JFrame frame = new JFrame("Seguimiento de Caso");
+        Container conte = frame.getContentPane();
+        conte.setLayout(null);
 
         JLabel l1 = new JLabel("Informacion de funcionario");
         l1.setBounds(20, 30, 200, 30);
         conte.add(l1);
+
         JLabel l2 = new JLabel("Nombre del funcionario:");
         l2.setBounds(20, 70, 200, 30);
         conte.add(l2);
         JTextField t1 = new JTextField();
         t1.setBounds(20, 100, 200, 30);
         conte.add(t1);
+
         JLabel l3 = new JLabel("Cedula de funcionario:");
-        l3.setBounds(20,150,200,30);
+        l3.setBounds(20, 150, 200, 30);
         conte.add(l3);
         JTextField t2 = new JTextField();
         t2.setBounds(20, 180, 200, 30);
         conte.add(t2);
+
         JLabel l4 = new JLabel("Codigo de funcionario:");
         l4.setBounds(20, 220, 200, 30);
         conte.add(l4);
         JTextField t3 = new JTextField();
         t3.setBounds(20, 250, 200, 30);
         conte.add(t3);
-        JLabel l5 = new JLabel("Solucion propuesta:");
+
+        JLabel l5 = new JLabel("Solución propuesta:");
         l5.setBounds(20, 290, 200, 30);
         conte.add(l5);
         JTextArea t4 = new JTextArea();
@@ -1436,25 +1498,30 @@ public void pantallaGeneral(Statement stmt){
         JScrollPane scroll = new JScrollPane(t4);
         scroll.setBounds(20, 320, 200, 100);
         conte.add(scroll);
+
         JButton grdr = new JButton("Guardar");
         grdr.setBounds(30, 440, 100, 30);
         conte.add(grdr);
+
         JLabel l6 = new JLabel("Informacion de oficina:");
         l6.setBounds(280, 30, 200, 30);
         conte.add(l6);
+
         JLabel l7 = new JLabel("Lugar de la oficina:");
         l7.setBounds(280, 70, 200, 30);
         conte.add(l7);
         JTextField t7 = new JTextField();
         t7.setBounds(280, 100, 200, 30);
         conte.add(t7);
+
         JLabel l8 = new JLabel("Telefono de la oficina:");
         l8.setBounds(280, 150, 200, 30);
         conte.add(l8);
         JTextField t8 = new JTextField();
         t8.setBounds(280, 180, 200, 30);
         conte.add(t8);
-        JLabel l9 = new JLabel("Direccion de la oficina");
+
+        JLabel l9 = new JLabel("Dirección de la oficina:");
         l9.setBounds(280, 220, 200, 30);
         conte.add(l9);
         JTextField t9 = new JTextField();
@@ -1462,43 +1529,45 @@ public void pantallaGeneral(Statement stmt){
         conte.add(t9);
 
         grdr.addActionListener(new ActionListener() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
-                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
-            if (respuesta == JOptionPane.NO_OPTION) {
-                frame.dispose();
-               return;
-            }
-            try {
-            int valor = stmt.executeUpdate(
-                "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, HoraAtencion, FechaAtencion, Solucion) " +
-                "VALUES ('" + t3.getText() + "', '" + t7.getText() + "', '" + t9.getText() + "', '" + t8.getText() + "', '" + t1.getText() + "', '" + t2.getText() + "', '" + obtenerHora() + "', '" + obtenerFecha() + "', '" + t4.getText() + "')"
-            );
- // Consulta opcional para verificar que se guardó
-            ResultSet rs = stmt.executeQuery("SELECT * FROM oficinaregional");
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getString("IDempleado") +
-                    " - Nombre: " + rs.getString("Nombre") +
-                    " - Lugar: " + rs.getString("Lugar") +
-                    " - Cedula: " + rs.getString("Cedula"));
-            }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
+                // Validación de campos vacíos
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                if (respuesta == JOptionPane.NO_OPTION) {
+                    frame.dispose();
+                    return;
+                }
 
-        JOptionPane.showMessageDialog(null, "Seguimiento guardado correctamente.");
-        frame.dispose();
+                try {
+                    // Validación de campos vacíos
+                    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+                    Statement stmt = cn.createStatement();
+                    
+                    String sql = "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, CedulaCaso, HoraAtencion, FechaAtencion, Solucion) VALUES ('" +
+                            t3.getText() + "', '" + t7.getText() + "', '" + t9.getText() + "', '" + t8.getText() + "', '" +
+                            t1.getText() + "', '" + t2.getText() + "', '" + cedulaCaso + "', '" + obtenerHora() + "', '" +
+                            obtenerFecha() + "', '" + t4.getText() + "')";
+                    // Ejecutar la inserción en la base de datos
+                    stmt.executeUpdate(sql);
+                    // Actualizar el caso como resuelto
+                    stmt.executeUpdate("UPDATE caso SET Resuelto = TRUE WHERE Cedula = '" + cedulaCaso + "'");
+
+                    JOptionPane.showMessageDialog(null, "Seguimiento guardado correctamente.");
+                    frame.dispose();
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos.");
+                }
             }
         });
-      
-frame.add(conte);
-        frame.setSize(500,600);
+
+        frame.setSize(520, 550);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
 
     }
     //Fin de metodo utilizado para solicitar la informacion de usuario y la oficina regional.
 
-}
 //Fin de la clase VistaGeneral.
