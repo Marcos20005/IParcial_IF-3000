@@ -376,7 +376,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
     try {
         //Se ejecuta la sentencia para eliminar un caso de la base de datos.
         int valor = stmt.executeUpdate("DELETE FROM caso WHERE Cedula = '" + cedula + "'");
-        valor = stmt.executeUpdate("DELETE FROM oficinaregional WHERE CedulaCaso = '" + cedula + "'");
+        valor += stmt.executeUpdate("DELETE FROM oficinaregional WHERE CedulaCaso = '" + cedula + "'");
         if (valor > 0) {
             JOptionPane.showMessageDialog(null, "Caso eliminado exitosamente.");
         } else {
