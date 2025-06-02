@@ -49,7 +49,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE); 
  //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
  Class.forName("com.mysql.jdbc.Driver");
-      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
       Statement stmt = con.createStatement();
       //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
 pantallaLoguear(stmt);     
@@ -226,7 +226,7 @@ public void pantallaGeneral(Statement stmt){
         });
 
         btnMostrarCaso = new JButton("Mostrar Casos");
-        btnMostrarCaso.setBounds(50, 100, 200, 30);
+        btnMostrarCaso.setBounds(50, 60, 200, 30);
         panelMostrarCaso.add(btnMostrarCaso);
         btnMostrarCaso.addActionListener(new ActionListener() {
     @Override
@@ -236,7 +236,7 @@ public void pantallaGeneral(Statement stmt){
 });
 
         btnEliminarCaso = new JButton("Resolver Caso"); 
-        btnEliminarCaso.setBounds(50, 150, 200, 30);
+        btnEliminarCaso.setBounds(50, 110, 200, 30);
         panelMostrarCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(new ActionListener() {
             @Override
@@ -246,11 +246,12 @@ public void pantallaGeneral(Statement stmt){
         });
 
         btnSalir1 = new JButton("Salir");
-        btnSalir1.setBounds(50, 200, 200, 30);
+        btnSalir1.setBounds(50, 160, 200, 30);
         panelMostrarCaso.add(btnSalir1);
         btnSalir1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie ");
                 System.exit(0);
             }
         }); 
@@ -276,14 +277,91 @@ public void pantallaGeneral(Statement stmt){
         });
 
         btnsalir = new JButton("Salir");
-        btnsalir.setBounds(40, 200, 200, 30);
+        btnsalir.setBounds(40, 250, 200, 30);
         panelCaso.add(btnsalir);
         btnsalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie ");
                 System.exit(0);
             }
         });
+        
+        JButton btnEliminarCaso = new JButton("Eliminar Caso");
+        btnEliminarCaso.setBounds(40, 200, 200, 30);
+        panelCaso.add(btnEliminarCaso);
+        btnEliminarCaso.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+             JFrame frame = new JFrame("Eliminar Caso");
+        Container conte = new Container();
+        conte.setLayout(null);
+
+        JTextArea textArea = new JTextArea();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM caso");
+            while (rs.next()) {
+           textArea.setText(textArea.getText()+"\n"+rs.getString("Cedula"));
+        }
+        } catch (SQLException e) {    
+            e.printStackTrace();
+        }
+        
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(30, 30, 200, 200);
+        conte.add(scroll);
+
+        JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
+        lblCedula.setBounds(30, 230, 200, 30);
+        conte.add(lblCedula);
+        JTextField txtCedula = new JTextField();
+        txtCedula.setBounds(30, 260, 200, 30);
+        conte.add(txtCedula);
+        JButton btnEliminar = new JButton("Eliminar");
+        btnEliminar.setBounds(30, 310, 100, 30);
+        conte.add(btnEliminar);
+
+        btnEliminar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String cedula = txtCedula.getText();
+                boolean index = false;
+                //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
+                //for (int i = 0; i < ListaCasos.size(); i++) {
+                  //  if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
+                    //    index = i;
+                      //  break;
+                   // }
+              //  }
+           try {
+               ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
+               while (rs2.next()) {
+                   if (rs2.getString("Cedula").equals(cedula)) {
+                       index = true;
+                   }
+               }
+           } catch (SQLException e2) {    
+               e2.printStackTrace();
+           }
+    
+            //Si el caso no es encontrado se despliega un JOptionPane con el mensaje de que no se encontro el caso.
+            if (index==true) {
+                    frame.dispose();
+                    eliminarCaso(stmt, cedula); // TODO Auto-generated catch block
+                } else {
+                    JOptionPane.showMessageDialog(null, "Caso no encontrado.");
+                    txtCedula.setText("");
+                }
+            }
+        });
+
+        frame.add(conte);
+        frame.setSize(300, 400);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);  
+            }
+        });
+        
 
         tab.addTab("Usuario", panelCaso);
         tab.addTab("Institucion", panelMostrarCaso);
@@ -294,6 +372,21 @@ public void pantallaGeneral(Statement stmt){
         //Fin de inicializacion y edicion de componentes de la pantalla principal.
 }
 
+public void eliminarCaso(Statement stmt, String cedula) {
+    try {
+        //Se ejecuta la sentencia para eliminar un caso de la base de datos.
+        int valor = stmt.executeUpdate("DELETE FROM caso WHERE Cedula = '" + cedula + "'");
+        valor = stmt.executeUpdate("DELETE FROM oficinaregional WHERE CedulaCaso = '" + cedula + "'");
+        if (valor > 0) {
+            JOptionPane.showMessageDialog(null, "Caso eliminado exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el caso con la cédula proporcionada.");
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al eliminar el caso: " + e.getMessage());
+    }
+
+}
 //Metodo declarado para la obtencion de la fecha correspondiente cuando se ingrese un caso o se de una solucion.
     public String obtenerFecha() {
         Date fecha = new Date();
@@ -614,9 +707,9 @@ public void pantallaGeneral(Statement stmt){
                 ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
                 while(rs2.next()){
                   if (rs2.getString("Cedula").equals(id)) {
-
+   String cedulaReferencia=rs2.getString("Cedula");
             String mensaje = "Caso encontrado\n" +
-                "Cedula: " + rs2.getString("Cedula") +
+                "Cedula: " + cedulaReferencia +
                 "\nNombre: " + rs2.getString("Nombre") +
                 "\nNumero Celular: " + rs2.getString("NumeroCelular") +
                 "\nDireccion: " + rs2.getString("Direccion") +
@@ -648,6 +741,20 @@ public void pantallaGeneral(Statement stmt){
             }
 
             mensaje += "\nDescripcion: " + rs2.getString("Descripcion");
+            ResultSet rs3 = stmt.executeQuery("select *from oficinaregional");
+            while(rs3.next()){
+            if(rs3.getString("CedulaCaso").equals(cedulaReferencia)){
+            mensaje+="\n\n✅ Seguimiento registrado:"
+                + "\nFuncionario: " + rs3.getString("Nombre")
+                + "\nCódigo Funcionario: " + rs3.getString("IDempleado")
+                + "\nSolución: " + rs3.getString("Solucion")
+                + "\nOficina: " + rs3.getString("Lugar")
+                + "\nDirección Oficina: " + rs3.getString("Direccion")
+                + "\nTeléfono Oficina: " + rs3.getString("Telefono")
+                + "\nFecha Atención: " + rs3.getString("FechaAtencion")
+                + "\nHora Atención: " + rs3.getString("HoraAtencion");
+            }
+            }
 
             JOptionPane.showMessageDialog(null, mensaje);
             return;     
@@ -731,7 +838,7 @@ public void pantallaGeneral(Statement stmt){
                 //listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                // ListaCasos.get(ListaCasos.size()-1).iDatos(pDigital1.getText(), agresor1.getText(), rAgresor1.getText(), gAgresor);
                try {
-          int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Digital" + "','" + agresor1.getText() + "','" + rAgresor1.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+pDigital1.getText()+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+          int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Digital" + "','" + agresor1.getText() + "','" + rAgresor1.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+pDigital1.getText()+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
             //While para comprobar los datos actual de la base de datos.
           while (rs.next()) { 
@@ -824,7 +931,7 @@ public void pantallaGeneral(Statement stmt){
                         gAgresor = "Otro";
                     }
                   try {
-          int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Economica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+tipoIngresoField.getText()+"','"+impactoFinancieroField.getText()+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+          int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Economica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+tipoIngresoField.getText()+"','"+impactoFinancieroField.getText()+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
             //While para comprobar los datos actual de la base de datos.
           while (rs.next()) { 
@@ -908,7 +1015,7 @@ public void pantallaGeneral(Statement stmt){
                         gAgresor = "Otro";
                     }
                     try {
-                        int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Emocional" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + impactoPsicologicoField.getText() +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+                        int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Emocional" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + impactoPsicologicoField.getText() +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
             //While para comprobar los datos actual de la base de datos
             while (rs.next()) { 
@@ -1001,7 +1108,7 @@ public void pantallaGeneral(Statement stmt){
                 }
             
                 try {
-            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Fisica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + tipoLesionField.getText() + "','" + atencionMedicaField.getText() + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");    
+            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Fisica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + tipoLesionField.getText() + "','" + atencionMedicaField.getText() + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");    
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
             //While para comprobar los datos actual de la base de datos.
             while (rs.next()) { 
@@ -1087,7 +1194,7 @@ public void pantallaGeneral(Statement stmt){
                         gAgresor = "Otro";
                     }
                try {
-            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Sexual" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+tipoAbusoSexualField.getText()+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"')");
+            int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Sexual" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+tipoAbusoSexualField.getText()+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE"+"')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
             //While para comprobar los datos actual de la base de datos.    
             while (rs.next()) { 
@@ -1142,13 +1249,7 @@ public void pantallaGeneral(Statement stmt){
             public void actionPerformed(ActionEvent e) {
                 String cedula = txtCedula.getText();
                 boolean index = false;
-                //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
-                //for (int i = 0; i < ListaCasos.size(); i++) {
-                  //  if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
-                    //    index = i;
-                      //  break;
-                   // }
-              //  }
+               
                try {
            ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
             while (rs2.next()) {
@@ -1297,7 +1398,7 @@ public void pantallaGeneral(Statement stmt){
         Statement stmt2 = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
             stmt = con.createStatement();
             stmt2 = con.createStatement();
 
@@ -1312,7 +1413,7 @@ public void pantallaGeneral(Statement stmt){
     String cedula = rs.getString("Cedula");
     String tipoViolencia = rs.getString("TipoViolencia");
 
-    String mensaje = "✅ CASO RESUELTO N° " + contador + "\n"
+    String mensaje = "CASO REGISTRADO N° " + contador + "\n"
             + "Cédula: " + cedula
             + "\nNombre: " + rs.getString("Nombre")
             + "\nCelular: " + rs.getString("NumeroCelular")
@@ -1389,16 +1490,13 @@ frame.setVisible(true);
 
     //Metodo utilizado para solicitar la cedula de un caso y poder darle una solucion.
     public void resolverCaso(Statement stmt) {
+       // ResultSet rs = stmt.executeQuery("select *from caso")
         JFrame frame = new JFrame("Resolver Caso");
         Container conte = frame.getContentPane(); // Usamos el contentPane correctamente
         conte.setLayout(null);
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
-
-        for (int i = 0; i < ListaCasos.size(); i++) {
-            textArea.setText(textArea.getText() + "\n" + ListaCasos.get(i).buscarCaso());
-        }
 
         try {
             // Consulta para obtener los casos no resueltos
@@ -1445,9 +1543,11 @@ frame.setVisible(true);
 
                 if (encontrado) {
                     // Si el caso existe, se cierra el frame y llamamos al método seguimientodeCaso
+                    frame.dispose();
                     seguimientodeCaso(cedulaInput, stmt); 
                 } else {
                     JOptionPane.showMessageDialog(null, "Caso no encontrado");
+                    txtCedula.setText("");
                 }
             }
         });
@@ -1540,7 +1640,7 @@ frame.setVisible(true);
 
                 try {
                     // Validación de campos vacíos
-                    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+                    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
                     Statement stmt = cn.createStatement();
                     
                     String sql = "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, CedulaCaso, HoraAtencion, FechaAtencion, Solucion) VALUES ('" +
