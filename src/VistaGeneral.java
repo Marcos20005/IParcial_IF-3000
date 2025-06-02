@@ -317,6 +317,7 @@ public void pantallaGeneral(Statement stmt){
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
         txtCedula.setBounds(30, 260, 200, 30);
+        txtCedula.setToolTipText("Ingrese la cédula del caso a eliminar");
         conte.add(txtCedula);
         JButton btnEliminar = new JButton("Eliminar");
         btnEliminar.setBounds(30, 310, 100, 30);
@@ -422,6 +423,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(lblDescripcion);
         JTextArea txtDescripcion = new JTextArea();
         txtDescripcion.setLineWrap(true);
+        txtDescripcion.setToolTipText("Escriba una breve descripción del caso");
         JScrollPane scroll = new JScrollPane(txtDescripcion);
         scroll.setBounds(260, 60, 300, 200);
         conte.add(scroll);
@@ -439,6 +441,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vNombre);
         JTextField vNombre1 = new JTextField();
         vNombre1.setBounds(30, 300, 150, 30); 
+        vNombre1.setToolTipText("Ingrese el nombre de la victima del caso");
         conte.add(vNombre1);
 
         JLabel vCedula = new JLabel("Cédula de la persona");
@@ -446,6 +449,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vCedula);
         JTextField cVictima = new JTextField();
         cVictima.setBounds(30, 370, 150, 30);
+        cVictima.setToolTipText("Ingrese la cédula de la victima del caso");
         conte.add(cVictima);
 
         JLabel vNumero = new JLabel("Número celular de la persona");
@@ -453,6 +457,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vNumero);
         JTextField vNumero1 = new JTextField();
         vNumero1.setBounds(30, 440, 150, 30);
+        vNumero1.setToolTipText("Ingrese el número celular de la victima del caso");
         conte.add(vNumero1);
 
         JLabel vDireccion = new JLabel("Dirección de la persona");
@@ -460,6 +465,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vDireccion);
         JTextField vDireccion1 = new JTextField();
         vDireccion1.setBounds(220, 370, 150, 30);
+        vDireccion1.setToolTipText("Ingrese la dirección de la victima del caso");
         conte.add(vDireccion1);
 
         JLabel vEdad = new JLabel("Edad de la persona");
@@ -467,6 +473,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vEdad);
         JTextField vEdad1 = new JTextField();
         vEdad1.setBounds(220, 300, 150, 30);
+        vEdad1.setToolTipText("Ingrese la edad de la victima del caso");
         conte.add(vEdad1);
 
         JLabel vGenero = new JLabel("Género de la persona");
@@ -498,6 +505,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vOcupacion);
         JTextField vOcupacion1 = new JTextField();
         vOcupacion1.setBounds(220, 440, 150, 30);
+        vOcupacion1.setToolTipText("Ingrese la ocupación de la victima del caso");
         conte.add(vOcupacion1);
 
         JLabel vNacionalidad = new JLabel("Nacionalidad de la persona");
@@ -505,6 +513,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(vNacionalidad);
         JTextField vNacionalidad1 = new JTextField();
         vNacionalidad1.setBounds(410, 440, 150, 30);
+        vNacionalidad1.setToolTipText("Ingrese la nacionalidad de la victima del caso");
         conte.add(vNacionalidad1);
 
         JLabel tViolencia = new JLabel("Tipo de violencia");
@@ -669,6 +678,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(lblID1);
         JTextField campo = new JTextField();
         campo.setBounds(80, 330, 200, 30);
+        campo.setToolTipText("Ingrese alguno de los ID de los casos registrados, que desea visualizar");
         conte.add(campo);
         campo.requestFocus();
         JTextArea txtId = new JTextArea();
@@ -785,17 +795,20 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(pDigital);
         JTextField pDigital1 = new JTextField();
         pDigital1.setBounds(50, 80, 200, 30);
+        pDigital1.setToolTipText("Ingrese la plataforma digital (facebook, instagram, twitter, etc.) donde se dio la agresión");
         conte.add(pDigital1);
         JLabel agresor = new JLabel("Nombre del agresor:");
         agresor.setBounds(30, 120, 200, 30);
         conte.add(agresor);
         JTextField agresor1 = new JTextField();
         agresor1.setBounds(50, 150, 200, 30);
+        agresor1.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresor1);
         JLabel rAgresor = new JLabel("Relación con el agresor:");
         rAgresor.setBounds(30, 190, 200, 30);
         conte.add(rAgresor);
         JTextField rAgresor1 = new JTextField();
+        rAgresor1.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         rAgresor1.setBounds(50, 220, 200, 30);
         conte.add(rAgresor1);
         JLabel gAgresor = new JLabel("Género del agresor:");
@@ -872,6 +885,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(tipoIngresoLabel);
             JTextField tipoIngresoField = new JTextField();
             tipoIngresoField.setBounds(20, 50, 340, 30);
+            tipoIngresoField.setToolTipText("Ingrese el tipo de ingreso afectado (salario, pensión, etc.)");
             conte.add(tipoIngresoField);
     
             JLabel impactoFinancieroLabel = new JLabel("Ingrese el impacto financiero:");
@@ -879,6 +893,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(impactoFinancieroLabel);
             JTextField impactoFinancieroField = new JTextField();
             impactoFinancieroField.setBounds(20, 120, 340, 30);
+            impactoFinancieroField.setToolTipText("Ingrese el impacto financiero (cantidad de dinero afectada)");
             conte.add(impactoFinancieroField);
 
             JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
@@ -886,6 +901,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(agresorLabel);
             JTextField agresorField = new JTextField();
             agresorField.setBounds(20, 190, 340, 30);
+            agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
             conte.add(agresorField);
  
             JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
@@ -893,6 +909,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(rAgresorLabel);
             JTextField rAgresorField = new JTextField();
             rAgresorField.setBounds(20, 260, 340, 30);
+            rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
             conte.add(rAgresorField);
     
             JLabel gAgresor = new JLabel("Género del agresor:");
@@ -963,6 +980,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(impactoPsicologicoLabel);
             JTextField impactoPsicologicoField = new JTextField();
             impactoPsicologicoField.setBounds(20, 50, 340, 30);
+            impactoPsicologicoField.setToolTipText("descripción del impacto emocional(depresión, ansiedad, etc.)");
             conte.add(impactoPsicologicoField);
 
             JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
@@ -970,6 +988,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(agresorLabel);
             JTextField agresorField = new JTextField();
             agresorField.setBounds(20, 120, 340, 30);
+            agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
             conte.add(agresorField);
  
             JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
@@ -977,6 +996,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             conte.add(rAgresorLabel);
             JTextField rAgresorField = new JTextField();
             rAgresorField.setBounds(20, 190, 340, 30);
+            rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
             conte.add(rAgresorField);
     
             JLabel gAgresor = new JLabel("Género del agresor:");
@@ -1047,6 +1067,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(tipoLesionLabel);
         JTextField tipoLesionField = new JTextField();
         tipoLesionField.setBounds(20, 50, 340, 30);
+        tipoLesionField.setToolTipText("Cual fue el tipo de lesion (corte, contusión, fractura, etc.)");
         conte.add(tipoLesionField);
 
         JLabel atencionMedicaLabel = new JLabel("Ingrese la atención médica recibida:");
@@ -1054,6 +1075,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(atencionMedicaLabel);
         JTextField atencionMedicaField = new JTextField();
         atencionMedicaField.setBounds(20, 120, 340, 30);
+        atencionMedicaField.setToolTipText("Que atencion medica recibio la victima (hospitalización, consulta médica, etc.)");
         conte.add(atencionMedicaField);
 
         JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
@@ -1061,6 +1083,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
         agresorField.setBounds(20, 190, 340, 30);
+        agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
         JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
@@ -1068,6 +1091,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
         rAgresorField.setBounds(20, 260, 340, 30);
+        rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
         JLabel gAgresor = new JLabel("Género del agresor:");
@@ -1142,6 +1166,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(tipoAbusoSexualLabel);
         JTextField tipoAbusoSexualField = new JTextField();
         tipoAbusoSexualField.setBounds(20, 50, 340, 30);
+        tipoAbusoSexualField.setToolTipText("Cual fue el abuso recibido (acoso, violación, etc.)");
         conte.add(tipoAbusoSexualField);
 
         JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
@@ -1149,6 +1174,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
         agresorField.setBounds(20, 120, 340, 30);
+        agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
         JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
@@ -1156,6 +1182,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
         rAgresorField.setBounds(20, 190, 340, 30);
+        rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
         JLabel gAgresor = new JLabel("Género del agresor:");
@@ -1240,6 +1267,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
         txtCedula.setBounds(30, 260, 200, 30);
+        txtCedula.setToolTipText("Ingrese la cédula del caso que desea editar la descripcion");
         conte.add(txtCedula);
         JButton btnBuscar = new JButton("Buscar");
         btnBuscar.setBounds(30, 310, 100, 30);
@@ -1321,6 +1349,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         txtDescripcion.setLineWrap(true);
         JScrollPane scroll = new JScrollPane(txtDescripcion);
         scroll.setBounds(130, 110, 300, 100);
+        txtDescripcion.setToolTipText("Ingrese la nueva descripcion del caso");
         conte.add(scroll);
 
         JButton btnGuardar = new JButton("Guardar");
@@ -1520,6 +1549,7 @@ frame.setVisible(true);
 
         JTextField txtCedula = new JTextField();
         txtCedula.setBounds(30, 320, 200, 30);
+        txtCedula.setToolTipText("Ingrese la cédula del caso que desea resolver");
         conte.add(txtCedula);
 
         JButton btnResolver = new JButton("Resolver");
@@ -1574,6 +1604,7 @@ frame.setVisible(true);
         conte.add(l2);
         JTextField t1 = new JTextField();
         t1.setBounds(20, 100, 200, 30);
+        t1.setToolTipText("Ingrese el nombre del funcionario que esta atendiendo el caso");
         conte.add(t1);
 
         JLabel l3 = new JLabel("Cedula de funcionario:");
@@ -1581,6 +1612,7 @@ frame.setVisible(true);
         conte.add(l3);
         JTextField t2 = new JTextField();
         t2.setBounds(20, 180, 200, 30);
+        t2.setToolTipText("Ingrese la cedula del funcionario que esta atendiendo el caso");
         conte.add(t2);
 
         JLabel l4 = new JLabel("Codigo de funcionario:");
@@ -1588,6 +1620,7 @@ frame.setVisible(true);
         conte.add(l4);
         JTextField t3 = new JTextField();
         t3.setBounds(20, 250, 200, 30);
+        t3.setToolTipText("Ingrese el codigo del funcionario que esta atendiendo el caso");
         conte.add(t3);
 
         JLabel l5 = new JLabel("Solución propuesta:");
@@ -1597,6 +1630,7 @@ frame.setVisible(true);
         t4.setLineWrap(true);
         JScrollPane scroll = new JScrollPane(t4);
         scroll.setBounds(20, 320, 200, 100);
+        t4.setToolTipText("Ingrese la solucion propuesta para el caso");
         conte.add(scroll);
 
         JButton grdr = new JButton("Guardar");
@@ -1612,6 +1646,7 @@ frame.setVisible(true);
         conte.add(l7);
         JTextField t7 = new JTextField();
         t7.setBounds(280, 100, 200, 30);
+        t7.setToolTipText("Ingrese el lugar de la oficina regional donde se esta atendiendo el caso");
         conte.add(t7);
 
         JLabel l8 = new JLabel("Telefono de la oficina:");
@@ -1619,6 +1654,7 @@ frame.setVisible(true);
         conte.add(l8);
         JTextField t8 = new JTextField();
         t8.setBounds(280, 180, 200, 30);
+        t8.setToolTipText("Ingrese el telefono de la oficina regional donde se esta atendiendo el caso");
         conte.add(t8);
 
         JLabel l9 = new JLabel("Dirección de la oficina:");
@@ -1626,6 +1662,7 @@ frame.setVisible(true);
         conte.add(l9);
         JTextField t9 = new JTextField();
         t9.setBounds(280, 250, 200, 30);
+        t9.setToolTipText("Ingrese la direccion de la oficina regional donde se esta atendiendo el caso");
         conte.add(t9);
 
         grdr.addActionListener(new ActionListener() {
