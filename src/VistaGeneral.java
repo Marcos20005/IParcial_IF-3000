@@ -49,7 +49,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE); 
  //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
  Class.forName("com.mysql.jdbc.Driver");
-      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
       Statement stmt = con.createStatement();
       //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
 pantallaLoguear(stmt);     
@@ -251,7 +251,7 @@ public void pantallaGeneral(Statement stmt){
         btnSalir1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie ");
+                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie Jesus Rojas Palacios ");
                 System.exit(0);
             }
         }); 
@@ -282,7 +282,7 @@ public void pantallaGeneral(Statement stmt){
         btnsalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie ");
+                JOptionPane.showMessageDialog(null,"Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie Jesus Rojas Palacios");
                 System.exit(0);
             }
         });
@@ -1398,7 +1398,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         Statement stmt2 = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
             stmt = con.createStatement();
             stmt2 = con.createStatement();
 
@@ -1640,7 +1640,7 @@ frame.setVisible(true);
 
                 try {
                     // Validación de campos vacíos
-                    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+                    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
                     Statement stmt = cn.createStatement();
                     
                     String sql = "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, CedulaCaso, HoraAtencion, FechaAtencion, Solucion) VALUES ('" +
