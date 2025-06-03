@@ -3,6 +3,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.sql.*;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 public class VistaGeneral  {
 //Componentes graficos globales para agregar actionListener mediante un solo metodo.
@@ -49,7 +52,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE); 
  //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
  Class.forName("com.mysql.jdbc.Driver");
-      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
       Statement stmt = con.createStatement();
       //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
 pantallaLoguear(stmt);     
@@ -79,11 +82,16 @@ public void pantallaLoguear(Statement stmt){
  conte.add(campoContraseña);
  JButton ingreso = new JButton("Ingresar");
  ingreso.setBounds(50,240,100,40);
+ ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/entrar.PNG");
+ ingreso.setIcon(icon);
  conte.add(ingreso);
  JButton crearLogin = new JButton("Crear usuario");
  crearLogin.setBounds(50,300,150,40);
+  ImageIcon icon2 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/agregar-usuario.PNG");
+    crearLogin.setIcon(icon2);
  conte.add(crearLogin);
  vistaLogin.add(conte);
+ vistaLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  vistaLogin.setLocationRelativeTo(null);
  vistaLogin.setVisible(true);
 ingreso.addActionListener(new ActionListener() {
@@ -91,7 +99,7 @@ ingreso.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
               try {
                 //Al presionar boton Ingresar se llama al metodo verificar login para validad si el usuario y la contraseña estan correctos.
-                verificarLogin(stmt,campoUsuario.getText(),campoContraseña.getText());
+                verificarLogin(stmt,campoUsuario.getText(),campoContraseña.getText(),vistaLogin);
                 campoUsuario.setText("");
                 campoContraseña.setText("");
               } catch (SQLException e1) {
@@ -105,6 +113,27 @@ ingreso.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //Al presionar boton Crear Usuario se llama al metodo con el mismo nombre para que se despliegue una pantalla solicitando toda la informacion
                 crearUsuario(stmt);
+            }
+        });
+        ingreso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                ingreso.setBounds(50,240,100,50);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                ingreso.setBounds(50,240,100,40);
+            }
+        });
+        crearLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                crearLogin.setBounds(50,300,150,50);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                crearLogin.setBounds(50,300,150,40);
             }
         });
     }
@@ -188,7 +217,7 @@ public void crearUsuario( Statement stmt){
     });
 }
 //Metodo declarado para verificar los datos al momento de intentar ingresar al sistema.
-public void verificarLogin(Statement stmt,String usuario, String contra) throws SQLException{
+public void verificarLogin(Statement stmt,String usuario, String contra, JFrame pantalla) throws SQLException{
    boolean encontrado = false; 
       try{
       ResultSet rs = stmt.executeQuery("SELECT * FROM usuario");
@@ -202,7 +231,9 @@ public void verificarLogin(Statement stmt,String usuario, String contra) throws 
       //Si la informacion coincide se llama a la pantalla general del sistema.
       if (encontrado==true) {
         JOptionPane.showMessageDialog(null, "Login exitoso\nInformacion de la personas\nCedula: " + rs.getString("Cedula")+"\nNombre: " + rs.getString("Nombre1") + "\nNombre2: " + rs.getString("Nombre2") + "\nApellido1: " + rs.getString("Apellido1") + "\nApellido2: " + rs.getString("Apellido2") + "\nLogin: " + rs.getString("login") + "\nClave: " + rs.getString("clave"));
+
           pantallaGeneral(stmt);
+          pantalla.dispose();
       }else{
       JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos"); 
 
@@ -224,6 +255,8 @@ public void pantallaGeneral(Statement stmt){
 
         btnCaso = new JButton("Caso");
         btnCaso.setBounds(40, 50, 200, 30);
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/anadir.PNG");
+        btnCaso.setIcon(icon);
         panelCaso.add(btnCaso);
         btnCaso.addActionListener(new ActionListener() {
             @Override
@@ -231,9 +264,22 @@ public void pantallaGeneral(Statement stmt){
              vistaCasos(stmt);  
             }
         });
+        btnCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                btnCaso.setBounds(40, 50, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnCaso.setBounds(40, 50, 200, 30);
+            }
+        });
 
         btnMostrarCaso = new JButton("Mostrar Casos");
         btnMostrarCaso.setBounds(50, 60, 200, 30);
+        ImageIcon icon2 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/mostrar.PNG");
+        btnMostrarCaso.setIcon(icon2);
         panelMostrarCaso.add(btnMostrarCaso);
         btnMostrarCaso.addActionListener(new ActionListener() {
     @Override
@@ -241,9 +287,22 @@ public void pantallaGeneral(Statement stmt){
         mostratCasos(stmt);
     }
 });
+        btnMostrarCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                btnMostrarCaso.setBounds(50, 60, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnMostrarCaso.setBounds(50, 60, 200, 30);
+            }
+        });
 
         btnEliminarCaso = new JButton("Resolver Caso"); 
         btnEliminarCaso.setBounds(50, 110, 200, 30);
+        ImageIcon icon3 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/resolviendo-el-problema.PNG");
+        btnEliminarCaso.setIcon(icon3);
         panelMostrarCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(new ActionListener() {
             @Override
@@ -252,8 +311,22 @@ public void pantallaGeneral(Statement stmt){
             }
         });
 
+        btnEliminarCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnEliminarCaso.setBounds(50, 110, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnEliminarCaso.setBounds(50, 110, 200, 30);
+            }
+        });
+        
+
         btnSalir1 = new JButton("Salir");
         btnSalir1.setBounds(50, 160, 200, 30);
+        ImageIcon iconSalir = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/cerrar-sesion.PNG");
+        btnSalir1.setIcon(iconSalir);
         panelMostrarCaso.add(btnSalir1);
         btnSalir1.addActionListener(new ActionListener() {
             @Override
@@ -262,9 +335,21 @@ public void pantallaGeneral(Statement stmt){
                 System.exit(0);
             }
         }); 
+        btnSalir1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnSalir1.setBounds(50, 160, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnSalir1.setBounds(50, 160, 200, 30);
+            }
+        });
 
         btnVisualizarCaso = new JButton("Visualizar Caso"); 
         btnVisualizarCaso.setBounds(40, 100, 200, 30);
+        ImageIcon icon4 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/mostrar-contrasena.PNG");
+        btnVisualizarCaso.setIcon(icon4);
         panelCaso.add(btnVisualizarCaso);
         btnVisualizarCaso.addActionListener(new ActionListener() {
             @Override
@@ -272,9 +357,21 @@ public void pantallaGeneral(Statement stmt){
                 visualizarCaso(stmt);
             }
         });
+        btnVisualizarCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnVisualizarCaso.setBounds(40, 100, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnVisualizarCaso.setBounds(40, 100, 200, 30);
+            }
+        });
 
         btnModificarCaso = new JButton("Modificar Caso");
         btnModificarCaso.setBounds(40, 150, 200, 30);
+        ImageIcon icon5 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/boton-editar.PNG");
+        btnModificarCaso.setIcon(icon5);    
         panelCaso.add(btnModificarCaso);
         btnModificarCaso.addActionListener(new ActionListener() {
             @Override
@@ -282,9 +379,22 @@ public void pantallaGeneral(Statement stmt){
                 modificarCaso(stmt);
             }
         });
+        btnModificarCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                btnModificarCaso.setBounds(40, 150, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnModificarCaso.setBounds(40, 150, 200, 30);
+            }
+        });
 
         btnsalir = new JButton("Salir");
         btnsalir.setBounds(40, 250, 200, 30);
+        ImageIcon iconSalir2 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/cerrar-sesion.PNG");
+        btnsalir.setIcon(iconSalir2);
         panelCaso.add(btnsalir);
         btnsalir.addActionListener(new ActionListener() {
             @Override
@@ -293,9 +403,21 @@ public void pantallaGeneral(Statement stmt){
                 System.exit(0);
             }
         });
+        btnsalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnsalir.setBounds(40, 250, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnsalir.setBounds(40, 250, 200, 30);
+            }
+        });
         
         JButton btnEliminarCaso = new JButton("Eliminar Caso");
         btnEliminarCaso.setBounds(40, 200, 200, 30);
+        ImageIcon icon6 = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/eliminar.PNG");
+        btnEliminarCaso.setIcon(icon6);
         panelCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(new ActionListener() {
             @Override
@@ -328,19 +450,15 @@ public void pantallaGeneral(Statement stmt){
         conte.add(txtCedula);
         JButton btnEliminar = new JButton("Eliminar");
         btnEliminar.setBounds(30, 310, 100, 30);
+        ImageIcon iconEliminar = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/eliminar.PNG");
+        btnEliminar.setIcon(iconEliminar);
         conte.add(btnEliminar);
 
         btnEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String cedula = txtCedula.getText();
                 boolean index = false;
-                //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
-                //for (int i = 0; i < ListaCasos.size(); i++) {
-                  //  if (ListaCasos.get(i).getVictima().getCedula().equals(cedula)) {
-                    //    index = i;
-                      //  break;
-                   // }
-              //  }
+             
            try {
                ResultSet rs2 = stmt.executeQuery("SELECT * FROM caso");
                while (rs2.next()) {
@@ -362,6 +480,16 @@ public void pantallaGeneral(Statement stmt){
                 }
             }
         });
+        btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnEliminar.setBounds(30, 310, 100, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnEliminar.setBounds(30, 310, 100, 30);
+            }
+        });
 
         frame.add(conte);
         frame.setSize(300, 400);
@@ -369,7 +497,16 @@ public void pantallaGeneral(Statement stmt){
         frame.setVisible(true);  
             }
         });
-        
+        btnEliminarCaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnEliminarCaso.setBounds(40, 200, 200, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnEliminarCaso.setBounds(40, 200, 200, 30);
+            }
+        });
 
         tab.addTab("Usuario", panelCaso);
         tab.addTab("Institucion", panelMostrarCaso);
@@ -437,6 +574,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
 
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(30, 510, 100, 30);
+        ImageIcon iconGuardar = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.PNG");
+        btnGuardar.setIcon(iconGuardar);
         conte.add(btnGuardar);
 
         JLabel iVictima = new JLabel("Información de la víctima");
@@ -625,51 +764,18 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 }
             }
         });
-    }
-    //Fin de metodo donde se nos solicita la informacion general.
-
-    //Este metodo se declara para visualizar toda la informacion de los registros.
-    public void mosCasos(Statement stmt) {
-        JFrame frame = new JFrame("Casos registrados");
-        Container conte = new Container();
-        conte.setLayout(null);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setLineWrap(true);
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setBounds(40, 50, 700, 400);
-        conte.add(scroll);
-        
-        String a = "";
-        //Declaraion de este condicional para verificar si el arrayList esta vacio y no se muestre un mensaje de error.
-        if (ListaCasos.isEmpty()) {
-            a = "No hay casos registrados.";
-        } else {
-            for (int i = 0; i < ListaCasos.size(); i++) {
-                a += "-----------------------------------\n";
-                a += "Caso #" + (i + 1) + "\n";
-                a += "------------------------------------\n";
-                a += listaResultados.get(i) + "\n\n";
-            }
-        }
-
-        textArea.setText(a);
-
-        JButton btnCerrar = new JButton("Cerrar");
-        btnCerrar.setBounds(40, 470, 100, 30);
-        conte.add(btnCerrar);
-        btnCerrar.addActionListener(new ActionListener() {
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnGuardar.setBounds(30, 510, 100, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnGuardar.setBounds(30, 510, 100, 30);
             }
         });
-
-        frame.add(conte);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
+    //Fin de metodo donde se nos solicita la informacion general.    
     
     //Declaracion de este metodo para poder ver la informacion de un caso en especifico y ver si tiene respuesta o no.
     public void visualizarCaso(Statement stmt) {
@@ -783,6 +889,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 JOptionPane.showMessageDialog(null, "Caso no encontrado.");
             }
         });
+
             
         frame.add(conte);
         frame.setSize(400, 500);
@@ -836,6 +943,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         botones.add(gAgresor3);
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(30, 400, 100, 30);
+        ImageIcon iconGuardar = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.PNG");
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
             @Override
@@ -870,6 +978,16 @@ public void eliminarCaso(Statement stmt, String cedula) {
             }
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
+            }
+        });
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnGuardar.setBounds(30, 400, 100, 40);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnGuardar.setBounds(30, 400, 100, 30);
             }
         });
 
@@ -937,6 +1055,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             botones.add(gAgresor3);
             JButton btnGuardar = new JButton("Guardar");
             btnGuardar.setBounds(20, 380, 100, 30);
+            ImageIcon iconGuardar = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.PNG");
             conte.add(btnGuardar);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
@@ -969,6 +1088,21 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 frame.dispose();
             }
         });
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                btnGuardar.setBounds(20, 380, 100, 40);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Acción al quitar el mouse del botón
+                btnGuardar.setBounds(20, 380, 100, 30);
+            }
+        });
+
+        
     
             frame.setVisible(true);
         }
@@ -1024,6 +1158,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
             botones.add(gAgresor3);
             JButton btnGuardar = new JButton("Guardar");
             btnGuardar.setBounds(20, 310, 100, 30);
+            ImageIcon iconGuardar = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.PNG");
+            btnGuardar.setIcon(iconGuardar);
             conte.add(btnGuardar);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
@@ -1054,6 +1190,19 @@ public void eliminarCaso(Statement stmt, String cedula) {
             }
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
+            }
+        });
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Acción al pasar el mouse por encima
+                btnGuardar.setText("¡Estás sobre mí!");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Acción al quitar el mouse del botón
+                btnGuardar.setText("Pasa el cursor por aquí");
             }
         });
                  frame.setVisible(true);
@@ -1119,6 +1268,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
         botones.add(gAgresor3);
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(20, 380, 100, 30);
+        ImageIcon icono = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.png");
+        btnGuardar.setIcon(icono);
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
             
@@ -1153,6 +1304,16 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 frame.dispose();
             }
             
+        });
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnGuardar.setBackground(Color.GREEN);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnGuardar.setBackground(null);
+            }
         });
 
         frame.setLocationRelativeTo(null);
@@ -1210,6 +1371,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
         botones.add(gAgresor3);
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(20, 310, 100, 30);
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.png");
+        btnGuardar.setIcon(icon);
         conte.add(btnGuardar);
             btnGuardar.addActionListener(new ActionListener() {
                 @Override
@@ -1240,6 +1403,16 @@ public void eliminarCaso(Statement stmt, String cedula) {
             }
                 JOptionPane.showMessageDialog(null, "Caso registrado correctamente.");
                 frame.dispose();
+            }
+        });
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                 btnGuardar.setBounds(20, 310, 100, 40);
+            }
+             public void mouseExited(MouseEvent e) {
+                btnGuardar.setBounds(20, 310, 100, 30);
+                
             }
         });
 
@@ -1277,6 +1450,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
         txtCedula.setToolTipText("Ingrese la cédula del caso que desea editar la descripcion");
         conte.add(txtCedula);
         JButton btnBuscar = new JButton("Buscar");
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/buscar.png");
+        btnBuscar.setIcon(icon);
         btnBuscar.setBounds(30, 310, 100, 30);
         conte.add(btnBuscar);
 
@@ -1310,6 +1485,16 @@ public void eliminarCaso(Statement stmt, String cedula) {
                     JOptionPane.showMessageDialog(null, "Caso no encontrado.");
                     txtCedula.setText("");
                 }
+            }
+        });
+        btnBuscar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                 btnBuscar.setBounds(30, 310, 100, 40);
+            }
+             public void mouseExited(MouseEvent e) {
+                btnBuscar.setBounds(30, 310, 100, 30);
+                
             }
         });
 
@@ -1361,6 +1546,8 @@ public void eliminarCaso(Statement stmt, String cedula) {
 
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(30, 230, 100, 30);
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar-el-archivo.png");
+        btnGuardar.setIcon(icon);
         conte.add(btnGuardar);
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -1384,6 +1571,16 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 frame.dispose();
             }
         });
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                 btnGuardar.setBounds(30, 230, 100, 40);
+            }
+             public void mouseExited(MouseEvent e) {
+                btnGuardar.setBounds(30, 230, 100, 30);
+                
+            }
+        });
         frame.add(conte);
         frame.setSize(460, 320);
         frame.setLocationRelativeTo(null);
@@ -1397,6 +1594,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
 
     //Metodo declarado para mostrar los casos registrados y solicitar el # de cedula para poder mostrar ese caso.
    public void mostratCasos(Statement stmt) {
+    System.out.println("Hola");
     JFrame frame = new JFrame("Casos Registrados");
     frame.setSize(500, 520);
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -1415,12 +1613,12 @@ public void eliminarCaso(Statement stmt, String cedula) {
     txtId.setLineWrap(true);
     txtId.setWrapStyleWord(true);
 
-    JScrollPane scroll = new JScrollPane(txtId);
-    scroll.setBounds(30, 60, 420, 360);
-    conte.add(scroll);
+   
 
     JButton btnMostrar = new JButton("Mostrar Todos");
     btnMostrar.setBounds(160, 430, 150, 30);
+    ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/mostrarLista.png");
+    btnMostrar.setIcon(icon);
     conte.add(btnMostrar);
 
     btnMostrar.addActionListener(new ActionListener() {
@@ -1434,7 +1632,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         Statement stmt2 = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
             stmt = con.createStatement();
             stmt2 = con.createStatement();
 
@@ -1446,6 +1644,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
             int contador = 1;
 
             while (rs.next()) {
+                System.out.println("Hola2");
     String cedula = rs.getString("Cedula");
     String tipoViolencia = rs.getString("TipoViolencia");
 
@@ -1493,7 +1692,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 + "\nFecha Atención: " + rs.getString("FechaAtencion")
                 + "\nHora Atención: " + rs.getString("HoraAtencion");
     }
-
+System.out.println(mensaje);
     mensaje += "\n-----------------------------------------------------------\n\n";
     txtId.append(mensaje);
     contador++;
@@ -1519,6 +1718,23 @@ public void eliminarCaso(Statement stmt, String cedula) {
         }
     }
 });
+    btnMostrar.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            btnMostrar.setBounds(150, 420, 150, 40);
+        }
+        public void mouseExited(MouseEvent e) {
+            btnMostrar.setBounds(160, 430, 150, 30);
+        }
+    });
+ JScrollPane scroll = new JScrollPane(txtId);
+    scroll.setBounds(30, 60, 420, 360);
+    conte.add(scroll);
+    conte.add(btnMostrar);
+    
+
+    frame.setContentPane(conte);
+    frame.setLocationRelativeTo(null);
 
 frame.setVisible(true);
     }
@@ -1561,6 +1777,8 @@ frame.setVisible(true);
 
         JButton btnResolver = new JButton("Resolver");
         btnResolver.setBounds(250, 320, 100, 30);
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/resolviendo-el-problema.png");
+        btnResolver.setIcon(icon);
         conte.add(btnResolver);
 
         btnResolver.addActionListener(new ActionListener() {
@@ -1588,7 +1806,15 @@ frame.setVisible(true);
                 }
             }
         });
-
+        btnResolver.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnResolver.setBounds(240, 310, 100, 40);
+            }
+            public void mouseExited(MouseEvent e) {
+                btnResolver.setBounds(250, 320, 100, 30);
+            }
+        });
         frame.setSize(500, 420);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -1642,6 +1868,8 @@ frame.setVisible(true);
 
         JButton grdr = new JButton("Guardar");
         grdr.setBounds(30, 440, 100, 30);
+        ImageIcon icon = new ImageIcon("C:/Users/Marcos/Documents/Imagenes para botones/guardar.png");
+        grdr.setIcon(icon);
         conte.add(grdr);
 
         JLabel l6 = new JLabel("Informacion de oficina:");
@@ -1705,7 +1933,15 @@ frame.setVisible(true);
                 }
             }
         });
-
+        grdr.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                grdr.setBounds(20, 430, 100, 40);
+            }
+            public void mouseExited(MouseEvent e) {
+                grdr.setBounds(30, 440, 100, 30);
+            }
+        });
         frame.setSize(520, 550);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
