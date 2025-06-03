@@ -52,7 +52,7 @@ UIManager.put("Button.arc", 100);
 UIManager.put("Button.focusColor", Color.ORANGE); 
  //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
  Class.forName("com.mysql.jdbc.Driver");
-      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+      Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
       Statement stmt = con.createStatement();
       //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
 pantallaLoguear(stmt);     
@@ -696,6 +696,69 @@ public void eliminarCaso(Statement stmt, String cedula) {
                     return;
                 }
                 
+                if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "La descripción de la denuncia no puede estar vacia");
+            return;
+        }
+        // Validar campos de texto
+        if (vNombre1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese el nombre de la persona");
+            return;
+        }
+        if (cVictima.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese la cédula de la persona");
+            return;
+        }
+        if (vNumero1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese el número celular de la persona");
+            return;
+        }
+        if (vDireccion1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese la dirección de la persona");
+            return;
+        }
+        if (vEdad1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese la edad de la persona");
+            return;
+        }
+        if (vOcupacion1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese la ocupación de la persona");
+            return;
+        }
+        if (vNacionalidad1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese la nacionalidad de la persona");
+            return;
+        }
+
+        // Validar formato de número celular y edad
+        int numeroCelular, edad;
+        try {
+            numeroCelular = Integer.parseInt(vNumero1.getText().trim());
+            if (numeroCelular < 100000 || numeroCelular > 999999999) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Ingrese un número celular válido (solo números)");
+            return;
+        }
+
+        try {
+            edad = Integer.parseInt(vEdad1.getText().trim());
+            if (edad < 1 || edad > 100) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Ingrese una edad válida (entre 1 y 100)");
+            return;
+        }
+
+        // Validar tipo de violencia
+        String tipoViolencia = tViolencia1.getSelectedItem().toString();
+        if (tipoViolencia.equals("Seleccione")) {
+            JOptionPane.showMessageDialog(frame, "Seleccione un tipo de violencia.");
+            return;
+        }
+
                 try {
                     //Si alguno de los campos de texto esta vacio entra a este metodo y se solicita llenar todos los componentes.
                     if (vNombre1.getText().isEmpty() || cVictima.getText().isEmpty() || vNumero1.getText().isEmpty() ||
@@ -965,6 +1028,23 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 //ListaCasos.add(caso);
                 //listaResultados.add(ListaCasos.get(ListaCasos.size()-1).mostrarcaso());
                // ListaCasos.get(ListaCasos.size()-1).iDatos(pDigital1.getText(), agresor1.getText(), rAgresor1.getText(), gAgresor);
+               if(pDigital1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la plataforma digital donde se dio la agresión");
+               return;
+            }
+            if (agresor1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del agresor");
+            return;
+            }
+                if (rAgresor1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la relación con el agresor");
+            return;
+                }   
+                if (gAgresor.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe Seleccionar el género del agresor");
+                return;
+                }
+                //Si todos los campos estan completos se procede a guardar el caso en la base de datos.    
                try {
           int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Digital" + "','" + agresor1.getText() + "','" + rAgresor1.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+pDigital1.getText()+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
@@ -1073,6 +1153,37 @@ public void eliminarCaso(Statement stmt, String cedula) {
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
                     }
+                    if(tipoIngresoField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el tipo de ingreso afectado");
+            return;
+                    }
+                    if (impactoFinancieroField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el impacto financiero");
+            return;
+                    }
+                    if (agresorField.getText().trim().isEmpty()) {  
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del agresor");
+            return;
+                    }
+                    double impactoFinanciero;
+                    try {
+                        impactoFinanciero = Double.parseDouble(impactoFinancieroField.getText().trim());
+                        if (impactoFinanciero < 0) {
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(frame, "Ingrese un impacto financiero válido (número positivo y ejemplo: 1000.50)");
+                        return;
+                    }
+                    if (rAgresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la relación con el agresor");
+            return;
+                    }   
+                    if (gAgresor.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe Seleccionar el género del agresor");
+            return;
+                    }
+                    //Si todos los campos estan completos se procede a guardar el caso en la base de datos.
                   try {
           int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Economica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+" "+"','"+tipoIngresoField.getText()+"','"+impactoFinancieroField.getText()+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
@@ -1176,6 +1287,22 @@ public void eliminarCaso(Statement stmt, String cedula) {
                         gAgresor = "Femenino";
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
+                    }
+                    if(impactoPsicologicoField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el impacto psicológico");   
+            return;
+                    }
+                    if (agresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del agresor");
+            return;
+                    }
+                    if (rAgresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la relación con el agresor");
+            return;
+                    }
+                    if (gAgresor.isEmpty()) {   
+            JOptionPane.showMessageDialog(frame, "Debe Seleccionar el género del agresor");
+            return;
                     }
                     try {
                         int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Emocional" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + impactoPsicologicoField.getText() +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");
@@ -1288,7 +1415,27 @@ public void eliminarCaso(Statement stmt, String cedula) {
                 } else if (gAgresor3.isSelected()) {
                     gAgresor = "Otro";
                 }
-            
+            if(tipoLesionField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el tipo de lesión");
+            return;
+            }
+            if (atencionMedicaField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la atención médica recibida");
+            return;
+            }   
+            if (agresorField.getText().trim().isEmpty()) {  
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del agresor");
+            return; 
+            }
+            if (rAgresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la relación con el agresor");
+            return;
+            }
+            if (gAgresor.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe Seleccionar el género del agresor");
+            return;
+            }
+            //Si todos los campos estan completos se procede a guardar el caso en la base de datos.
                 try {
             int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Fisica" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + tipoLesionField.getText() + "','" + atencionMedicaField.getText() + "','" + " " +"','"+" "+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE')");    
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
@@ -1390,6 +1537,23 @@ public void eliminarCaso(Statement stmt, String cedula) {
                     } else if (gAgresor3.isSelected()) {
                         gAgresor = "Otro";
                     }
+                    if(tipoAbusoSexualField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el tipo de abuso sexual");
+            return;
+                    }
+                    if (agresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del agresor");
+            return;
+                    }
+                    if (rAgresorField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe ingresar la relación con el agresor");
+            return;
+                    }
+                    if (gAgresor.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Debe Seleccionar el género del agresor");
+            return;
+                    }
+                    //Si todos los campos estan completos se procede a guardar el caso en la base de datos.
                try {
             int valor = stmt.executeUpdate("INSERT INTO caso (Cedula, Nombre, NumeroCelular, Direccion, Edad, Genero, EstadoCivil, Ocupacion, Nacionalidad, TipoViolencia, Agresor, RelacionAgresor, GeneroAgresor, TipoLesion, AtencionMedica, ImpactoPsicologico, TipoAbusoSexual, TipoIngreso, CantidadIngreso, PlataformaDigital, Fecha, Hora, Descripcion, Resuelto) VALUES ('" + caso.getVictima().getCedula() + "','" + caso.getVictima().getNombre() + "','" + caso.getVictima().getnCelular() + "','" + caso.getVictima().getDireccion() + "','" + caso.getVictima().getEdad() + "','" + caso.getVictima().getGenero() + "','" + caso.getVictima().getEstadoCivil() + "','" + caso.getVictima().getOcupacion() + "','" + caso.getVictima().getNacionalidad() + "','" + "Violencia Sexual" + "','" + agresorField.getText() + "','" + rAgresorField.getText() + "','" + gAgresor + "','" + " " + "','" + " " + "','" + " " +"','"+tipoAbusoSexualField.getText()+"','"+" "+"','"+"0"+"','"+" "+"','"+caso.getFecha()+"','"+caso.getHora()+"','"+caso.getDescripcion()+"','FALSE"+"')");
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
@@ -1632,7 +1796,7 @@ public void eliminarCaso(Statement stmt, String cedula) {
         Statement stmt2 = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
             stmt = con.createStatement();
             stmt2 = con.createStatement();
 
@@ -1909,7 +2073,43 @@ frame.setVisible(true);
                     frame.dispose();
                     return;
                 }
-
+                if(t1.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar el nombre del funcionario");
+                    return;
+                }
+                if(t2.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar la cedula del funcionario");
+                    return;
+                }
+                if(t2.getText().matches("[0-9]+") == false){
+                    JOptionPane.showMessageDialog(frame, "La cedula del funcionario debe contener solo numeros");
+                    return;
+                }
+                if(t3.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar el codigo del funcionario");
+                    return;
+                }
+                if(t4.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar la solucion propuesta");
+                    return;
+                }
+                if(t7.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar el lugar de la oficina");
+                    return;
+                }
+                if(t8.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar el telefono de la oficina");
+                    return;
+                }
+                if(!t8.getText().matches("[0-9]+")){
+                    JOptionPane.showMessageDialog(frame, "El telefono de la oficina debe contener solo numeros");
+                    return;
+                }
+                if(t9.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar la direccion de la oficina");
+                    return;
+                }
+                // Si todos los campos están completos, se procede a guardar el seguimiento en la base de datos
                 try {
                     // Validación de campos vacíos
                     Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
