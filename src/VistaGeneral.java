@@ -517,21 +517,20 @@ btnCaso.setIconTextGap(50);
     public void keyReleased(KeyEvent e) {
         String texto = txtCedula.getText().trim();
 
-       
         if (texto.isEmpty()) {
             textArea.setText("");
             return;
         }
 
         try {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            // Usa LIKE para filtrar desde SQL
+            String query = "SELECT * FROM caso WHERE Cedula LIKE '" + texto + "%'";
+            ResultSet rs = stmt.executeQuery(query);
             textArea.setText(""); 
 
             while (rs.next()) {
                 String cedula = rs.getString("Cedula");
-                if (cedula.startsWith(texto)) {
-                    textArea.append(cedula + "\n"); 
-                }
+                textArea.append(cedula + "\n"); 
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -971,21 +970,20 @@ btnCaso.setIconTextGap(50);
     public void keyReleased(KeyEvent e) {
         String texto = campo.getText().trim();
 
-       
         if (texto.isEmpty()) {
             txtId.setText("");
             return;
         }
 
         try {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            // Usa LIKE para filtrar desde SQL
+            String query = "SELECT * FROM caso WHERE Cedula LIKE '" + texto + "%'";
+            ResultSet rs = stmt.executeQuery(query);
             txtId.setText(""); 
 
             while (rs.next()) {
                 String cedula = rs.getString("Cedula");
-                if (cedula.startsWith(texto)) {
-                    txtId.append(cedula + "\n"); 
-                }
+                txtId.append(cedula + "\n"); 
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -2147,26 +2145,25 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                 }
             }
         });
-   txtCedula.addKeyListener(new KeyAdapter() {
+  txtCedula.addKeyListener(new KeyAdapter() {
     @Override
     public void keyReleased(KeyEvent e) {
         String texto = txtCedula.getText().trim();
 
-       
         if (texto.isEmpty()) {
             textArea.setText("");
             return;
         }
 
         try {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            // Usa LIKE para filtrar desde SQL
+            String query = "SELECT * FROM caso WHERE Cedula LIKE '" + texto + "%'";
+            ResultSet rs1 = stmt.executeQuery(query);
             textArea.setText(""); 
 
-            while (rs.next()) {
-                String cedula = rs.getString("Cedula");
-                if (cedula.startsWith(texto)) {
-                    textArea.append("Cedula: "+cedula +" - Tipo de violencia: "+rs.getString("TipoViolencia")+ "\n"); 
-                }
+            while (rs1.next()) {
+                String cedula = rs1.getString("Cedula");
+                textArea.append("Cedula: "+cedula +" - Tipo de violencia: "+ rs1.getString("TipoViolencia")+ "\n"); 
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -2210,7 +2207,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         btnResolver.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnResolver.setBounds(240, 310, 100, 40);
+                btnResolver.setBounds(250, 320, 100, 40);
             }
 
             public void mouseExited(MouseEvent e) {
