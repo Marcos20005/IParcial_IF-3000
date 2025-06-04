@@ -2,8 +2,11 @@
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,18 +18,25 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
 import java.sql.*;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 
 public class VistaGeneral {
 //Componentes graficos globales para agregar actionListener mediante un solo metodo.
@@ -68,20 +78,33 @@ public class VistaGeneral {
         vistaLogin.setSize(300, 400);
         vistaLogin.setLocationRelativeTo(null);
         JLabel etiquetaUsuario = new JLabel("Nombre de usuario");
-        etiquetaUsuario.setBounds(50, 40, 200, 30);
+        etiquetaUsuario.setBounds(50, 20, 200, 30);
         conte.add(etiquetaUsuario);
         JTextField campoUsuario = new JTextField();
-        campoUsuario.setBounds(40, 80, 200, 40);
+        campoUsuario.setBounds(40, 60, 200, 40);
         campoUsuario.setToolTipText("Ingrese su nombre de usuario");
         conte.add(campoUsuario);
 
         JLabel etiquetaContraseña = new JLabel("Contraseña");
-        etiquetaContraseña.setBounds(50, 140, 200, 30);
+        etiquetaContraseña.setBounds(50, 120, 200, 30);
         conte.add(etiquetaContraseña);
-        JTextField campoContraseña = new JTextField();
-        campoContraseña.setBounds(40, 180, 200, 40);
+        JPasswordField campoContraseña = new JPasswordField();
+        campoContraseña.setBounds(40, 160, 200, 40);
         campoContraseña.setToolTipText("Ingrese Contraseña");
         conte.add(campoContraseña);
+        JCheckBox mostrarContraseña = new JCheckBox("Mostrar contraseña");
+        mostrarContraseña.setBounds(40, 200, 200, 30);
+        conte.add(mostrarContraseña);
+        mostrarContraseña.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (mostrarContraseña.isSelected()) {
+            campoContraseña.setEchoChar((char) 0); // mostrar contraseña
+        } else {
+            campoContraseña.setEchoChar('•'); // ocultar contraseña
+        }
+    }
+});
         JButton ingreso = new JButton("Ingresar");
         ingreso.setBounds(50, 240, 100, 40);
         ImageIcon icon = new ImageIcon("Iconos/entrar.PNG");
@@ -196,10 +219,10 @@ public class VistaGeneral {
         campoContraseña.setBounds(50, 400, 200, 30);
         campoContraseña.setToolTipText("Ingrese la contraseña que desea tener a la hora de crear un nuevo usuario");
         conte.add(campoContraseña);
-        frame.add(conte);
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(50, 440, 200, 30);
         conte.add(btnGuardar);
+        frame.add(conte);
         frame.setSize(400, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -265,6 +288,8 @@ public class VistaGeneral {
         btnCaso = new JButton("Caso");
         btnCaso.setBounds(40, 50, 200, 30);
         ImageIcon icon = new ImageIcon("Iconos/anadir.PNG");
+btnCaso.setHorizontalAlignment(SwingConstants.LEFT);
+btnCaso.setIconTextGap(50);
         btnCaso.setIcon(icon);
         panelCaso.add(btnCaso);
         btnCaso.addActionListener(new ActionListener() {
@@ -289,6 +314,8 @@ public class VistaGeneral {
         btnMostrarCaso = new JButton("Mostrar Casos");
         btnMostrarCaso.setBounds(50, 60, 200, 30);
         ImageIcon icon2 = new ImageIcon("Iconos/mostrar.PNG");
+        btnMostrarCaso.setHorizontalAlignment(SwingConstants.LEFT);
+        btnMostrarCaso.setIconTextGap(30);
         btnMostrarCaso.setIcon(icon2);
         panelMostrarCaso.add(btnMostrarCaso);
         btnMostrarCaso.addActionListener(new ActionListener() {
@@ -313,6 +340,8 @@ public class VistaGeneral {
         btnEliminarCaso = new JButton("Resolver Caso");
         btnEliminarCaso.setBounds(50, 110, 200, 30);
         ImageIcon icon3 = new ImageIcon("Iconos/resolviendo-el-problema.PNG");
+        btnEliminarCaso.setHorizontalAlignment(SwingConstants.LEFT);
+        btnEliminarCaso.setIconTextGap(30);
         btnEliminarCaso.setIcon(icon3);
         panelMostrarCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(new ActionListener() {
@@ -337,6 +366,8 @@ public class VistaGeneral {
         btnSalir1 = new JButton("Salir");
         btnSalir1.setBounds(50, 160, 200, 30);
         ImageIcon iconSalir = new ImageIcon("Iconos/cerrar-sesion.PNG");
+        btnSalir1.setHorizontalAlignment(SwingConstants.LEFT);
+        btnSalir1.setIconTextGap(50);
         btnSalir1.setIcon(iconSalir);
         panelMostrarCaso.add(btnSalir1);
         btnSalir1.addActionListener(new ActionListener() {
@@ -361,6 +392,8 @@ public class VistaGeneral {
         btnVisualizarCaso = new JButton("Visualizar Caso");
         btnVisualizarCaso.setBounds(40, 100, 200, 30);
         ImageIcon icon4 = new ImageIcon("Iconos/mostrar-contrasena.PNG");
+        btnVisualizarCaso.setHorizontalAlignment(SwingConstants.LEFT);
+        btnVisualizarCaso.setIconTextGap(30);
         btnVisualizarCaso.setIcon(icon4);
         panelCaso.add(btnVisualizarCaso);
         btnVisualizarCaso.addActionListener(new ActionListener() {
@@ -384,6 +417,8 @@ public class VistaGeneral {
         btnModificarCaso = new JButton("Modificar Caso");
         btnModificarCaso.setBounds(40, 150, 200, 30);
         ImageIcon icon5 = new ImageIcon("Iconos/boton-editar.PNG");
+        btnModificarCaso.setHorizontalAlignment(SwingConstants.LEFT);
+        btnModificarCaso.setIconTextGap(30);
         btnModificarCaso.setIcon(icon5);
         panelCaso.add(btnModificarCaso);
         btnModificarCaso.addActionListener(new ActionListener() {
@@ -408,6 +443,8 @@ public class VistaGeneral {
         btnsalir = new JButton("Salir");
         btnsalir.setBounds(40, 250, 200, 30);
         ImageIcon iconSalir2 = new ImageIcon("Iconos/cerrar-sesion.PNG");
+        btnsalir.setHorizontalAlignment(SwingConstants.LEFT);
+        btnsalir.setIconTextGap(50);
         btnsalir.setIcon(iconSalir2);
         panelCaso.add(btnsalir);
         btnsalir.addActionListener(new ActionListener() {
@@ -432,6 +469,8 @@ public class VistaGeneral {
         JButton btnEliminarCaso = new JButton("Eliminar Caso");
         btnEliminarCaso.setBounds(40, 200, 200, 30);
         ImageIcon icon6 = new ImageIcon("Iconos/eliminar.PNG");
+        btnEliminarCaso.setHorizontalAlignment(SwingConstants.LEFT);
+        btnEliminarCaso.setIconTextGap(30);
         btnEliminarCaso.setIcon(icon6);
         panelCaso.add(btnEliminarCaso);
         btnEliminarCaso.addActionListener(new ActionListener() {
@@ -463,9 +502,48 @@ public class VistaGeneral {
                 txtCedula.setBounds(30, 260, 200, 30);
                 txtCedula.setToolTipText("Ingrese la cédula del caso a eliminar");
                 conte.add(txtCedula);
+
+                 textArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                String textoSeleccionado = textArea.getSelectedText();
+                if (textoSeleccionado != null && !textoSeleccionado.isEmpty()) {
+                    txtCedula.setText(textoSeleccionado);
+                }
+            }
+        });
+   txtCedula.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String texto = txtCedula.getText().trim();
+
+       
+        if (texto.isEmpty()) {
+            textArea.setText("");
+            return;
+        }
+
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            textArea.setText(""); 
+
+            while (rs.next()) {
+                String cedula = rs.getString("Cedula");
+                if (cedula.startsWith(texto)) {
+                    textArea.append(cedula + "\n"); 
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
                 JButton btnEliminar = new JButton("Eliminar");
-                btnEliminar.setBounds(30, 310, 100, 30);
+                btnEliminar.setBounds(30, 310, 200, 30);
                 ImageIcon iconEliminar = new ImageIcon("Iconos/eliminar.PNG");
+                btnEliminar.setHorizontalAlignment(SwingConstants.LEFT);
+                btnEliminar.setIconTextGap(50);
                 btnEliminar.setIcon(iconEliminar);
                 conte.add(btnEliminar);
 
@@ -498,12 +576,12 @@ public class VistaGeneral {
                 btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseEntered(java.awt.event.MouseEvent e) {
-                        btnEliminar.setBounds(30, 310, 100, 40);
+                        btnEliminar.setBounds(30, 310, 200, 40);
                     }
 
                     @Override
                     public void mouseExited(java.awt.event.MouseEvent e) {
-                        btnEliminar.setBounds(30, 310, 100, 30);
+                        btnEliminar.setBounds(30, 310, 200, 30);
                     }
                 });
 
@@ -862,6 +940,7 @@ public class VistaGeneral {
 
     //Declaracion de este metodo para poder ver la informacion de un caso en especifico y ver si tiene respuesta o no.
     public void visualizarCaso(Statement stmt) {
+      
         JFrame frame = new JFrame("Ingrese el ID del caso que desea visualizar");
         Container conte = new Container();
         conte.setLayout(null);
@@ -878,15 +957,45 @@ public class VistaGeneral {
         conte.add(campo);
         campo.requestFocus();
         JTextArea txtId = new JTextArea();
-        //For implementado para recorrer el arrayList y mostrar el # de cedula de todos los registros.
-        //for (int i = 0; i < ListaCasos.size(); i++) {
-        //   txtId.setText(txtId.getText() + "\n" + ListaCasos.get(i).buscarCaso());
-        // }
+        txtId.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                String textoSeleccionado = txtId.getSelectedText();
+                if (textoSeleccionado != null && !textoSeleccionado.isEmpty()) {
+                    campo.setText(textoSeleccionado);
+                }
+            }
+        });
+   campo.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String texto = campo.getText().trim();
+
+       
+        if (texto.isEmpty()) {
+            txtId.setText("");
+            return;
+        }
 
         try {
             ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            txtId.setText(""); 
+
             while (rs.next()) {
-                txtId.setText(txtId.getText() + "\n" + rs.getString("Cedula"));
+                String cedula = rs.getString("Cedula");
+                if (cedula.startsWith(texto)) {
+                    txtId.append(cedula + "\n"); 
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            while (rs.next()) {
+                txtId.append(rs.getString("Cedula")+"\n");
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -900,6 +1009,8 @@ public class VistaGeneral {
 
         JButton btnBuscar = new JButton("Buscar");
         btnBuscar.setBounds(80, 380, 100, 30);
+        ImageIcon iconBuscar = new ImageIcon("Iconos/buscar.PNG");
+        btnBuscar.setIcon(iconBuscar);
         conte.add(btnBuscar);
         btnBuscar.addActionListener(new ActionListener() {
             @Override
@@ -969,8 +1080,19 @@ public class VistaGeneral {
                 }
                 JOptionPane.showMessageDialog(null, "Caso no encontrado.");
             }
+            
         });
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnBuscar.setBounds(80, 380, 100, 40);
+            }
 
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnBuscar.setBounds(80, 380, 100, 30);
+            }
+        });
         frame.add(conte);
         frame.setSize(400, 500);
         frame.setLocationRelativeTo(null);
@@ -1613,7 +1735,7 @@ public class VistaGeneral {
         try {
             rs = stmt.executeQuery("SELECT * FROM caso");
             while (rs.next()) {
-                textArea.setText(textArea.getText() + "\n" + rs.getString("Cedula"));
+                textArea.append(rs.getString("Cedula")+"\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1630,6 +1752,43 @@ public class VistaGeneral {
         txtCedula.setBounds(30, 260, 200, 30);
         txtCedula.setToolTipText("Ingrese la cédula del caso que desea editar la descripcion");
         conte.add(txtCedula);
+
+         textArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                String textoSeleccionado = textArea.getSelectedText();
+                if (textoSeleccionado != null && !textoSeleccionado.isEmpty()) {
+                    txtCedula.setText(textoSeleccionado);
+                }
+            }
+        });
+   txtCedula.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String texto = txtCedula.getText().trim();
+
+       
+        if (texto.isEmpty()) {
+            textArea.setText("");
+            return;
+        }
+
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            textArea.setText(""); 
+
+            while (rs.next()) {
+                String cedula = rs.getString("Cedula");
+                if (cedula.startsWith(texto)) {
+                    textArea.append(cedula + "\n"); 
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
         JButton btnBuscar = new JButton("Buscar");
         ImageIcon icon = new ImageIcon("Iconos/buscar.png");
         btnBuscar.setIcon(icon);
@@ -1796,29 +1955,46 @@ public class VistaGeneral {
         txtId.setLineWrap(true);
         txtId.setWrapStyleWord(true);
 
-        JButton btnMostrar = new JButton("Mostrar Todos");
-        btnMostrar.setBounds(160, 430, 150, 30);
-        ImageIcon icon = new ImageIcon("Iconos/mostrarLista.png");
-        btnMostrar.setIcon(icon);
-        conte.add(btnMostrar);
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setBounds(160, 430, 150, 30);
+        ImageIcon icon = new ImageIcon("Iconos/aceptar-el-contorno-del-boton-circular.png");
+        btnAceptar.setIcon(icon);
+        conte.add(btnAceptar);
 
-        btnMostrar.addActionListener(new ActionListener() {
-            @Override
+        btnAceptar.addActionListener(new ActionListener() {
+           @Override
             public void actionPerformed(ActionEvent e) {
-                txtId.setText("");
+                frame.dispose();
+    }
+});
+btnAceptar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnAceptar.setBounds(160, 430, 150, 40);
+            }
 
+            public void mouseExited(MouseEvent e) {
+                btnAceptar.setBounds(160, 430, 150, 30);
+            }
+        });
+
+        conte.add(btnAceptar);
+
+        // Botón para mostrar los casos
+       
+                txtId.setText(""); // Limpiar el área de texto antes de mostrar los casos
 // Conexión a la base de datos
                 Connection con = null;
-                Statement stmt = null;
+                Statement stmt1 = null;
                 Statement stmt2 = null;
 
                 try {
                     con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
-                    stmt = con.createStatement();
+                    stmt1 = con.createStatement();
                     stmt2 = con.createStatement();
 
 // Consulta para obtener los casos y sus seguimientos
-                    ResultSet rs = stmt.executeQuery(
+                    ResultSet rs = stmt1.executeQuery(
                             "SELECT c.*, o.Nombre AS NombreFuncionario, o.IDempleado, o.Solucion, o.Lugar, o.Direccion AS DireccionOficina, o.Telefono, o.FechaAtencion, o.HoraAtencion "
                             + "FROM caso c LEFT JOIN oficinaregional o ON c.Cedula = o.CedulaCaso"
                     );
@@ -1903,22 +2079,22 @@ public class VistaGeneral {
                         ex.printStackTrace();
                     }
                 }
-            }
-        });
-        btnMostrar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnMostrar.setBounds(150, 420, 150, 40);
-            }
+            
+      //  });
+       // btnMostrar.addMouseListener(new MouseAdapter() {
+         //   @Override
+           // public void mouseEntered(MouseEvent e) {
+             //   btnMostrar.setBounds(150, 420, 150, 40);
+            //}
 
-            public void mouseExited(MouseEvent e) {
-                btnMostrar.setBounds(160, 430, 150, 30);
-            }
-        });
+            //public void mouseExited(MouseEvent e) {
+              //  btnMostrar.setBounds(160, 430, 150, 30);
+            //}
+        //});
         JScrollPane scroll = new JScrollPane(txtId);
         scroll.setBounds(30, 60, 420, 360);
         conte.add(scroll);
-        conte.add(btnMostrar);
+        //conte.add(btnMostrar);
 
         frame.setContentPane(conte);
         frame.setLocationRelativeTo(null);
@@ -1961,6 +2137,44 @@ public class VistaGeneral {
         txtCedula.setBounds(30, 320, 200, 30);
         txtCedula.setToolTipText("Ingrese la cédula del caso que desea resolver");
         conte.add(txtCedula);
+
+ textArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                String textoSeleccionado = textArea.getSelectedText();
+                if (textoSeleccionado != null && !textoSeleccionado.isEmpty()) {
+                    txtCedula.setText(textoSeleccionado);
+                }
+            }
+        });
+   txtCedula.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String texto = txtCedula.getText().trim();
+
+       
+        if (texto.isEmpty()) {
+            textArea.setText("");
+            return;
+        }
+
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
+            textArea.setText(""); 
+
+            while (rs.next()) {
+                String cedula = rs.getString("Cedula");
+                if (cedula.startsWith(texto)) {
+                    textArea.append("Cedula: "+cedula +" - Tipo de violencia: "+rs.getString("TipoViolencia")+ "\n"); 
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
+
 
         JButton btnResolver = new JButton("Resolver");
         btnResolver.setBounds(250, 320, 100, 30);
