@@ -34,6 +34,7 @@ import javax.swing.event.CaretListener;
 import java.sql.*;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -221,9 +222,11 @@ public class VistaGeneral {
         conte.add(campoContraseña);
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(50, 440, 200, 30);
+        ImageIcon iconGuardar = new ImageIcon("Iconos/guardar-el-archivo.PNG");
+        btnGuardar.setIcon(iconGuardar);
         conte.add(btnGuardar);
         frame.add(conte);
-        frame.setSize(400, 600);
+        frame.setSize(300, 540);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         btnGuardar.addActionListener(new ActionListener() {
@@ -243,6 +246,18 @@ public class VistaGeneral {
                 }
             }
         });
+        //Acciones al pasar el mouse por encima del boton Guardar.
+       btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseEntered(java.awt.event.MouseEvent e) {
+        btnGuardar.setBounds(50, 440, 150, 50); // aumentar altura al pasar el mouse
+    }
+
+    @Override
+    public void mouseExited(java.awt.event.MouseEvent e) {
+        btnGuardar.setBounds(50, 440, 150, 40); // restaurar tamaño original
+    }
+});
     }
 //Metodo declarado para verificar los datos al momento de intentar ingresar al sistema.
 
@@ -373,10 +388,50 @@ btnCaso.setIconTextGap(50);
         btnSalir1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie Jesus Rojas Palacios ");
-                System.exit(0);
+               //Ventana para mostrar los desarrolladores y sus carnets.
+        JFrame ventana = new JFrame("Desarrolladores");
+        ventana.setSize(500, 500);  
+        ventana.setLayout(null);
+        ventana.setLocationRelativeTo(null);
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JLabel texto1 = new JLabel("Desarrolladores:");
+        texto1.setBounds(180, 10, 200, 20);
+        ventana.add(texto1);
+        JLabel texto2 = new JLabel("Marcos Ortega C35750");
+        texto2.setBounds(60, 40, 160, 20);  
+        ventana.add(texto2);
+
+        JLabel texto3 = new JLabel("Eddie Rojas C36934");
+        texto3.setBounds(280, 40, 160, 20); 
+        ventana.add(texto3);
+
+        // Imagen de Marcos
+        ImageIcon img1 = new ImageIcon("Iconos/imagen-marcos.JPG");
+        Image esc1 = img1.getImage().getScaledInstance(160, 240, Image.SCALE_SMOOTH);  
+        JLabel lbl1 = new JLabel(new ImageIcon(esc1));
+        lbl1.setBounds(60, 70, 160, 240);  
+        ventana.add(lbl1);
+
+        // Imagen de Eddie
+        ImageIcon img2 = new ImageIcon("Iconos/imagen eddie.JPG");
+        Image esc2 = img2.getImage().getScaledInstance(160, 240, Image.SCALE_SMOOTH);  
+        JLabel lbl2 = new JLabel(new ImageIcon(esc2));
+        lbl2.setBounds(280, 70, 160, 240);  
+        ventana.add(lbl2);
+
+        ventana.setVisible(true);
+
+        // Cierre automático en 5 segundos
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
-        });
+            System.exit(0);
+        }).start();
+    }
+});
         btnSalir1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -449,11 +504,51 @@ btnCaso.setIconTextGap(50);
         panelCaso.add(btnsalir);
         btnsalir.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Desarrolladores\nMarcos Jose Ortega Fernandez\nEddie Jesus Rojas Palacios");
-                System.exit(0);
+        public void actionPerformed(ActionEvent e) {
+            //Ventana para mostrar los desarrolladores y sus carnets.
+        JFrame ventana = new JFrame("Desarrolladores");
+        ventana.setSize(500, 500);  
+        ventana.setLayout(null);
+        ventana.setLocationRelativeTo(null);
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JLabel texto1 = new JLabel("Desarrolladores:");
+        texto1.setBounds(180, 10, 200, 20);
+        ventana.add(texto1);
+        JLabel texto2 = new JLabel("Marcos Ortega C35750");
+        texto2.setBounds(60, 40, 160, 20);  
+        ventana.add(texto2);
+
+        JLabel texto3 = new JLabel("Eddie Rojas C36934");
+        texto3.setBounds(280, 40, 160, 20); 
+        ventana.add(texto3);
+
+        // Imagen de Marcos
+        ImageIcon img1 = new ImageIcon("Iconos/imagen-marcos.JPG");
+        Image esc1 = img1.getImage().getScaledInstance(160, 240, Image.SCALE_SMOOTH);  
+        JLabel lbl1 = new JLabel(new ImageIcon(esc1));
+        lbl1.setBounds(60, 70, 160, 240);  
+        ventana.add(lbl1);
+
+        // Imagen de Eddie
+        ImageIcon img2 = new ImageIcon("Iconos/imagen eddie.JPG");
+        Image esc2 = img2.getImage().getScaledInstance(160, 240, Image.SCALE_SMOOTH);  
+        JLabel lbl2 = new JLabel(new ImageIcon(esc2));
+        lbl2.setBounds(280, 70, 160, 240);  
+        ventana.add(lbl2);
+
+        ventana.setVisible(true);
+
+        // Cierre automático en 5 segundos
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
-        });
+            System.exit(0);
+        }).start();
+    }
+});
         btnsalir.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -672,7 +767,7 @@ btnCaso.setIconTextGap(50);
         JLabel lblHora = new JLabel("Hora de la denuncia:   " + h);
         lblHora.setBounds(30, 100, 220, 30);
         conte.add(lblHora);
-        JLabel lblDescripcion = new JLabel("Descripción de la denuncia:");
+        JLabel lblDescripcion = new JLabel("Descripción de la denuncia* : ");
         lblDescripcion.setBounds(330, 20, 200, 30);
         conte.add(lblDescripcion);
         JTextArea txtDescripcion = new JTextArea();
@@ -692,7 +787,7 @@ btnCaso.setIconTextGap(50);
         iVictima.setBounds(30, 190, 200, 30);
         conte.add(iVictima);
 
-        JLabel vNombre = new JLabel("Nombre de la persona");
+        JLabel vNombre = new JLabel("Nombre de la persona *");
         vNombre.setBounds(30, 270, 200, 30);
         conte.add(vNombre);
         JTextField vNombre1 = new JTextField();
@@ -700,7 +795,7 @@ btnCaso.setIconTextGap(50);
         vNombre1.setToolTipText("Ingrese el nombre de la victima del caso");
         conte.add(vNombre1);
 
-        JLabel vCedula = new JLabel("Cédula de la persona");
+        JLabel vCedula = new JLabel("Cédula de la persona *");
         vCedula.setBounds(30, 340, 150, 30);
         conte.add(vCedula);
         JTextField cVictima = new JTextField();
@@ -708,7 +803,7 @@ btnCaso.setIconTextGap(50);
         cVictima.setToolTipText("Ingrese la cédula de la victima del caso");
         conte.add(cVictima);
 
-        JLabel vNumero = new JLabel("Número celular de la persona");
+        JLabel vNumero = new JLabel("Número celular de la persona *");
         vNumero.setBounds(30, 410, 190, 30);
         conte.add(vNumero);
         JTextField vNumero1 = new JTextField();
@@ -716,7 +811,7 @@ btnCaso.setIconTextGap(50);
         vNumero1.setToolTipText("Ingrese el número celular de la victima del caso");
         conte.add(vNumero1);
 
-        JLabel vDireccion = new JLabel("Dirección de la persona");
+        JLabel vDireccion = new JLabel("Dirección de la persona *");
         vDireccion.setBounds(220, 340, 190, 30);
         conte.add(vDireccion);
         JTextField vDireccion1 = new JTextField();
@@ -724,7 +819,7 @@ btnCaso.setIconTextGap(50);
         vDireccion1.setToolTipText("Ingrese la dirección de la victima del caso");
         conte.add(vDireccion1);
 
-        JLabel vEdad = new JLabel("Edad de la persona");
+        JLabel vEdad = new JLabel("Edad de la persona *");
         vEdad.setBounds(220, 270, 150, 30);
         conte.add(vEdad);
         JTextField vEdad1 = new JTextField();
@@ -732,7 +827,7 @@ btnCaso.setIconTextGap(50);
         vEdad1.setToolTipText("Ingrese la edad de la victima del caso");
         conte.add(vEdad1);
 
-        JLabel vGenero = new JLabel("Género de la persona");
+        JLabel vGenero = new JLabel("Género de la persona *");
         vGenero.setBounds(410, 260, 150, 30);
         conte.add(vGenero);
         ButtonGroup botones = new ButtonGroup();
@@ -749,14 +844,15 @@ btnCaso.setIconTextGap(50);
         botones.add(vGenero3);
         conte.add(vGenero3);
 
-        JLabel vEcivil = new JLabel("Estado civil de la persona");
+        JLabel vEcivil = new JLabel("Estado civil de la persona *");
         vEcivil.setBounds(410, 340, 190, 30);
         conte.add(vEcivil);
         JComboBox vEcivil1 = new JComboBox(estado);
         vEcivil1.setBounds(410, 370, 150, 30);
+        vEcivil1.setToolTipText("Seleccione el estado civil de la victima del caso");
         conte.add(vEcivil1);
 
-        JLabel vOcupacion = new JLabel("Ocupación de la persona");
+        JLabel vOcupacion = new JLabel("Ocupación de la persona *");
         vOcupacion.setBounds(220, 410, 190, 30);
         conte.add(vOcupacion);
         JTextField vOcupacion1 = new JTextField();
@@ -764,7 +860,7 @@ btnCaso.setIconTextGap(50);
         vOcupacion1.setToolTipText("Ingrese la ocupación de la victima del caso");
         conte.add(vOcupacion1);
 
-        JLabel vNacionalidad = new JLabel("Nacionalidad de la persona");
+        JLabel vNacionalidad = new JLabel("Nacionalidad de la persona *");
         vNacionalidad.setBounds(410, 410, 190, 30);
         conte.add(vNacionalidad);
         JTextField vNacionalidad1 = new JTextField();
@@ -772,7 +868,7 @@ btnCaso.setIconTextGap(50);
         vNacionalidad1.setToolTipText("Ingrese la nacionalidad de la victima del caso");
         conte.add(vNacionalidad1);
 
-        JLabel tViolencia = new JLabel("Tipo de violencia");
+        JLabel tViolencia = new JLabel("Tipo de violencia *");
         tViolencia.setBounds(410, 480, 190, 30);
         conte.add(tViolencia);
         JComboBox tViolencia1 = new JComboBox(cViolencia);
@@ -1131,28 +1227,28 @@ btnCaso.setIconTextGap(50);
         Container conte = new Container();
         conte.setLayout(null);
 
-        JLabel pDigital = new JLabel("Ingrese la plataforma donde se dio la agresión:");
+        JLabel pDigital = new JLabel("Ingrese la plataforma donde se dio la agresión: *");
         pDigital.setBounds(30, 50, 300, 30);
         conte.add(pDigital);
         JTextField pDigital1 = new JTextField();
         pDigital1.setBounds(50, 80, 200, 30);
         pDigital1.setToolTipText("Ingrese la plataforma digital (facebook, instagram, twitter, etc.) donde se dio la agresión");
         conte.add(pDigital1);
-        JLabel agresor = new JLabel("Nombre del agresor:");
+        JLabel agresor = new JLabel("Nombre del agresor: *");
         agresor.setBounds(30, 120, 200, 30);
         conte.add(agresor);
         JTextField agresor1 = new JTextField();
         agresor1.setBounds(50, 150, 200, 30);
         agresor1.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresor1);
-        JLabel rAgresor = new JLabel("Relación con el agresor:");
+        JLabel rAgresor = new JLabel("Relación con el agresor: *");
         rAgresor.setBounds(30, 190, 200, 30);
         conte.add(rAgresor);
         JTextField rAgresor1 = new JTextField();
         rAgresor1.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         rAgresor1.setBounds(50, 220, 200, 30);
         conte.add(rAgresor1);
-        JLabel gAgresor = new JLabel("Género del agresor:");
+        JLabel gAgresor = new JLabel("Género del agresor: *");
         gAgresor.setBounds(30, 260, 200, 30);
         conte.add(gAgresor);
         JRadioButton gAgresor1 = new JRadioButton("Masculino");
@@ -1250,7 +1346,7 @@ btnCaso.setIconTextGap(50);
         Container conte = frame.getContentPane();
         conte.setLayout(null);
 
-        JLabel tipoIngresoLabel = new JLabel("Ingrese el tipo de ingreso afectado:");
+        JLabel tipoIngresoLabel = new JLabel("Ingrese el tipo de ingreso afectado: *");
         tipoIngresoLabel.setBounds(20, 20, 350, 30);
         conte.add(tipoIngresoLabel);
         JTextField tipoIngresoField = new JTextField();
@@ -1258,7 +1354,7 @@ btnCaso.setIconTextGap(50);
         tipoIngresoField.setToolTipText("Ingrese el tipo de ingreso afectado (salario, pensión, etc.)");
         conte.add(tipoIngresoField);
 
-        JLabel impactoFinancieroLabel = new JLabel("Ingrese el impacto financiero:");
+        JLabel impactoFinancieroLabel = new JLabel("Ingrese el impacto financiero: *");
         impactoFinancieroLabel.setBounds(20, 90, 350, 30);
         conte.add(impactoFinancieroLabel);
         JTextField impactoFinancieroField = new JTextField();
@@ -1266,7 +1362,7 @@ btnCaso.setIconTextGap(50);
         impactoFinancieroField.setToolTipText("Ingrese el impacto financiero (cantidad de dinero afectada)");
         conte.add(impactoFinancieroField);
 
-        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
+        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor: *");
         agresorLabel.setBounds(20, 160, 350, 30);
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
@@ -1274,7 +1370,7 @@ btnCaso.setIconTextGap(50);
         agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
-        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
+        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor: *");
         rAgresorLabel.setBounds(20, 230, 350, 30);
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
@@ -1282,7 +1378,7 @@ btnCaso.setIconTextGap(50);
         rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
-        JLabel gAgresor = new JLabel("Género del agresor:");
+        JLabel gAgresor = new JLabel("Género del agresor: *");
         gAgresor.setBounds(20, 300, 350, 30);
         conte.add(gAgresor);
         JRadioButton gAgresor1 = new JRadioButton("Masculino");
@@ -1390,7 +1486,7 @@ btnCaso.setIconTextGap(50);
         Container conte = frame.getContentPane();
         conte.setLayout(null);
 
-        JLabel impactoPsicologicoLabel = new JLabel("Ingrese el impacto psicológico:");
+        JLabel impactoPsicologicoLabel = new JLabel("Ingrese el impacto psicológico: *");
         impactoPsicologicoLabel.setBounds(20, 20, 350, 30);
         conte.add(impactoPsicologicoLabel);
         JTextField impactoPsicologicoField = new JTextField();
@@ -1398,7 +1494,7 @@ btnCaso.setIconTextGap(50);
         impactoPsicologicoField.setToolTipText("descripción del impacto emocional(depresión, ansiedad, etc.)");
         conte.add(impactoPsicologicoField);
 
-        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
+        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor: *");
         agresorLabel.setBounds(20, 90, 350, 30);
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
@@ -1406,7 +1502,7 @@ btnCaso.setIconTextGap(50);
         agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
-        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
+        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor: *");
         rAgresorLabel.setBounds(20, 160, 350, 30);
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
@@ -1414,7 +1510,7 @@ btnCaso.setIconTextGap(50);
         rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
-        JLabel gAgresor = new JLabel("Género del agresor:");
+        JLabel gAgresor = new JLabel("Género del agresor: *");
         gAgresor.setBounds(20, 230, 350, 30);
         conte.add(gAgresor);
         JRadioButton gAgresor1 = new JRadioButton("Masculino");
@@ -1507,7 +1603,7 @@ btnCaso.setIconTextGap(50);
         Container conte = frame.getContentPane();
         conte.setLayout(null);
 
-        JLabel tipoLesionLabel = new JLabel("Ingrese el tipo de lesión:");
+        JLabel tipoLesionLabel = new JLabel("Ingrese el tipo de lesión: *");
         tipoLesionLabel.setBounds(20, 20, 350, 30);
         conte.add(tipoLesionLabel);
         JTextField tipoLesionField = new JTextField();
@@ -1515,7 +1611,7 @@ btnCaso.setIconTextGap(50);
         tipoLesionField.setToolTipText("Cual fue el tipo de lesion (corte, contusión, fractura, etc.)");
         conte.add(tipoLesionField);
 
-        JLabel atencionMedicaLabel = new JLabel("Ingrese la atención médica recibida:");
+        JLabel atencionMedicaLabel = new JLabel("Ingrese la atención médica recibida: *");
         atencionMedicaLabel.setBounds(20, 90, 350, 30);
         conte.add(atencionMedicaLabel);
         JTextField atencionMedicaField = new JTextField();
@@ -1523,7 +1619,7 @@ btnCaso.setIconTextGap(50);
         atencionMedicaField.setToolTipText("Que atencion medica recibio la victima (hospitalización, consulta médica, etc.)");
         conte.add(atencionMedicaField);
 
-        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
+        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor: *");
         agresorLabel.setBounds(20, 160, 350, 30);
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
@@ -1531,7 +1627,7 @@ btnCaso.setIconTextGap(50);
         agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
-        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
+        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor: *");
         rAgresorLabel.setBounds(20, 230, 350, 30);
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
@@ -1539,7 +1635,7 @@ btnCaso.setIconTextGap(50);
         rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
-        JLabel gAgresor = new JLabel("Género del agresor:");
+        JLabel gAgresor = new JLabel("Género del agresor: *");
         gAgresor.setBounds(20, 300, 350, 30);
         conte.add(gAgresor);
         JRadioButton gAgresor1 = new JRadioButton("Masculino");
@@ -1639,7 +1735,7 @@ btnCaso.setIconTextGap(50);
         Container conte = frame.getContentPane();
         conte.setLayout(null);
 
-        JLabel tipoAbusoSexualLabel = new JLabel("Ingrese el tipo de abuso sexual:");
+        JLabel tipoAbusoSexualLabel = new JLabel("Ingrese el tipo de abuso sexual: *");
         tipoAbusoSexualLabel.setBounds(20, 20, 350, 30);
         conte.add(tipoAbusoSexualLabel);
         JTextField tipoAbusoSexualField = new JTextField();
@@ -1647,7 +1743,7 @@ btnCaso.setIconTextGap(50);
         tipoAbusoSexualField.setToolTipText("Cual fue el abuso recibido (acoso, violación, etc.)");
         conte.add(tipoAbusoSexualField);
 
-        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor:");
+        JLabel agresorLabel = new JLabel("Ingrese el nombre del agresor: *");
         agresorLabel.setBounds(30, 90, 350, 30);
         conte.add(agresorLabel);
         JTextField agresorField = new JTextField();
@@ -1655,7 +1751,7 @@ btnCaso.setIconTextGap(50);
         agresorField.setToolTipText("Ingrese el nombre de la persona que agredio a la victima");
         conte.add(agresorField);
 
-        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor:");
+        JLabel rAgresorLabel = new JLabel("Ingrese la relación con el agresor: *");
         rAgresorLabel.setBounds(20, 160, 350, 30);
         conte.add(rAgresorLabel);
         JTextField rAgresorField = new JTextField();
@@ -1663,7 +1759,7 @@ btnCaso.setIconTextGap(50);
         rAgresorField.setToolTipText("Ingrese la relación con el agresor (amigo, familiar, desconocido, etc.)");
         conte.add(rAgresorField);
 
-        JLabel gAgresor = new JLabel("Género del agresor:");
+        JLabel gAgresor = new JLabel("Género del agresor: *");
         gAgresor.setBounds(20, 230, 350, 30);
         conte.add(gAgresor);
         JRadioButton gAgresor1 = new JRadioButton("Masculino");
@@ -2285,7 +2381,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         l1.setBounds(20, 30, 200, 30);
         conte.add(l1);
 
-        JLabel l2 = new JLabel("Nombre del funcionario:");
+        JLabel l2 = new JLabel("Nombre del funcionario: *");
         l2.setBounds(20, 70, 200, 30);
         conte.add(l2);
         JTextField t1 = new JTextField();
@@ -2293,7 +2389,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         t1.setToolTipText("Ingrese el nombre del funcionario que esta atendiendo el caso");
         conte.add(t1);
 
-        JLabel l3 = new JLabel("Cedula de funcionario:");
+        JLabel l3 = new JLabel("Cedula de funcionario: *");
         l3.setBounds(20, 150, 200, 30);
         conte.add(l3);
         JTextField t2 = new JTextField();
@@ -2301,7 +2397,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         t2.setToolTipText("Ingrese la cedula del funcionario que esta atendiendo el caso");
         conte.add(t2);
 
-        JLabel l4 = new JLabel("Codigo de funcionario:");
+        JLabel l4 = new JLabel("Codigo de funcionario: *");
         l4.setBounds(20, 220, 200, 30);
         conte.add(l4);
         JTextField t3 = new JTextField();
@@ -2309,7 +2405,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         t3.setToolTipText("Ingrese el codigo del funcionario que esta atendiendo el caso");
         conte.add(t3);
 
-        JLabel l5 = new JLabel("Solución propuesta:");
+        JLabel l5 = new JLabel("Solución propuesta: *");
         l5.setBounds(20, 290, 200, 30);
         conte.add(l5);
         JTextArea t4 = new JTextArea();
@@ -2329,7 +2425,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         l6.setBounds(280, 30, 200, 30);
         conte.add(l6);
 
-        JLabel l7 = new JLabel("Lugar de la oficina:");
+        JLabel l7 = new JLabel("Lugar de la oficina: *");
         l7.setBounds(280, 70, 200, 30);
         conte.add(l7);
         JTextField t7 = new JTextField();
@@ -2337,7 +2433,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         t7.setToolTipText("Ingrese el lugar de la oficina regional donde se esta atendiendo el caso");
         conte.add(t7);
 
-        JLabel l8 = new JLabel("Telefono de la oficina:");
+        JLabel l8 = new JLabel("Telefono de la oficina: *");
         l8.setBounds(280, 150, 200, 30);
         conte.add(l8);
         JTextField t8 = new JTextField();
@@ -2345,7 +2441,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         t8.setToolTipText("Ingrese el telefono de la oficina regional donde se esta atendiendo el caso");
         conte.add(t8);
 
-        JLabel l9 = new JLabel("Dirección de la oficina:");
+        JLabel l9 = new JLabel("Dirección de la oficina: *");
         l9.setBounds(280, 220, 200, 30);
         conte.add(l9);
         JTextField t9 = new JTextField();
