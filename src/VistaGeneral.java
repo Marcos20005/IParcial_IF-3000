@@ -164,6 +164,17 @@ public class VistaGeneral {
         }
             }
         });
+        editarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                editarUsuario.setBounds(50, 360, 150, 50);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                editarUsuario.setBounds(50, 360, 150, 40);
+            }
+        });
         ingreso.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -189,6 +200,7 @@ public class VistaGeneral {
         });
     }
 
+    //Metodo para editar un usuario ya existente en la base de datos.
     public void editarUsiario(Connection con, Statement stmt) {
     JFrame frame = new JFrame("Editar Usuario");
     Container conte = frame.getContentPane();
