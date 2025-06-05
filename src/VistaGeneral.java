@@ -34,6 +34,7 @@ import javax.swing.event.CaretListener;
 import java.sql.*;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -65,7 +66,7 @@ public class VistaGeneral {
         UIManager.put("Button.focusColor", Color.ORANGE);
         //Inicializacion de componente necesario para establecer conexion con el motor de base de datos.                    
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
         Statement stmt = con.createStatement();
         //Se llama al metodo necesario para mostrar la pantalla de validar usuario y contraseña.
         pantallaLoguear(stmt);
@@ -164,6 +165,8 @@ public class VistaGeneral {
                 crearLogin.setBounds(50, 300, 150, 40);
             }
         });
+       
+
     }
 
     public void crearUsuario(Statement stmt) {
@@ -379,7 +382,7 @@ btnCaso.setIconTextGap(50);
         });
 
         btnSalir1 = new JButton("Salir");
-        btnSalir1.setBounds(50, 160, 200, 30);
+        btnSalir1.setBounds(50, 210, 200, 30);
         ImageIcon iconSalir = new ImageIcon("Iconos/cerrar-sesion.PNG");
         btnSalir1.setHorizontalAlignment(SwingConstants.LEFT);
         btnSalir1.setIconTextGap(50);
@@ -435,12 +438,12 @@ btnCaso.setIconTextGap(50);
         btnSalir1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                btnSalir1.setBounds(50, 160, 200, 40);
+                btnSalir1.setBounds(50, 210, 200, 40);
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
-                btnSalir1.setBounds(50, 160, 200, 30);
+                btnSalir1.setBounds(50, 210, 200, 30);
             }
         });
 
@@ -710,6 +713,30 @@ btnCaso.setIconTextGap(50);
                 btnEliminarCaso.setBounds(40, 200, 200, 30);
             }
         });
+         JButton btnEditarFunci = new JButton("Editar Funcionario");
+        btnEditarFunci.setBounds(50, 160, 200, 30);
+        ImageIcon iconEditar = new ImageIcon("Iconos/boton-editar.PNG");
+        btnEditarFunci.setIcon(iconEditar);
+        btnEditarFunci.setHorizontalAlignment(SwingConstants.LEFT);
+        btnEditarFunci.setIconTextGap(20);
+        panelMostrarCaso.add(btnEditarFunci);
+        btnEditarFunci.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+             editarFuncionario(stmt);
+            }
+        });
+        btnEditarFunci.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnEditarFunci.setBounds(50, 160, 200, 40);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnEditarFunci.setBounds(50, 160, 200, 30);
+            }
+        });
 
         tab.addTab("Usuario", panelCaso);
         tab.addTab("Institucion", panelMostrarCaso);
@@ -750,6 +777,248 @@ btnCaso.setIconTextGap(50);
         return formato.format(hora);
     }
 
+    //Metodo declarado para buscar un registro de una solucion propuesta por un funcionario y editar la informacio.
+    public void editarFuncionario(Statement stmt) {
+        
+        JFrame frame = new JFrame("Editar Funcionario");
+        Container conte = new Container();
+        conte.setLayout(null);
+
+        JLabel lblTitulo = new JLabel("Seleccione la cedula del funcionario para editar:");
+        lblTitulo.setBounds(20, 10, 300, 30);
+        conte.add(lblTitulo);
+        JTextArea textArea = new JTextArea();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM oficinaregional");
+            while (rs.next()) {
+                textArea.append(rs.getString("Cedula") + "\n");
+            }
+            if(textArea.getText().equals("")){
+                textArea.setText("Ningun funcionario a registrado una solucion.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setBounds(30, 50, 220, 200);
+        conte.add(scroll);
+        JLabel lblCedula = new JLabel("Ingrese la cédula del funcionario:");
+        lblCedula.setBounds(30, 270, 200, 30);
+        conte.add(lblCedula);
+        JTextField txtCedula = new JTextField();
+        txtCedula.setBounds(30, 300, 200, 30);
+        txtCedula.setToolTipText("Ingrese la cédula del funcionario a editar");
+        conte.add(txtCedula);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setBounds(30, 340, 200, 30);
+        ImageIcon iconBuscar = new ImageIcon("Iconos/buscar.PNG");
+        btnBuscar.setIcon(iconBuscar);
+        conte.add(btnBuscar);
+
+        frame.setSize(300, 430);
+        frame.setLocationRelativeTo(null);
+        frame.add(conte);
+        frame.setVisible(true);
+
+         textArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                String textoSeleccionado = textArea.getSelectedText();
+                if (textoSeleccionado != null && !textoSeleccionado.isEmpty()) {
+                    txtCedula.setText(textoSeleccionado);
+                }
+            }
+        });
+        txtCedula.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String texto = txtCedula.getText().trim();
+
+        if (texto.isEmpty()) {
+          
+            
+            try {
+          
+            ResultSet rs1 = stmt.executeQuery("SELECT * FROM oficinaregional");
+            textArea.setText("");
+            while (rs1.next()) {
+                textArea.append(rs1.getString("Cedula")+"\n");
+            }
+            if(textArea.getText().equals("")){
+                textArea.setText("Ningun funcionario a registrado una solucion.");
+            }
+     
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+            return;
+        }
+
+        try {
+            // Usa LIKE para filtrar desde SQL
+            String query = "SELECT * FROM oficinaregional WHERE Cedula LIKE '" + texto + "%'";
+            ResultSet rs = stmt.executeQuery(query);
+            textArea.setText(""); 
+
+            while (rs.next()) {
+                String cedula = rs.getString("Cedula");
+                textArea.append(cedula + "\n"); 
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //Se declara ResultSet para comparar el caso de la cedula buscada con la cedula de la base de datos
+                try {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * FROM oficinaregional");
+                    while (rs2.next()) {
+                        
+                        if (rs2.getString("Cedula").equals(txtCedula.getText())) {
+                            
+                            
+                            frame.dispose();
+                            JOptionPane.showMessageDialog(null, "Caso encontrado");
+                            actualizarRegistro(stmt, txtCedula.getText());
+                            return;
+                        }
+                    }
+                    
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(null, "Caso no encontrado.");
+                txtCedula.setText("");
+               
+                 try {
+          
+            ResultSet rs3 = stmt.executeQuery("SELECT * FROM oficinaregional");
+            textArea.setText("");
+            while (rs3.next()) {
+                textArea.append(rs3.getString("Cedula")+"\n");
+            }
+
+            if(textArea.getText().equals("")){
+                textArea.setText("Ningun funcionario a registrado una solucion.");
+            }
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+            }
+        });
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnBuscar.setBounds(30, 340, 200, 40);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnBuscar.setBounds(30, 340, 200, 30);
+            }
+        });
+    }//Fin de metodo
+
+    public void actualizarRegistro(Statement stmt, String cedula){
+        JFrame frame = new JFrame("Actualizar registro de solucion");
+        Container conte = new Container();
+        conte.setLayout(null);
+        JLabel lblCedula = new JLabel("Ingrese la nueva cédula del funcionario:");
+        lblCedula.setBounds(30, 20, 250, 30);
+        conte.add(lblCedula);
+        JTextField txtCedula = new JTextField();
+        txtCedula.setBounds(30, 50, 200, 30);
+        txtCedula.setToolTipText("Ingrese la nueva cédula del funcionario");
+        conte.add(txtCedula);
+        JLabel lblNombre = new JLabel("Ingrese el nuevo nombre del funcionario:");
+        lblNombre.setBounds(30, 90, 250, 30);
+        conte.add(lblNombre);
+        JTextField txtNombre = new JTextField();
+        txtNombre.setBounds(30, 120, 200, 30);
+        txtNombre.setToolTipText("Ingrese el nuevo nombre del funcionario");
+        conte.add(txtNombre);
+        JLabel lblApellido = new JLabel("Ingrese el nuevo ID del funcionario:");
+        lblApellido.setBounds(30, 160, 250, 30);
+        conte.add(lblApellido);
+        JTextField txtApellido = new JTextField();
+        txtApellido.setBounds(30, 190, 200, 30);
+        txtApellido.setToolTipText("Ingrese el nuevo ID del funcionario");
+        conte.add(txtApellido);
+        JLabel lblSegundoApellido = new JLabel("Ingrese la nueva direccion del funcionario:");
+        lblSegundoApellido.setBounds(30, 230, 250, 30);
+        conte.add(lblSegundoApellido);
+        JTextField txtSegundoApellido = new JTextField();
+        txtSegundoApellido.setBounds(30, 260, 200, 30);
+        txtSegundoApellido.setToolTipText("Ingrese la nueva direcion del funcionario");
+        conte.add(txtSegundoApellido);
+        JLabel lblTelefono = new JLabel("Ingrese el nuevo telefono del funcionario:");
+        lblTelefono.setBounds(30, 300, 250, 30);
+        conte.add(lblTelefono);
+        JTextField txtTelefono = new JTextField();
+        txtTelefono.setBounds(30, 330, 200, 30);
+        txtTelefono.setToolTipText("Ingrese el nuevo telefono del funcionario");
+        conte.add(txtTelefono);
+
+        JButton btnActualizar = new JButton("Actualizar");
+        btnActualizar.setBounds(30, 380, 200, 30);
+        ImageIcon iconActualizar = new ImageIcon("Iconos/procesamiento-de-datos.PNG");
+        btnActualizar.setIcon(iconActualizar);
+        btnActualizar.setHorizontalAlignment(SwingConstants.LEFT);
+        btnActualizar.setIconTextGap(50);
+        conte.add(btnActualizar);
+        btnActualizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+  
+  if (txtCedula.getText().isEmpty() || txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() || txtSegundoApellido.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
+      JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+      return;
+  }
+  int respuesta = JOptionPane.showConfirmDialog(frame, "¿Desea guardar los datos?", "Respuesta", JOptionPane.YES_NO_OPTION);
+                if (respuesta == JOptionPane.NO_OPTION) {
+                    return;
+                }
+                try {
+                    //Se ejecuta la sentencia para actualizar el registro del funcionario en la base de datos.
+                    int valor = stmt.executeUpdate("UPDATE oficinaregional SET Cedula = '" + txtCedula.getText() + "', Nombre = '" + txtNombre.getText() + "', IDempleado = '" + txtApellido.getText() + "', Direccion = '" + txtSegundoApellido.getText() + "', Telefono = '" + txtTelefono.getText() +"', HoraAtencion = '"+obtenerHora()+"', FechaAtencion = '"+obtenerFecha()+"' WHERE Cedula = '" + cedula + "'");
+                    if (valor > 0) {
+                        JOptionPane.showMessageDialog(null, "Registro actualizado exitosamente.");
+                        frame.dispose();
+                    } 
+                } catch (SQLException e1) {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar el registro: " + e1.getMessage());
+                }
+            }
+        });
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnActualizar.setBounds(30, 380, 200, 40);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnActualizar.setBounds(30, 380, 200, 30);
+            }
+        });
+        frame.add(conte);
+        frame.setSize(300, 480);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+
+    }
+    
     //Metodo declarado para visualizar la pestaña donde se nos solicita la informacion general del caso.
     public void vistaCasos(Statement stmt) {
         String estado[] = {"Soltero/a", "Casado/a", "Divorciado/a", "Separado/a", "Viudo/a", "Concubinato"};
@@ -879,7 +1148,6 @@ btnCaso.setIconTextGap(50);
         frame.add(conte);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        //ActionPerformed de boton guardar para guardar todos los datos en el arrayList ListaCasos.
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -2117,16 +2385,16 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                 txtId.setText(""); // Limpiar el área de texto antes de mostrar los casos
 // Conexión a la base de datos
                 Connection con = null;
-                Statement stmt1 = null;
+                //Statement stmt1 = null;
                 Statement stmt2 = null;
 
                 try {
-                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
                     stmt = con.createStatement();
                     stmt2 = con.createStatement();
 
 // Consulta para obtener los casos y sus seguimientos
-                    ResultSet rs = stmt1.executeQuery(
+                    ResultSet rs = stmt.executeQuery(
                             "SELECT c.*, o.Nombre AS NombreFuncionario, o.IDempleado, o.Solucion, o.Lugar, o.Direccion AS DireccionOficina, o.Telefono, o.FechaAtencion, o.HoraAtencion "
                             + "FROM caso c LEFT JOIN oficinaregional o ON c.Cedula = o.CedulaCaso"
                     );
@@ -2497,7 +2765,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                 // Si todos los campos están completos, se procede a guardar el seguimiento en la base de datos
                 try {
                             // Validación de campos vacíos
-                            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "erpalacios");
+                            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/proyecto1?verifyServerCertificate=false&useSSL=true", "root", "cRojas34");
                     Statement stmt = cn.createStatement();
                             
                             String sql = "INSERT INTO oficinaregional (IDempleado, Lugar, Direccion, Telefono, Nombre, Cedula, CedulaCaso, HoraAtencion, FechaAtencion, Solucion) VALUES ('" +
@@ -2529,13 +2797,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                 });
                 frame.setSize(520, 550);
                 frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-                
-                    
-                        
-                   //     odo utilizado para solicitar la informacion de usuario y la oficina regional.
-
-                     //   e VistaGeneral.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        frame.setVisible(true);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
             }
         }
