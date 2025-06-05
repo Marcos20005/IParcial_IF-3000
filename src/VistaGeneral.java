@@ -76,7 +76,7 @@ public class VistaGeneral {
         //inicializacion de componentes graficos
         JFrame vistaLogin = new JFrame("Login de usuario");
         Container conte = new Container();
-        vistaLogin.setSize(300, 400);
+        vistaLogin.setSize(300, 500);
         vistaLogin.setLocationRelativeTo(null);
         JLabel etiquetaUsuario = new JLabel("Nombre de usuario");
         etiquetaUsuario.setBounds(50, 20, 200, 30);
@@ -116,6 +116,10 @@ public class VistaGeneral {
         ImageIcon icon2 = new ImageIcon("Iconos/agregar-usuario.PNG");
         crearLogin.setIcon(icon2);
         conte.add(crearLogin);
+        JButton editarUsuario = new JButton("Editar usuario");
+        editarUsuario.setBounds(50, 360, 150, 40);
+        editarUsuario.setIcon(new ImageIcon("Iconos/boton-editar.PNG"));
+        conte.add(editarUsuario);
         vistaLogin.add(conte);
         vistaLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         vistaLogin.setLocationRelativeTo(null);
@@ -139,6 +143,25 @@ public class VistaGeneral {
             public void actionPerformed(ActionEvent e) {
                 //Al presionar boton Crear Usuario se llama al metodo con el mismo nombre para que se despliegue una pantalla solicitando toda la informacion
                 crearUsuario(stmt);
+            }
+        });
+        editarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true",
+                "root", "erpalacios"
+            );
+            Statement stmt = con.createStatement();
+
+            // Llama al método que abre la ventana de edición
+            editarUsiario(con, stmt);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos: " + ex.getMessage());
+        }
             }
         });
         ingreso.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -166,6 +189,143 @@ public class VistaGeneral {
         });
     }
 
+    public void editarUsiario(Connection con, Statement stmt) {
+    JFrame frame = new JFrame("Editar Usuario");
+    Container conte = frame.getContentPane();
+    conte.setLayout(null);
+
+    JLabel etiSeleccionar = new JLabel("Selecciona usuario:");
+    etiSeleccionar.setBounds(30, 10, 200, 30);
+    conte.add(etiSeleccionar);
+
+    JComboBox<String> comboUsuarios = new JComboBox<>();
+    comboUsuarios.setBounds(30, 40, 250, 30);
+    conte.add(comboUsuarios);
+
+    // Cargar usuarios en el combo
+    try {
+        ResultSet rs = stmt.executeQuery("SELECT Cedula, Nombre1, Apellido1 FROM usuario");
+        while (rs.next()) {
+            String cedula = rs.getString("Cedula");
+            String nombre = rs.getString("Nombre1");
+            String apellido = rs.getString("Apellido1");
+            comboUsuarios.addItem(cedula + " - " + nombre + " " + apellido);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    JLabel etiNombre = new JLabel("Nuevo nombre");
+    etiNombre.setBounds(30, 80, 200, 30);
+    conte.add(etiNombre);
+
+    JTextField campoNombre = new JTextField();
+    campoNombre.setBounds(30, 110, 200, 30);
+    conte.add(campoNombre);
+
+    JLabel etiSegundoNombre = new JLabel("Nuevo segundo nombre");
+    etiSegundoNombre.setBounds(30, 140, 200, 30);
+    conte.add(etiSegundoNombre);
+
+    JTextField campoSegundoNombre = new JTextField();
+    campoSegundoNombre.setBounds(30, 170, 200, 30);
+    conte.add(campoSegundoNombre);
+
+    JLabel etiApellido = new JLabel("Nuevo apellido");
+    etiApellido.setBounds(30, 200, 200, 30);
+    conte.add(etiApellido);
+
+    JTextField campoApellido = new JTextField();
+    campoApellido.setBounds(30, 230, 200, 30);
+    conte.add(campoApellido);
+
+    JLabel etiSegundoApellido = new JLabel("Nuevo segundo apellido");
+    etiSegundoApellido.setBounds(30, 260, 200, 30);
+    conte.add(etiSegundoApellido);
+
+    JTextField campoSegundoApellido = new JTextField();
+    campoSegundoApellido.setBounds(30, 290, 200, 30);
+    conte.add(campoSegundoApellido);
+
+    JLabel etiUsuario = new JLabel("Nuevo nombre de usuario");
+    etiUsuario.setBounds(30, 320, 200, 30);
+    conte.add(etiUsuario);
+
+    JTextField campoUsuario = new JTextField();
+    campoUsuario.setBounds(30, 350, 200, 30);
+    conte.add(campoUsuario);
+
+    JLabel etiContraseña = new JLabel("Nueva contraseña");
+    etiContraseña.setBounds(30, 380, 200, 30);
+    conte.add(etiContraseña);
+
+    JTextField campoContraseña = new JTextField();
+    campoContraseña.setBounds(30, 410, 200, 30);
+    conte.add(campoContraseña);
+
+    JButton btnGuardar = new JButton("Guardar");
+    btnGuardar.setBounds(30, 460, 150, 40);
+    conte.add(btnGuardar);
+
+    // Cuando seleccionan un usuario en el combo, cargar sus datos
+    comboUsuarios.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String seleccionado = (String) comboUsuarios.getSelectedItem();
+            if (seleccionado != null) {
+                String cedula = seleccionado.split(" - ")[0]; // Extraer solo la cédula
+                try {
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM usuario WHERE Cedula = '" + cedula + "'");
+                    if (rs.next()) {
+                        campoNombre.setText(rs.getString("Nombre1"));
+                        campoSegundoNombre.setText(rs.getString("Nombre2"));
+                        campoApellido.setText(rs.getString("Apellido1"));
+                        campoSegundoApellido.setText(rs.getString("Apellido2"));
+                        campoUsuario.setText(rs.getString("login"));
+                        campoContraseña.setText(rs.getString("clave"));
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    });
+
+    btnGuardar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String seleccionado = (String) comboUsuarios.getSelectedItem();
+            if (seleccionado != null) {
+                String cedula = seleccionado.split(" - ")[0];
+                try {
+                    String sql = "UPDATE usuario SET " +
+                                 "Nombre1 = '" + campoNombre.getText() + "', " +
+                                 "Nombre2 = '" + campoSegundoNombre.getText() + "', " +
+                                 "Apellido1 = '" + campoApellido.getText() + "', " +
+                                 "Apellido2 = '" + campoSegundoApellido.getText() + "', " +
+                                 "login = '" + campoUsuario.getText() + "', " +
+                                 "clave = '" + campoContraseña.getText() + "' " +
+                                 "WHERE Cedula = '" + cedula + "'";
+                    int actualizado = stmt.executeUpdate(sql);
+
+                    if (actualizado > 0) {
+                        JOptionPane.showMessageDialog(null, "Usuario actualizado con éxito.");
+                        frame.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo actualizar el usuario.");
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage());
+                }
+            }
+        }
+    });
+
+    frame.setSize(350, 560);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+}
     public void crearUsuario(Statement stmt) {
         //Inicializacion de componentes graficos para solicitar la informacion de un nuevo usuario.
         JFrame frame = new JFrame("Informacion de nuevo usuario");
