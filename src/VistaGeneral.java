@@ -259,7 +259,7 @@ public class VistaGeneral {
             }
             //Si la informacion coincide se llama a la pantalla general del sistema.
             if (encontrado == true) {
-                JOptionPane.showMessageDialog(null, "Login exitoso\nInformacion de la personas\nCedula: " + rs.getString("Cedula") + "\nNombre: " + rs.getString("Nombre1") + "\nNombre2: " + rs.getString("Nombre2") + "\nApellido1: " + rs.getString("Apellido1") + "\nApellido2: " + rs.getString("Apellido2") + "\nLogin: " + rs.getString("login") + "\nClave: " + rs.getString("clave"));
+                JOptionPane.showMessageDialog(null, "Login exitoso\nInformacion de la persona\nCedula: " + rs.getString("Cedula") + "\nNombre: " + rs.getString("Nombre1") + "\nNombre2: " + rs.getString("Nombre2") + "\nApellido1: " + rs.getString("Apellido1") + "\nApellido2: " + rs.getString("Apellido2") + "\nLogin: " + rs.getString("login") + "\nClave: " + rs.getString("clave"));
 
                 pantallaGeneral(stmt);
                 pantalla.dispose();
@@ -485,7 +485,7 @@ btnCaso.setIconTextGap(50);
                 try {
                     rs = stmt.executeQuery("SELECT * FROM caso");
                     while (rs.next()) {
-                        textArea.setText(textArea.getText() + "\n" + rs.getString("Cedula"));
+                        textArea.append(rs.getString("Cedula")+"\n");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -518,8 +518,22 @@ btnCaso.setIconTextGap(50);
         String texto = txtCedula.getText().trim();
 
         if (texto.isEmpty()) {
+           if (texto.isEmpty()) {
+          try {
+          
+            ResultSet rs1 = stmt.executeQuery("SELECT * FROM caso");
             textArea.setText("");
+            while (rs1.next()) {
+                textArea.append(rs1.getString("Cedula")+"\n");
+            }
+     
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
             return;
+        }
+
         }
 
         try {
@@ -971,7 +985,20 @@ btnCaso.setIconTextGap(50);
         String texto = campo.getText().trim();
 
         if (texto.isEmpty()) {
+          
+            
+            try {
+          
+            ResultSet rs1 = stmt.executeQuery("SELECT * FROM caso");
             txtId.setText("");
+            while (rs1.next()) {
+                txtId.append(rs1.getString("Cedula")+"\n");
+            }
+     
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
             return;
         }
 
@@ -1767,7 +1794,18 @@ btnCaso.setIconTextGap(50);
 
        
         if (texto.isEmpty()) {
+          try {
+          
+            ResultSet rs1 = stmt.executeQuery("SELECT * FROM caso");
             textArea.setText("");
+            while (rs1.next()) {
+                textArea.append(rs1.getString("Cedula")+"\n");
+            }
+     
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
             return;
         }
 
@@ -2108,6 +2146,10 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         Container conte = frame.getContentPane(); // Usamos el contentPane correctamente
         conte.setLayout(null);
 
+        JLabel lbl = new JLabel("Casos registrados");
+        lbl.setBounds(40,10,150,30);
+        conte.add(lbl);
+
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
 
@@ -2124,15 +2166,15 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         }
 
         JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setBounds(30, 30, 400, 250);
+        scroll.setBounds(40, 40, 400, 250);
         conte.add(scroll);
 
         JLabel lblCedula = new JLabel("Ingrese la cédula del caso:");
-        lblCedula.setBounds(30, 290, 200, 30);
+        lblCedula.setBounds(45, 300, 200, 30);
         conte.add(lblCedula);
 
         JTextField txtCedula = new JTextField();
-        txtCedula.setBounds(30, 320, 200, 30);
+        txtCedula.setBounds(40, 330, 200, 30);
         txtCedula.setToolTipText("Ingrese la cédula del caso que desea resolver");
         conte.add(txtCedula);
 
@@ -2151,19 +2193,32 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         String texto = txtCedula.getText().trim();
 
         if (texto.isEmpty()) {
+            if (texto.isEmpty()) {
+          try {
+          
+            ResultSet rs1 = stmt.executeQuery("SELECT * FROM caso");
             textArea.setText("");
+            while (rs1.next()) {
+                textArea.append("Cedula: " + rs1.getString("Cedula") + " - Tipo de violencia: " + rs1.getString("TipoViolencia") + "\n");
+            }
+     
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
             return;
+        }
         }
 
         try {
             // Usa LIKE para filtrar desde SQL
             String query = "SELECT * FROM caso WHERE Cedula LIKE '" + texto + "%'";
-            ResultSet rs1 = stmt.executeQuery(query);
+            ResultSet rs2 = stmt.executeQuery(query);
             textArea.setText(""); 
 
-            while (rs1.next()) {
-                String cedula = rs1.getString("Cedula");
-                textArea.append("Cedula: "+cedula +" - Tipo de violencia: "+ rs1.getString("TipoViolencia")+ "\n"); 
+            while (rs2.next()) {
+                String cedula = rs2.getString("Cedula");
+                textArea.append("Cedula: "+cedula +" - Tipo de violencia: "+ rs2.getString("TipoViolencia")+ "\n"); 
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -2174,7 +2229,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
 
 
         JButton btnResolver = new JButton("Resolver");
-        btnResolver.setBounds(250, 320, 100, 30);
+        btnResolver.setBounds(260, 330, 100, 30);
         ImageIcon icon = new ImageIcon("Iconos/resolviendo-el-problema.png");
         btnResolver.setIcon(icon);
         conte.add(btnResolver);
@@ -2207,11 +2262,11 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         btnResolver.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnResolver.setBounds(250, 320, 100, 40);
+                btnResolver.setBounds(260, 330, 100, 40);
             }
 
             public void mouseExited(MouseEvent e) {
-                btnResolver.setBounds(250, 320, 100, 30);
+                btnResolver.setBounds(260, 330, 100, 30);
             }
         });
         frame.setSize(500, 420);
@@ -2266,7 +2321,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
 
         JButton grdr = new JButton("Guardar");
         grdr.setBounds(30, 440, 100, 30);
-        ImageIcon icon = new ImageIcon("Iconos/guardar.png");
+        ImageIcon icon = new ImageIcon("Iconos/guardar-el-archivo.png");
         grdr.setIcon(icon);
         conte.add(grdr);
 
@@ -2370,7 +2425,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
         grdr.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        grdr.setBounds(20, 430, 100, 40);
+                        grdr.setBounds(30, 440, 100, 40);
                     }
             public void mouseExited(MouseEvent e) {
                         grdr.setBounds(30, 440, 100, 30);
