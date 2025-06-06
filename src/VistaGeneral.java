@@ -50,10 +50,7 @@ public class VistaGeneral {
     JButton btnsalir;
     JButton btnVisualizarCaso;
     JButton btnSalir1;
-    //ArrayList utilizado donde se guardan todos los datos utilizados.
-    ArrayList<Caso> ListaCasos = new ArrayList();
-    //ArrayList utilizado para poder aniadir una solucion y que se muestre la informacion del caso y la solucion.
-    ArrayList<String> listaResultados = new ArrayList();
+
 
     public VistaGeneral() throws UnsupportedLookAndFeelException, ClassNotFoundException, SQLException {
         //Metodos utilizados para darle una vista mas atractiva utilizando libreria FlatLaf.     
@@ -152,7 +149,7 @@ public class VistaGeneral {
                 try {
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/proyecto1?verifyServerCertificate=false&useSSL=true",
-                "root", "erpalacios"
+                "root", "cRojas34"
             );
             Statement stmt = con.createStatement();
 
@@ -230,55 +227,65 @@ public class VistaGeneral {
         e.printStackTrace();
     }
 
-    JLabel etiNombre = new JLabel("Nuevo nombre");
+    JLabel etiNombre = new JLabel("Nuevo nombre  *");
     etiNombre.setBounds(30, 80, 200, 30);
     conte.add(etiNombre);
 
     JTextField campoNombre = new JTextField();
     campoNombre.setBounds(30, 110, 200, 30);
+    campoNombre.setToolTipText("Ingrese el nuevo nombre del usuario");
     conte.add(campoNombre);
 
-    JLabel etiSegundoNombre = new JLabel("Nuevo segundo nombre");
+    JLabel etiSegundoNombre = new JLabel("Nuevo segundo nombre  *");
     etiSegundoNombre.setBounds(30, 140, 200, 30);
     conte.add(etiSegundoNombre);
 
     JTextField campoSegundoNombre = new JTextField();
     campoSegundoNombre.setBounds(30, 170, 200, 30);
+    campoSegundoNombre.setToolTipText("Ingrese el nuevo segundo nombre del usuario");
     conte.add(campoSegundoNombre);
 
-    JLabel etiApellido = new JLabel("Nuevo apellido");
+    JLabel etiApellido = new JLabel("Nuevo apellido   *");
     etiApellido.setBounds(30, 200, 200, 30);
     conte.add(etiApellido);
 
     JTextField campoApellido = new JTextField();
     campoApellido.setBounds(30, 230, 200, 30);
+    campoApellido.setToolTipText("Ingrese el nuevo apellido del usuario");
     conte.add(campoApellido);
 
-    JLabel etiSegundoApellido = new JLabel("Nuevo segundo apellido");
+    JLabel etiSegundoApellido = new JLabel("Nuevo segundo apellido    *");
     etiSegundoApellido.setBounds(30, 260, 200, 30);
     conte.add(etiSegundoApellido);
 
     JTextField campoSegundoApellido = new JTextField();
     campoSegundoApellido.setBounds(30, 290, 200, 30);
+    campoSegundoApellido.setToolTipText("Ingrese el nuevo segundo apellido del usuario");
     conte.add(campoSegundoApellido);
 
-    JLabel etiUsuario = new JLabel("Nuevo nombre de usuario");
+    JLabel etiUsuario = new JLabel("Nuevo nombre de usuario   *");
     etiUsuario.setBounds(30, 320, 200, 30);
     conte.add(etiUsuario);
 
     JTextField campoUsuario = new JTextField();
     campoUsuario.setBounds(30, 350, 200, 30);
+    campoUsuario.setToolTipText("Ingrese el nuevo nombre de usuario");
     conte.add(campoUsuario);
 
-    JLabel etiContraseña = new JLabel("Nueva contraseña");
+    JLabel etiContraseña = new JLabel("Nueva contraseña   *");
     etiContraseña.setBounds(30, 380, 200, 30);
     conte.add(etiContraseña);
 
     JTextField campoContraseña = new JTextField();
     campoContraseña.setBounds(30, 410, 200, 30);
+    campoContraseña.setToolTipText("Ingrese la nueva contraseña del usuario");
     conte.add(campoContraseña);
 
     JButton btnGuardar = new JButton("Guardar");
+        ImageIcon iconEditar = new ImageIcon("Iconos/boton-editar.PNG");
+    btnGuardar.setIcon(iconEditar);
+    btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
+    btnGuardar.setIconTextGap(50);
     btnGuardar.setBounds(30, 460, 150, 40);
     conte.add(btnGuardar);
 
@@ -334,6 +341,17 @@ public class VistaGeneral {
                     JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage());
                 }
             }
+        }
+    });
+    btnGuardar.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            btnGuardar.setBounds(30, 460, 150, 50); 
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            btnGuardar.setBounds(30, 460, 150, 40); 
         }
     });
 
@@ -412,9 +430,7 @@ public class VistaGeneral {
                     int valor = stmt.executeUpdate("insert into usuario(Cedula, Nombre1, Nombre2, Apellido1, Apellido2, login, clave) value (" + "'" + campoCedula.getText() + "'" + ",'" + campoNombre.getText() + "','" + campoSegundoNombre.getText() + "','" + campoApellido.getText() + "','" + campoSegundoApellido.getText() + "','" + campoUsuario.getText() + "','" + campoContraseña.getText() + "')");
                     ResultSet rs = stmt.executeQuery("SELECT * FROM usuario");
                     //While para comprobar los datos actual de la base de datos.
-                    while (rs.next()) {
-                        System.out.println("Cedula: " + rs.getString("Cedula") + " Nombre: " + rs.getString("Nombre1") + " " + rs.getString("Nombre2") + " " + rs.getString("Apellido1") + " " + rs.getString("Apellido2") + " Login: " + rs.getString("login") + " Clave: " + rs.getString("clave"));
-                    }
+                   
                     frame.dispose();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
@@ -1105,35 +1121,35 @@ btnCaso.setIconTextGap(50);
         JFrame frame = new JFrame("Actualizar registro de solucion");
         Container conte = new Container();
         conte.setLayout(null);
-        JLabel lblCedula = new JLabel("Ingrese la nueva cédula del funcionario:");
+        JLabel lblCedula = new JLabel("Ingrese la nueva cédula del funcionario:   *");
         lblCedula.setBounds(30, 20, 250, 30);
         conte.add(lblCedula);
         JTextField txtCedula = new JTextField();
         txtCedula.setBounds(30, 50, 200, 30);
         txtCedula.setToolTipText("Ingrese la nueva cédula del funcionario");
         conte.add(txtCedula);
-        JLabel lblNombre = new JLabel("Ingrese el nuevo nombre del funcionario:");
+        JLabel lblNombre = new JLabel("Ingrese el nuevo nombre del funcionario:   *");
         lblNombre.setBounds(30, 90, 250, 30);
         conte.add(lblNombre);
         JTextField txtNombre = new JTextField();
         txtNombre.setBounds(30, 120, 200, 30);
         txtNombre.setToolTipText("Ingrese el nuevo nombre del funcionario");
         conte.add(txtNombre);
-        JLabel lblApellido = new JLabel("Ingrese el nuevo ID del funcionario:");
+        JLabel lblApellido = new JLabel("Ingrese el nuevo ID del funcionario:   *");
         lblApellido.setBounds(30, 160, 250, 30);
         conte.add(lblApellido);
         JTextField txtApellido = new JTextField();
         txtApellido.setBounds(30, 190, 200, 30);
         txtApellido.setToolTipText("Ingrese el nuevo ID del funcionario");
         conte.add(txtApellido);
-        JLabel lblSegundoApellido = new JLabel("Ingrese la nueva direccion del funcionario:");
+        JLabel lblSegundoApellido = new JLabel("Ingrese la nueva direccion del funcionario:   *");
         lblSegundoApellido.setBounds(30, 230, 250, 30);
         conte.add(lblSegundoApellido);
         JTextField txtSegundoApellido = new JTextField();
         txtSegundoApellido.setBounds(30, 260, 200, 30);
         txtSegundoApellido.setToolTipText("Ingrese la nueva direcion del funcionario");
         conte.add(txtSegundoApellido);
-        JLabel lblTelefono = new JLabel("Ingrese el nuevo telefono del funcionario:");
+        JLabel lblTelefono = new JLabel("Ingrese el nuevo telefono del funcionario:   *");
         lblTelefono.setBounds(30, 300, 250, 30);
         conte.add(lblTelefono);
         JTextField txtTelefono = new JTextField();
@@ -2139,7 +2155,7 @@ btnCaso.setIconTextGap(50);
                     ResultSet rs = stmt.executeQuery("SELECT * FROM caso");
                     //While para comprobar los datos actual de la base de datos.
                     while (rs.next()) {
-                        System.out.println("Cedula: " + rs.getString("Cedula") + " Nombre: " + rs.getString("Nombre") + " Tipo Lesion:" + rs.getString("TipoLesion") + " Atencion Medica: " + rs.getString("AtencionMedica"));
+                        
                     }
                 } catch (SQLException e1) {
                     // TODO Auto-generated catch block
@@ -2153,12 +2169,12 @@ btnCaso.setIconTextGap(50);
         btnGuardar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnGuardar.setBackground(Color.GREEN);
+                btnGuardar.setBounds(20, 380, 100, 40);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnGuardar.setBackground(null);
+                btnGuardar.setBounds(20, 380, 100, 30);
             }
         });
 
@@ -2621,7 +2637,6 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                                     + "\nFecha Atención: " + rs.getString("FechaAtencion")
                                     + "\nHora Atención: " + rs.getString("HoraAtencion");
                         }
-                        System.out.println(mensaje);
                         mensaje += "\n-----------------------------------------------------------\n\n";
                         txtId.append(mensaje);
                         contador++;
@@ -2652,17 +2667,7 @@ btnAceptar.addMouseListener(new MouseAdapter() {
                     }
                 }
             
-      //  });
-       // btnMostrar.addMouseListener(new MouseAdapter() {
-         //   @Override
-           // public void mouseEntered(MouseEvent e) {
-             //   btnMostrar.setBounds(150, 420, 150, 40);
-            //}
-
-            //public void mouseExited(MouseEvent e) {
-              //  btnMostrar.setBounds(160, 430, 150, 30);
-            //}
-        //});
+      
         JScrollPane scroll = new JScrollPane(txtId);
         scroll.setBounds(30, 60, 420, 360);
         conte.add(scroll);
